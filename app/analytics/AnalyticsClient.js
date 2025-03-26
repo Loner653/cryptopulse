@@ -1,4 +1,3 @@
-// app/analytics/AnalyticsClient.js
 "use client";
 
 import Image from "next/image";
@@ -77,36 +76,10 @@ export default function AnalyticsClient({
                   <tbody>
                     {marketData.length > 0 ? (
                       marketData.map((coin) => (
-                        <tr key={coin.id}> {/* coin.id is unique (e.g., "bitcoin") */}
-                          <td>
-                            <Image
-                              src={coin.image}
-                              alt={`${coin.name} logo`}
-                              width={24}
-                              height={24}
-                              className={styles.coinImage}
-                              priority={false}
-                            />
-                            {coin.name}
-                          </td>
-                          <td>${coin.current_price.toLocaleString()}</td>
-                          <td
-                            className={
-                              coin.price_change_percentage_24h >= 0
-                                ? styles.positive
-                                : styles.negative
-                            }
-                          >
-                            {coin.price_change_percentage_24h.toFixed(2)}%
-                          </td>
-                          <td>${coin.market_cap.toLocaleString()}</td>
-                          <td>${coin.total_volume.toLocaleString()}</td>
-                        </tr>
+                        <tr key={coin.id}><td><Image src={coin.image} alt={`${coin.name} logo`} width={24} height={24} className={styles.coinImage} priority={false} />{coin.name}</td><td>${coin.current_price.toLocaleString()}</td><td className={coin.price_change_percentage_24h >= 0 ? styles.positive : styles.negative}>{coin.price_change_percentage_24h.toFixed(2)}%</td><td>${coin.market_cap.toLocaleString()}</td><td>${coin.total_volume.toLocaleString()}</td></tr>
                       ))
                     ) : (
-                      <tr>
-                        <td colSpan={5}>No market data available.</td>
-                      </tr>
+                      <tr><td colSpan={5}>No market data available.</td></tr>
                     )}
                   </tbody>
                 </table>
@@ -139,16 +112,10 @@ export default function AnalyticsClient({
                   <tbody>
                     {defiData.length > 0 ? (
                       defiData.map((protocol, index) => (
-                        <tr key={protocol.name || index}> {/* Add index as fallback if name isn't unique */}
-                          <td>{protocol.name}</td>
-                          <td>${protocol.tvl.toLocaleString()}</td>
-                          <td>{protocol.chain || "Multi-Chain"}</td>
-                        </tr>
+                        <tr key={protocol.name || index}><td>{protocol.name}</td><td>${protocol.tvl.toLocaleString()}</td><td>{protocol.chain || "Multi-Chain"}</td></tr>
                       ))
                     ) : (
-                      <tr>
-                        <td colSpan={3}>No DeFi data available.</td>
-                      </tr>
+                      <tr><td colSpan={3}>No DeFi data available.</td></tr>
                     )}
                   </tbody>
                 </table>
@@ -181,30 +148,10 @@ export default function AnalyticsClient({
                   <tbody>
                     {trendingData && trendingData.length > 0 ? (
                       trendingData.map((coin) => (
-                        <tr key={coin.item.id}> {/* coin.item.id is unique */}
-                          <td>
-                            <Image
-                              src={coin.item.small}
-                              alt={`${coin.item.name} logo`}
-                              width={24}
-                              height={24}
-                              className={styles.coinImage}
-                              priority={false}
-                            />
-                            {coin.item.name}
-                          </td>
-                          <td>{coin.item.market_cap_rank || "N/A"}</td>
-                          <td>
-                            {coin.item.price_btc
-                              ? coin.item.price_btc.toFixed(8)
-                              : "N/A"}
-                          </td>
-                        </tr>
+                        <tr key={coin.item.id}><td><Image src={coin.item.small} alt={`${coin.item.name} logo`} width={24} height={24} className={styles.coinImage} priority={false} />{coin.item.name}</td><td>{coin.item.market_cap_rank || "N/A"}</td><td>{coin.item.price_btc ? coin.item.price_btc.toFixed(8) : "N/A"}</td></tr>
                       ))
                     ) : (
-                      <tr>
-                        <td colSpan={3}>No trending data available.</td>
-                      </tr>
+                      <tr><td colSpan={3}>No trending data available.</td></tr>
                     )}
                   </tbody>
                 </table>
@@ -241,25 +188,10 @@ export default function AnalyticsClient({
                   <tbody>
                     {binanceData.length > 0 ? (
                       binanceData.map((coin) => (
-                        <tr key={coin.id}> {/* Use the unique id instead of name */}
-                          <td>{coin.name}</td>
-                          <td>${coin.price.toLocaleString()}</td>
-                          <td
-                            className={
-                              coin.priceChangePercent >= 0
-                                ? styles.positive
-                                : styles.negative
-                            }
-                          >
-                            {coin.priceChangePercent.toFixed(2)}%
-                          </td>
-                          <td>${coin.volume.toLocaleString()}</td>
-                        </tr>
+                        <tr key={coin.id}><td>{coin.name}</td><td>${coin.price.toLocaleString()}</td><td className={coin.priceChangePercent >= 0 ? styles.positive : styles.negative}>{coin.priceChangePercent.toFixed(2)}%</td><td>${coin.volume.toLocaleString()}</td></tr>
                       ))
                     ) : (
-                      <tr>
-                        <td colSpan={4}>No Binance data available.</td>
-                      </tr>
+                      <tr><td colSpan={4}>No Binance data available.</td></tr>
                     )}
                   </tbody>
                 </table>
