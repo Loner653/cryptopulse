@@ -1,0 +1,126 @@
+/* app/sidebar.module.css */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 10px 20px;
+  height: calc(100vh - 60px);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  z-index: 1000;
+}
+
+.collapsed {
+  width: 80px;
+}
+
+.collapsed .logo,
+.collapsed a {
+  display: none;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.sidebarTitle {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+}
+
+.navList li {
+  margin-bottom: 15px;
+}
+
+.navList li a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navList li a:hover {
+  color: #00ffff;
+}
+
+.articlesButton {
+  display: block;
+  padding: 10px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  color: #1a1a2e;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.articlesButton:hover {
+  opacity: 0.9;
+}
+
+.sidebarArticles {
+  margin-top: 30px;
+}
+
+.sidebarArticlesTitle {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebarArticleItem {
+  margin-bottom: 20px;
+}
+
+.sidebarArticleItem a {
+  color: #e0e0e0;
+  text-decoration: none;
+}
+
+.sidebarArticleItem h4 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #00ffff;
+}
+
+.sidebarArticleItem p {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+
+  .open {
+    transform: translateX(0);
+  }
+}

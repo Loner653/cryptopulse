@@ -1,0 +1,63 @@
+/* 🔹 Main Container */
+.chartContainer {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #1a1a1d;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    overflow-x: auto;
+}
+
+/* 📌 Title */
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00d1ff;
+}
+
+/* 🏦 Table Styling */
+.cryptoTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 🔹 Table Header */
+.cryptoTable th {
+    background: #292b2f;
+    color: #00d1ff;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+/* 🔸 Table Rows */
+.cryptoTable td {
+    padding: 12px;
+    text-align: left;
+    color: #ddd;
+    border-bottom: 1px solid #444;
+    font-size: 13px;
+}
+
+/* 📉 Coin Image (Reduced Size) */
+.coinImage {
+    width: 25px; /* Reduced from 35px */
+    height: 25px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* 🔺 Price Up & Down */
+.priceUp {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.priceDown {
+    color: #ff4444;
+    font-weight: bold;
+}

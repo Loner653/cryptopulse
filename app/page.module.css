@@ -1,0 +1,94 @@
+/* app/page.module.css */
+.contentContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding-top: 120px; /* Matches .dashboard-content in global.css */
+  margin-left: 250px;
+  min-height: 100vh;
+}
+
+.cryptoSection,
+.airdropSection,
+.newsSection,
+.articleSection {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 60px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cryptoSection:hover,
+.airdropSection:hover,
+.newsSection:hover,
+.articleSection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cryptoSection h2,
+.airdropSection h2,
+.newsSection h2,
+.articleSection h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.articleSection h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionIcon {
+  margin-right: 8px;
+}
+
+.priceList p,
+.airdropSection p,
+.articleSection p {
+  margin: 10px 0;
+  color: #e0e0e0;
+}
+
+.airdropSection ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #e0e0e0;
+}
+
+.airdropSection li {
+  margin: 8px 0;
+}
+
+.readMoreButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  color: #1a1a2e;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: opacity 0.3s ease;
+}
+
+.readMoreButton:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    margin-left: 0;
+    padding-top: 120px; /* Consistent with desktop */
+  }
+}
