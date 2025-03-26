@@ -1,13 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ["coin-images.coingecko.com"],
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "coin-images.coingecko.com",
+          pathname: "/coins/images/**", // Optional: restrict to specific paths
+        },
+      ],
     },
-  };
-  
-  module.exports = nextConfig;
-  module.exports = {
     eslint: {
       ignoreDuringBuilds: true,
     },
   };
+  
+  module.exports = nextConfig;

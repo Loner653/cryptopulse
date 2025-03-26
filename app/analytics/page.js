@@ -1,312 +1,141 @@
-"use client";
+// app/analytics/page.js
+// NO 'use client' – this is a Server Component
 
-import { useState, useEffect } from "react"; // Fix the import syntax
-import Image from "next/image"; // Import Image component
-import styles from "./page.module.css";
+import AnalyticsClient from "./AnalyticsClient";
+import ErrorBoundary from "./ErrorBoundary";
 
-export default function Analytics() {
-  const [marketData, setMarketData] = useState([]);
-  const [defiData, setDefiData] = useState([]);
-  const [trendingData, setTrendingData] = useState([]);
-  const [binanceData, setBinanceData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // Utility function to add a delay
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Function to fetch market data from CoinGecko
-  const fetchMarketData = async () => {
+async function fetchWithRetry(url, options = {}, retries = 3, backoff = 1000) {
+  for (let i = 0; i < retries; i++) {
     try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false",
-        { cache: "no-store" }
-      );
+      const response = await fetch(url, options);
       if (!response.ok) {
-        throw new Error(`Failed to fetch market data: ${response.status} ${response.statusText}`);
+        throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
       }
-      const data = await response.json();
-      setMarketData(data);
-    } catch (err) {
-      console.error("Error fetching market data:", err);
-      setError(`Failed to load market data: ${err.message}. Please try again later.`);
+      return response.json();
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      console.warn(`Retrying fetch for ${url}... Attempt ${i + 1}/${retries}`);
+      await delay(backoff * Math.pow(2, i));
     }
-  };
+  }
+}
 
-  // Function to fetch DeFi data from DefiLlama
-  const fetchDefiData = async () => {
-    try {
-      await delay(1000); // Add 1-second delay to avoid rate limits
-      const response = await fetch("https://api.llama.fi/protocols");
-      if (!response.ok) {
-        throw new Error(`Failed to fetch DeFi data: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const sortedData = data.sort((a, b) => b.tvl - a.tvl).slice(0, 5);
-      setDefiData(sortedData);
-    } catch (err) {
-      console.error("Error fetching DeFi data:", err);
-      setError(`Failed to load DeFi data: ${err.message}. Please try again later.`);
-    }
-  };
+async function fetchMarketData() {
+  try {
+    const data = await fetchWithRetry(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false",
+      { next: { revalidate: 300 } }
+    );
+    return { data, error: null };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
 
-  // Function to fetch trending coins from CoinGecko
-  const fetchTrendingData = async () => {
-    try {
-      await delay(2000); // Add 2-second delay
-      const response = await fetch("https://api.coingecko.com/api/v3/search/trending");
-      if (!response.ok) {
-        throw new Error(`Failed to fetch trending data: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const trendingCoins = data.coins.slice(0, 5);
-      setTrendingData(trendingCoins);
-    } catch (err) {
-      console.error("Error fetching trending data:", err);
-      setError(`Failed to load trending data: ${err.message}. Please try again later.`);
-    }
-  };
+async function fetchDefiData() {
+  try {
+    await delay(1000);
+    const data = await fetchWithRetry("https://api.llama.fi/protocols", {
+      next: { revalidate: 300 },
+    });
+    return { data: data.sort((a, b) => b.tvl - a.tvl).slice(0, 5), error: null };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
 
-  // Function to fetch Binance-related price data from CoinGecko
-  const fetchBinanceData = async () => {
-    try {
-      await delay(3000); // Add 3-second delay
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false",
-        { cache: "no-store" }
-      );
-      if (!response.ok) {
-        throw new Error(`Failed to fetch Binance data: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const binanceFocusedData = data
-        .filter((coin) => coin.total_volume > 1000000)
-        .slice(0, 5);
-      setBinanceData(binanceFocusedData);
-    } catch (err) {
-      console.error("Error fetching Binance data:", err);
-      setError(`Failed to load Binance data: ${err.message}. Please try again later.`);
-    }
-  };
+async function fetchTrendingData() {
+  try {
+    await delay(2000);
+    const data = await fetchWithRetry("https://api.coingecko.com/api/v3/search/trending", {
+      next: { revalidate: 300 },
+    });
+    return { data: data.coins.slice(0, 5), error: null };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
 
-  // Fetch data on mount and every 48 hours
-  useEffect(() => {
-    const fetchAllData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        await fetchMarketData();
-        await fetchDefiData();
-        await fetchTrendingData();
-        await fetchBinanceData();
-      } catch (err) {
-        setError(`An error occurred while fetching data: ${err.message}.`);
-      } finally {
-        setLoading(false);
-      }
+async function fetchBinanceData() {
+  try {
+    await delay(3000);
+    const data = await fetchWithRetry(
+      "https://api.coingecko.com/api/v3/exchanges/binance/tickers?coin_ids=bitcoin,ethereum,binancecoin,ripple,cardano",
+      { next: { revalidate: 300 } }
+    );
+    return {
+      data: data.tickers
+        .map((ticker, index) => ({
+          id: `${ticker.base}-${ticker.target}-${index}`, // Add a unique ID
+          name: ticker.base,
+          price: ticker.last,
+          priceChangePercent: ticker.converted_last?.usd_24h_change || 0,
+          volume: ticker.converted_volume?.usd || 0,
+        }))
+        .slice(0, 5),
+      error: null,
     };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
 
-    fetchAllData();
-    const interval = setInterval(fetchAllData, 48 * 60 * 60 * 1000);
+export const metadata = {
+  title: "Crypto Analytics | CryptoPulse",
+  description: "Get the latest cryptocurrency analytics, including market overview, DeFi metrics, trending coins, and Binance price data.",
+};
 
-    return () => clearInterval(interval);
-  }, []);
+export default async function Analytics() {
+  const [marketResult, defiResult, trendingResult, binanceResult] = await Promise.all([
+    fetchMarketData(),
+    fetchDefiData(),
+    fetchTrendingData(),
+    fetchBinanceData(),
+  ]);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Crypto Analytics",
+    description: "Real-time cryptocurrency analytics including market data, DeFi metrics, trending coins, and Binance prices.",
+    mainEntity: [
+      {
+        "@type": "ItemList",
+        name: "Market Overview",
+        itemListElement: marketResult.data.map((coin, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "CryptoCurrency",
+            name: coin.name,
+            currentPrice: coin.current_price,
+            currency: "USD",
+          },
+        })),
+      },
+    ],
+  };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.pageTitle}>Crypto Analytics</h1>
-
-      {loading ? (
-        <p className={styles.loading}>Loading analytics data...</p>
-      ) : error ? (
-        <p className={styles.error}>{error}</p>
-      ) : (
-        <>
-          {/* Market Overview Section */}
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Market Overview</h2>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Coin</th>
-                    <th>Price (USD)</th>
-                    <th>24h Change</th>
-                    <th>Market Cap</th>
-                    <th>24h Volume</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {marketData.length > 0 ? (
-                    marketData.map((coin) => (
-                      <tr key={coin.id}>
-                        <td>
-                          <Image
-                            src={coin.image}
-                            alt={`${coin.name} logo`}
-                            width={24}
-                            height={24}
-                            className={styles.coinImage}
-                          />
-                          {coin.name}
-                        </td>
-                        <td>${coin.current_price.toLocaleString()}</td>
-                        <td
-                          className={
-                            coin.price_change_percentage_24h >= 0
-                              ? styles.positive
-                              : styles.negative
-                          }
-                        >
-                          {coin.price_change_percentage_24h.toFixed(2)}%
-                        </td>
-                        <td>${coin.market_cap.toLocaleString()}</td>
-                        <td>${coin.total_volume.toLocaleString()}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5}>No market data available.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* DeFi Metrics Section */}
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>DeFi Metrics</h2>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Protocol</th>
-                    <th>Total Value Locked (TVL)</th>
-                    <th>Chain</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {defiData.length > 0 ? (
-                    defiData.map((protocol) => (
-                      <tr key={protocol.name}>
-                        <td>{protocol.name}</td>
-                        <td>${protocol.tvl.toLocaleString()}</td>
-                        <td>{protocol.chain || "Multi-Chain"}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>No DeFi data available.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* Trending Coins Section */}
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Trending Coins</h2>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Coin</th>
-                    <th>Market Cap Rank</th>
-                    <th>Price (BTC)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {trendingData && trendingData.length > 0 ? (
-                    trendingData.map((coin) => (
-                      <tr key={coin.item.id}>
-                        <td>
-                          <Image
-                            src={coin.item.small}
-                            alt={`${coin.item.name} logo`}
-                            width={24}
-                            height={24}
-                            className={styles.coinImage}
-                          />
-                          {coin.item.name}
-                        </td>
-                        <td>{coin.item.market_cap_rank || "N/A"}</td>
-                        <td>
-                          {coin.item.price_btc
-                            ? coin.item.price_btc.toFixed(8)
-                            : "N/A"}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>No trending data available.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            <p className={styles.note}>
-              Trending coins are based on search volume on CoinGecko.
-            </p>
-          </section>
-
-          {/* Binance Price Overview Section */}
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Binance Price Overview</h2>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Coin</th>
-                    <th>Price (USD)</th>
-                    <th>24h Change</th>
-                    <th>24h Volume</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {binanceData.length > 0 ? (
-                    binanceData.map((coin) => (
-                      <tr key={coin.id}>
-                        <td>
-                          <Image
-                            src={coin.image}
-                            alt={`${coin.name} logo`}
-                            width={24}
-                            height={24}
-                            className={styles.coinImage}
-                          />
-                          {coin.name}
-                        </td>
-                        <td>${coin.current_price.toLocaleString()}</td>
-                        <td
-                          className={
-                            coin.price_change_percentage_24h >= 0
-                              ? styles.positive
-                              : styles.negative
-                          }
-                        >
-                          {coin.price_change_percentage_24h.toFixed(2)}%
-                        </td>
-                        <td>${coin.total_volume.toLocaleString()}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={4}>No Binance data available.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            <p className={styles.note}>
-              Prices reflect top coins with significant volume on Binance (via
-              CoinGecko).
-            </p>
-          </section>
-        </>
-      )}
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <ErrorBoundary>
+        <AnalyticsClient
+          marketData={marketResult.data}
+          marketError={marketResult.error}
+          defiData={defiResult.data}
+          defiError={defiResult.error}
+          trendingData={trendingResult.data}
+          trendingError={trendingResult.error}
+          binanceData={binanceResult.data}
+          binanceError={binanceResult.error}
+        />
+      </ErrorBoundary>
+    </>
   );
 }

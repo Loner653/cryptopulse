@@ -1,102 +1,160 @@
+/* app/analytics/page.module.css */
 .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e0e0e0;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
+  max-width: 1000px; /* Matches articles’ .content-container */
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Matches articles’ .content-container */
+  color: #e0e0e0; /* Matches articles’ .content-container */
+  font-family: 'Arial', sans-serif; /* Matches articles’ .content-container */
+  line-height: 1.6; /* Matches articles’ .content-container */
+  padding-top: 80px; /* Matches articles’ .content-container */
+}
+
+.pageTitle {
+  font-size: 2.5rem; /* Matches articles’ .article-section-title */
+  text-align: center; /* Matches articles’ .article-section-title */
+  margin-bottom: 40px; /* Matches articles’ .article-section-title */
+  background: linear-gradient(90deg, #ffd700, #00ffff); /* Matches articles’ .article-section-title */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Matches articles’ .article-section-title */
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.05); /* Matches articles’ .article-section */
+  border-radius: 10px; /* Matches articles’ .article-section */
+  padding: 30px; /* Matches articles’ .article-section */
+  margin-bottom: 40px; /* Matches articles’ .article-section */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Matches articles’ .article-section */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Matches articles’ .article-section */
+}
+
+.section:hover {
+  transform: translateY(-5px); /* Matches articles’ .article-section:hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Matches articles’ .article-section:hover */
+}
+
+.sectionTitle {
+  font-size: 1.8rem; /* Matches articles’ .article-section-subtitle */
+  margin-bottom: 20px; /* Matches articles’ .article-section-subtitle */
+  background: linear-gradient(90deg, #ffd700, #00ffff); /* Matches articles’ .article-section-subtitle */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Adjusted to match articles’ dark theme */
+}
+
+.table th {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Matches articles’ .content-container */
+  background: rgba(255, 255, 255, 0.05); /* Matches articles’ .article-section for consistency */
+  background: linear-gradient(90deg, #ffd700, #00ffff); /* Gradient to match articles’ titles */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  border-bottom: 2px solid #ffd700; /* Matches articles’ .article-blockquote border color */
+}
+
+.table td {
+  color: #e0e0e0; /* Matches articles’ .content-container text color */
+}
+
+.coinImage {
+  vertical-align: middle;
+  margin-right: 8px;
+  border-radius: 4px; /* Matches articles’ .article-image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Matches articles’ .article-image */
+}
+
+.positive {
+  color: #00ff00; /* Brighter green to stand out on dark background */
+}
+
+.negative {
+  color: #ff0000; /* Brighter red to stand out on dark background */
+}
+
+.note {
+  font-size: 0.9rem;
+  color: #b0b0b0; /* Matches articles’ .article-image-caption */
+  margin-top: 10px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #b0b0b0; /* Matches articles’ .article-image-caption */
+}
+
+.error {
+  text-align: center;
+  color: #ff0000; /* Brighter red to stand out on dark background */
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
+
+.navLink {
+  margin-right: 16px;
+  color: #00ffff; /* Matches articles’ .toc-link */
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: #ffd700; /* Matches articles’ .toc-link:hover */
+}
+
+.refreshButton {
+  padding: 10px 20px; /* Matches articles’ .share-button */
+  background: linear-gradient(90deg, #ffd700, #00ffff); /* Matches articles’ .back-to-top */
+  color: #1a1a2e; /* Matches articles’ .back-to-top */
+  border: none;
+  border-radius: 5px; /* Matches articles’ .share-button */
+  cursor: pointer;
+  font-weight: bold; /* Matches articles’ .share-button */
+}
+
+.refreshButton:hover {
+  opacity: 0.9; /* Matches articles’ .share-button:hover */
+}
+
+.refreshButton:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.skeleton {
+  padding: 16px;
+}
+
+.skeletonRow {
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1); /* Adjusted to match articles’ dark theme */
+  margin-bottom: 8px;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
   }
-  
-  .pageTitle {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 40px;
-    background: linear-gradient(90deg, #ffd700, #00ffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  50% {
+    opacity: 0.5;
   }
-  
-  .section {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  100% {
+    opacity: 1;
   }
-  
-  .section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .sectionTitle {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #ffd700, #00ffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .tableContainer {
-    overflow-x: auto;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .table th,
-  .table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .table th {
-    background: rgba(255, 255, 255, 0.1);
-    font-weight: bold;
-    color: #ffd700;
-  }
-  
-  .table td {
-    color: #e0e0e0;
-  }
-  
-  .coinImage {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-    margin-right: 10px;
-  }
-  
-  .positive {
-    color: #00ff00;
-  }
-  
-  .negative {
-    color: #ff0000;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #b0b0b0;
-  }
-  
-  .error {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #ff5555;
-  }
-  
-  .note {
-    text-align: center;
-    font-style: italic;
-    color: #b0b0b0;
-    margin-top: 10px;
-  }
+}

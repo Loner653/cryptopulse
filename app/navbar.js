@@ -1,17 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
 
 export default function Navbar() {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem("loggedIn");
-    router.push("/");
-  };
-
   return (
     <nav className={styles.navbar}>
       <h1 className={styles.title}>Welcome to CryptoPulse</h1>
@@ -40,9 +32,6 @@ export default function Navbar() {
           <Link href="/analytics" className={styles.navLink}>
             Analytics
           </Link>
-        </li>
-        <li>
-          
         </li>
       </ul>
     </nav>
