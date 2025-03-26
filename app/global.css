@@ -30,8 +30,8 @@ body {
   height: 100%;
   z-index: 1000;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-  touch-action: pan-y; /* Allow vertical scrolling on the sidebar */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 .sidebar-title {
@@ -133,9 +133,9 @@ body {
 .main-container {
   flex: 1;
   margin-left: 250px;
-  overflow-y: auto; /* Ensure main content is always scrollable */
-  -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-  touch-action: pan-y; /* Allow vertical scrolling on the main content */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Top header */
@@ -212,9 +212,14 @@ body {
 
 /* General container for all content */
 .content-container {
-  max-width: 800px;
+  max-width: 1000px; /* Updated to match articles.css */
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Updated to match articles.css */
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding-top: 80px; /* Updated to match articles.css */
 }
 
 /* Section Icon (for emojis) */
@@ -427,102 +432,225 @@ body {
 
 /* Article Page Styles (for /articles page) */
 .article-section-title {
-  color: #ffd700;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  font-weight: 600;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  transition: text-shadow 0.3s ease;
+  font-size: 2.5rem;
   text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.article-section-title:hover {
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-}
-
-/* Individual article section */
 .article-section {
-  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .article-section:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, rgba(0, 0, 70, 0.9), rgba(0, 70, 120, 0.7));
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Article subtitle (h2) */
 .article-section-subtitle {
-  color: #00ccff;
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-  font-weight: 500;
-  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
-  transition: text-shadow 0.3s ease;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.article-section-subtitle:hover {
-  text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
-}
-
-/* Subsection title (h3) */
 .article-subsection-title {
-  color: #ffffff;
-  font-size: 1.3rem;
-  margin: 15px 0 5px;
-  font-weight: 500;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-  transition: text-shadow 0.3s ease;
+  font-size: 1.8rem;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.article-subsection-title:hover {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+.article-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Article paragraph, list, and blockquote styles */
-.article-section p,
-.article-list li,
-.article-blockquote {
-  color: white;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 10px;
-  font-weight: 300;
-  transition: color 0.3s ease;
-}
-
-.article-section p:hover,
-.article-list li:hover,
-.article-blockquote:hover {
-  color: #e0e0e0;
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-}
-
-.article-list {
-  padding-left: 20px;
-}
-
-.article-section strong {
-  color: white;
-  font-weight: 500;
-}
-
-.article-section em {
-  color: white;
+.article-image-caption {
+  text-align: center;
   font-style: italic;
+  color: #b0b0b0;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
 }
 
 .article-blockquote {
   border-left: 4px solid #ffd700;
-  padding-left: 10px;
-  margin: 10px 0;
+  padding-left: 20px;
+  margin: 20px 0;
   font-style: italic;
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+  color: #d0d0d0;
+}
+
+.article-list {
+  list-style-type: disc;
+  padding-left: 30px;
+  margin: 15px 0;
+}
+
+.article-list li {
+  margin-bottom: 10px;
+}
+
+/* Enhanced Table of Contents Styles */
+.table-of-contents {
+  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 80px;
+}
+
+.toc-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+}
+
+.toc-link {
+  color: #66d9ff; /* Lighter cyan for better contrast */
+  text-decoration: none;
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  border-left: 3px solid #00ccff;
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  text-shadow: 0 0 3px rgba(102, 217, 255, 0.5);
+}
+
+.toc-link:hover {
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: rgba(255, 215, 0, 0.15);
+  border-left-color: #ffd700;
+}
+
+/* Share Buttons Styles */
+.share-buttons {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.share-buttons h4 {
+  font-size: 1.2rem;
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+.share-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.share-button.twitter {
+  background-color: #1da1f2;
+  color: #fff;
+}
+
+.share-button.linkedin {
+  background-color: #0077b5;
+  color: #fff;
+}
+
+.share-button:hover {
+  opacity: 0.9;
+}
+
+/* Related Articles Styles */
+.related-articles {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.related-articles-title {
+  font-size: 1.4rem;
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+.related-articles-list {
+  list-style: none;
+  padding: 0;
+}
+
+.related-articles-list li {
+  margin-bottom: 10px;
+}
+
+.related-articles-list a {
+  color: #66d9ff; /* Lighter cyan for better contrast */
+  text-decoration: none;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  border-left: 3px solid #00ccff;
+  display: inline-block;
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  text-shadow: 0 0 3px rgba(102, 217, 255, 0.5);
+}
+
+.related-articles-list a:hover {
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: rgba(255, 215, 0, 0.15);
+  border-left-color: #ffd700;
+}
+
+/* Back to Top Button Styles */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  color: #1a1a2e;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.back-to-top:hover {
+  opacity: 0.9;
 }
 
 /* Article Section (for homepage) */
