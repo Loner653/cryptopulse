@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import NewsFeed from "./Newsfeed"; // Points to app/Newsfeed.js
+import NewsFeed from "./Newsfeed"; // Adjusted to point to app/Newsfeed.js
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
-import styles from "./page.module.css"; // Import the new CSS
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -32,13 +31,13 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className={styles.contentContainer}>
+    <div className="content-container">
       {/* Crypto Prices Section */}
-      <section className={styles.cryptoSection}>
+      <section className="crypto-section">
         <h2>
-          <span className={styles.sectionIcon}>📈</span> Real-Time Crypto Prices
+          <span className="section-icon">📈</span> Real-Time Crypto Prices
         </h2>
-        <div className={styles.priceList}>
+        <div className="price-list">
           <p>Bitcoin: ${prices.bitcoin.toLocaleString()}</p>
           <p>Ethereum: ${prices.ethereum.toLocaleString()}</p>
           <p>BNB: ${prices.bnb.toLocaleString()}</p>
@@ -46,9 +45,9 @@ export default function Dashboard() {
       </section>
 
       {/* Airdrop Section */}
-      <section className={styles.airdropSection}>
+      <section className="airdrop-section">
         <h2>
-          <span className={styles.sectionIcon}>🎁</span> Latest Airdrop
+          <span className="section-icon">🎁</span> Latest Airdrop
         </h2>
         <p>Check out the hottest airdrop listings!</p>
         <ul>
@@ -58,23 +57,23 @@ export default function Dashboard() {
       </section>
 
       {/* News Section */}
-      <section className={styles.newsSection}>
+      <section className="news-section">
         <h2>
-          <span className={styles.sectionIcon}>📰</span> Latest Crypto Articles
+          <span className="section-icon">📰</span> Latest Crypto News
         </h2>
         <NewsFeed />
       </section>
 
       {/* Article Section (Preview) */}
-      <section className={styles.articleSection}>
+      <section className="article-section">
         <h1>
-          <span className={styles.sectionIcon}>📜</span> Featured Article
+          <span className="section-icon">📜</span> Featured Article
         </h1>
         <h2>The Origin of Bitcoin: A Revolutionary Digital Currency</h2>
         <p>
           Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis, a period marked by widespread distrust in traditional banking systems. It was created as a radical alternative to centralized financial systems, offering a decentralized, peer-to-peer network that operates without the need for intermediaries like banks or governments.
         </p>
-        <Link href="/articles#origin-of-bitcoin" className={styles.readMoreButton}>
+        <Link href="/articles#origin-of-bitcoin" className="read-more-button">
           Read More →
         </Link>
       </section>

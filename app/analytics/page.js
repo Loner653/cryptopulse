@@ -61,20 +61,19 @@ async function fetchTrendingData() {
 async function fetchBinanceData() {
   try {
     await delay(3000);
+    const coinIds = "bitcoin,ethereum,binancecoin,ripple,cardano";
     const data = await fetchWithRetry(
-      "https://api.coingecko.com/api/v3/exchanges/binance/tickers?coin_ids=bitcoin,ethereum,binancecoin,ripple,cardano",
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=5&page=1&sparkline=false`,
       { next: { revalidate: 300 } }
     );
     return {
-      data: data.tickers
-        .map((ticker, index) => ({
-          id: `${ticker.base}-${ticker.target}-${index}`, // Add a unique ID
-          name: ticker.base,
-          price: ticker.last,
-          priceChangePercent: ticker.converted_last?.usd_24h_change || 0,
-          volume: ticker.converted_volume?.usd || 0,
-        }))
-        .slice(0, 5),
+      data: data.map((coin, index) => ({
+        id: coin.id, // Use CoinGecko's unique ID
+        name: coin.symbol.toUpperCase(),
+        price: coin.current_price,
+        priceChangePercent: coin.price_change_percentage_24h || 0,
+        volume: coin.total_volume,
+      })),
       error: null,
     };
   } catch (error) {

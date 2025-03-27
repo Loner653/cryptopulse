@@ -49,17 +49,24 @@ export default function Dashboard() {
         <h2>
           <span className="section-icon">🎁</span> Latest Airdrop
         </h2>
-        <p>Check out the hottest airdrop listings!</p>
-        <ul>
-          <li>Project X: 500 tokens - Claim by April 1, 2025</li>
-          <li>Grass airdrop: 1000 tokens - Claim by Q3 2025</li>
-        </ul>
+        <p>
+          Don’t miss out on the hottest airdrop opportunities! Follow Blockchain Bro on X at{" "}
+          <a
+            href="https://x.com/Philkeyz_01"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="x-link"
+          >
+            @Philkeyz_01
+          </a>{" "}
+          for the latest updates and exclusive airdrop announcements.
+        </p>
       </section>
 
       {/* News Section */}
       <section className="news-section">
         <h2>
-          <span className="section-icon">📰</span> Latest Crypto Articles
+          <span className="section-icon">📰</span> Latest Crypto News
         </h2>
         <NewsFeed />
       </section>

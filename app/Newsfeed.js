@@ -1,70 +1,92 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./news.module.css";
 
 export default function NewsFeed() {
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [newsItems, setNewsItems] = useState([]);
+  const [displayedNews, setDisplayedNews] = useState([]);
   const [error, setError] = useState(null);
 
-  const fetchNews = async () => {
-    try {
-      const response = await fetch("/api/news");
-      const data = await response.json();
-      if (response.ok) {
-        setNews(data);
-        setError(null);
-      } else {
-        setError(data.error || "Failed to fetch news");
-      }
-    } catch (error) {
-      setError("An error occurred while fetching news");
-      console.error("Error fetching news:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Fetch news data from the API route
   useEffect(() => {
+    async function fetchNews() {
+      try {
+        const res = await fetch("/api/news");
+        if (!res.ok) {
+          throw new Error("Failed to fetch news from API route");
+        }
+        const data = await res.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        const news = data.map((article) => ({
+          id: article.id,
+          title: article.title,
+          description: article.description || "No description available.",
+          url: article.url,
+          date: article.date,
+        }));
+        setNewsItems(news);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setError(error.message);
+      }
+    }
     fetchNews();
-
-    // Set up polling to fetch news every 5 minutes
-    const interval = setInterval(fetchNews, 300000); // 5 minutes
-    return () => clearInterval(interval); // Clean up interval on component unmount
   }, []);
 
-  if (loading) return <div className={styles.newsContainer}>Loading...</div>;
-  if (error) return <div className={styles.newsContainer}>Error: {error}</div>;
+  // Rotate news every 24 hours
+  useEffect(() => {
+    function updateDisplayedNews() {
+      if (newsItems.length === 0) return;
+
+      // Get the current day as a number (e.g., day 1 of the year to day 365)
+      const today = new Date();
+      const dayOfYear = Math.floor(
+        (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+      );
+
+      // Calculate the starting index for the 3 news items based on the day
+      const totalNews = newsItems.length;
+      const newsPerDay = 3;
+      const startIndex = (dayOfYear * newsPerDay) % totalNews;
+
+      // Select 3 news items, wrapping around if necessary
+      const selectedNews = [];
+      for (let i = 0; i < newsPerDay; i++) {
+        const index = (startIndex + i) % totalNews;
+        selectedNews.push(newsItems[index]);
+      }
+
+      setDisplayedNews(selectedNews);
+    }
+
+    // Update news immediately and then every 24 hours
+    updateDisplayedNews();
+    const interval = setInterval(updateDisplayedNews, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [newsItems]);
 
   return (
-    <div className={styles.newsContainer}>
-      <h1 className={styles.title}>📰 Crypto News</h1>
-      {news.length === 0 ? (
-        <p>No news articles available at the moment.</p>
-      ) : (
-        <ul className={styles.newsList}>
-          {news.map((article, index) => (
-            <li key={index} className={styles.newsItem}>
-              <h3>{article.title || "Untitled Article"}</h3>
-              <p>{article.body ? article.body.slice(0, 150) + "..." : "No description available"}</p>
-              <p>
-                Published on:{" "}
-                {article.published_on
-                  ? new Date(article.published_on * 1000).toLocaleDateString()
-                  : "Unknown Date"}{" "}
-                by {article.source || "Unknown Source"}
-              </p>
-              <a
-                href={article.url || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read more
+    <div className="news-feed">
+      {error ? (
+        <p className="error">Error: {error}</p>
+      ) : displayedNews.length > 0 ? (
+        displayedNews.map((news) => (
+          <div key={news.id} className="news-item">
+            <h3>
+              <a href={news.url} target="_blank" rel="noopener noreferrer">
+                {news.title}
               </a>
-            </li>
-          ))}
-        </ul>
+            </h3>
+            <p>{news.description}</p>
+            <p className="news-date">{news.date}</p>
+          </div>
+        ))
+      ) : (
+        <p>Loading news...</p>
       )}
     </div>
   );

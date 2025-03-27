@@ -1,15 +1,17 @@
-import { Suspense } from "react";
+// app/articles/page.js
+import { headers } from "next/headers"; // Import headers for server-side context
+import ArticlesContentServer from "./ArticlesContentServer";
 import ArticlesContentClient from "./ArticlesContentClient";
 
-export const metadata = {
-  title: "Crypto Articles | CryptoPulse",
-  description: "Explore in-depth articles on cryptocurrency topics including Bitcoin's origin, Ethereum's evolution, stablecoins, and more.",
-};
-
 export default function ArticlesPage() {
+  const headersList = headers();
+  const host = headersList.get("host"); // e.g., localhost:3000
+  const protocol = headersList.get("x-forwarded-proto") || "https"; // Detect protocol (http or https)
+  const origin = `${protocol}://${host}`; // Construct origin, e.g., https://localhost:3000
+
   return (
-    <Suspense fallback={<div>Loading articles...</div>}>
-      <ArticlesContentClient />
-    </Suspense>
+    <ArticlesContentClient>
+      <ArticlesContentServer origin={origin} />
+    </ArticlesContentClient>
   );
 }

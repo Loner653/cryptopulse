@@ -109,7 +109,7 @@ export default function ClientLayout({ children }) {
         </main>
 
         <footer className="footer">
-          <p>© 2025 Crypto & DePIN Hub</p>
+          <p>© 2025 CryptoPulse</p>
         </footer>
       </div>
 
