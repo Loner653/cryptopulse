@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://cryptoglobalive.com
+
+# Sitemaps
+Sitemap: https://cryptoglobalive.com/sitemap.xml
