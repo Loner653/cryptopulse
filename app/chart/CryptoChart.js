@@ -10,7 +10,7 @@ export default function CryptoChart() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0.1 }); // Adjusted threshold
+  const { ref, inView } = useInView({ threshold: 0.1 });
 
   const formatMarketCap = (value) => {
     if (!value) return "N/A";
@@ -20,7 +20,6 @@ export default function CryptoChart() {
     return value.toLocaleString();
   };
 
-  // Debounce function to limit API call frequency
   const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
@@ -38,7 +37,12 @@ export default function CryptoChart() {
       const response = await fetch(`/api/coins?page=${isRefresh ? 1 : page}`);
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || "Failed to fetch");
+      if (!response.ok) {
+        if (response.status === 429) { // Rate limit hit
+          throw new Error("API rate limit exceeded, retrying...");
+        }
+        throw new Error(data.error || "Failed to fetch");
+      }
 
       setCoins((prevCoins) => {
         const newCoins = isRefresh ? data : [...prevCoins, ...data];
@@ -49,7 +53,9 @@ export default function CryptoChart() {
       if (!isRefresh) setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error(`Error fetching coins (Attempt ${attempt}):`, error);
-      if (attempt < 3) {
+      if (error.message.includes("rate limit") && attempt < 3) {
+        setTimeout(() => fetchCoins(isRefresh, attempt + 1), 5000); // Longer delay for rate limits
+      } else if (attempt < 3) {
         setTimeout(() => fetchCoins(isRefresh, attempt + 1), 3000);
       }
     } finally {
@@ -57,7 +63,6 @@ export default function CryptoChart() {
     }
   }, [loading, page]);
 
-  // Debounced version of fetchCoins for scroll events
   const debouncedFetchCoins = useCallback(debounce(() => fetchCoins(), 1000), [fetchCoins]);
 
   const handleScroll = useCallback(() => {
@@ -69,7 +74,7 @@ export default function CryptoChart() {
   }, []);
 
   useEffect(() => {
-    fetchCoins(); // Initial fetch (not debounced)
+    fetchCoins();
 
     if (window.Tawk_API && window.Tawk_API.onLoad) {
       window.Tawk_API.onLoad = function () {
@@ -107,19 +112,19 @@ export default function CryptoChart() {
 
           if (userMessage.includes("price") || userMessage.includes("how much is")) {
             window.Tawk_API.sendMessage(
-              `The current price of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${detectedCoin.current_price?.toLocaleString() ?? "N/A"} USD.`
+              `The current price of ${detectedCoin.symbol.toUpperCase()} is $${detectedCoin.current_price?.toLocaleString() ?? "N/A"} USD.`
             );
           } else if (userMessage.includes("market cap")) {
             window.Tawk_API.sendMessage(
-              `The market cap of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${formatMarketCap(detectedCoin.market_cap)} USD.`
+              `The market cap of ${detectedCoin.symbol.toUpperCase()} is $${formatMarketCap(detectedCoin.market_cap)} USD.`
             );
           } else if (userMessage.includes("24h change") || userMessage.includes("24 hour change")) {
             window.Tawk_API.sendMessage(
-              `The 24h price change of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is ${detectedCoin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%.`
+              `The 24h price change of ${detectedCoin.symbol.toUpperCase()} is ${detectedCoin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%.`
             );
           } else {
             window.Tawk_API.sendMessage(
-              `I can help with price, market cap, or 24h change for ${detectedCoin.name}. What would you like to know?`
+              `I can help with price, market cap, or 24h change for ${detectedCoin.symbol.toUpperCase()}. What would you like to know?`
             );
           }
         };
@@ -132,7 +137,7 @@ export default function CryptoChart() {
 
   useEffect(() => {
     if (inView && !loading) {
-      debouncedFetchCoins(); // Debounced fetch on scroll
+      debouncedFetchCoins();
     }
   }, [inView, debouncedFetchCoins]);
 
@@ -144,10 +149,10 @@ export default function CryptoChart() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Coin</th>
+            <th>Ticker</th>
             <th>Price</th>
             <th>Market Cap</th>
-            <th>24h Change</th>
+            <th>24h %</th>
           </tr>
         </thead>
         <tbody>
@@ -158,12 +163,12 @@ export default function CryptoChart() {
                 <td>
                   <Image
                     src={coin.image}
-                    alt={coin.name}
-                    width={24}
-                    height={24}
+                    alt={coin.symbol}
+                    width={20}
+                    height={20}
                     className={styles.coinImage}
                   />
-                  {coin.name} ({coin.symbol.toUpperCase()})
+                  {coin.symbol.toUpperCase()}
                 </td>
                 <td>${coin.current_price?.toLocaleString() ?? "N/A"}</td>
                 <td>${formatMarketCap(coin.market_cap)}</td>
@@ -181,22 +186,12 @@ export default function CryptoChart() {
           )}
         </tbody>
       </table>
-      <div ref={ref} style={{ height: "70px" }}>
+      <div ref={ref} style={{ height: "50px" }}>
         {loading ? "Loading..." : ""}
       </div>
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`${styles.backToTop} back-to-top ${isBackToTopVisible ? "visible" : ""}`}
-        style={{
-          padding: "5px 10px",
-          fontSize: "0.8rem",
-          minWidth: "auto",
-          background: "rgba(255, 215, 0, 0.5)", // Faded yellow (50% opacity)
-          color: "#1a1a2e",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+        className={`${styles.backToTop} ${isBackToTopVisible ? "visible" : ""}`}
       >
         ↑
       </button>

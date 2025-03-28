@@ -1,3 +1,25 @@
+/* 🔝 Back to Top Button */
+.backToTop {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px 10px; /* Increased from 5px 10px to 15px 10px for more height */
+    background-color: rgba(41, 43, 47, 0.5);
+    color: #00d1ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.backToTop:hover {
+    background-color: rgba(58, 60, 65, 0.7);
+    opacity: 0.9;
+}
+
 /* 🔹 Main Container */
 .chartContainer {
     max-width: 900px;
@@ -45,14 +67,14 @@
 
 /* 📉 Coin Image (Reduced Size) */
 .coinImage {
-    width: 25px;
-    height: 25px;
+    width: 20px; /* Reduced from 25px for mobile */
+    height: 20px;
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 8px;
 }
 
-/* 🔺 Price Up & Down - Not used, kept for reference */
+/* 🔺 Price Up & Down */
 .priceUp {
     color: #00ff00;
     font-weight: bold;
@@ -81,31 +103,63 @@
     background-color: #3a3c41;
 }
 
-/* 🔝 Back to Top Button */
-.backToTop {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 10px 20px;
-    background-color: #292b2f;
-    color: #00d1ff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-}
-
-.backToTop:hover {
-    background-color: #3a3c41;
-}
-
 /* Tawk.to Chat Container */
 #tawkto-container {
     background: #1a1a1d;
     padding: 10px;
     color: #ddd;
     overflow-y: auto;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 600px) {
+    .chartContainer {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .cryptoTable th,
+    .cryptoTable td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .cryptoTable th:nth-child(1),
+    .cryptoTable td:nth-child(1) {
+        width: 10%;
+    }
+
+    .cryptoTable th:nth-child(2),
+    .cryptoTable td:nth-child(2) {
+        width: 20%;
+    }
+
+    .cryptoTable th:nth-child(3),
+    .cryptoTable td:nth-child(3) {
+        width: 30%;
+    }
+
+    .cryptoTable th:nth-child(4),
+    .cryptoTable td:nth-child(4) {
+        width: 25%;
+    }
+
+    .cryptoTable th:nth-child(5),
+    .cryptoTable td:nth-child(5) {
+        width: 15%;
+    }
+
+    .refreshButton {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .backToTop {
+        right: 10px;
+        padding: 12px 8px;
+        font-size: 0.7rem;
+    }
 }
