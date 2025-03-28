@@ -9,7 +9,8 @@ export default function CryptoChart() {
   const [coins, setCoins] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const { ref, inView } = useInView();
+  const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0.1 }); // Adjusted threshold
 
   const formatMarketCap = (value) => {
     if (!value) return "N/A";
@@ -17,6 +18,15 @@ export default function CryptoChart() {
     if (value >= 1_000_000_000) return (value / 1_000_000_000).toFixed(2) + "B";
     if (value >= 1_000_000) return (value / 1_000_000).toFixed(2) + "M";
     return value.toLocaleString();
+  };
+
+  // Debounce function to limit API call frequency
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
   };
 
   const fetchCoins = useCallback(async (isRefresh = false, attempt = 1) => {
@@ -31,11 +41,9 @@ export default function CryptoChart() {
       if (!response.ok) throw new Error(data.error || "Failed to fetch");
 
       setCoins((prevCoins) => {
-        if (isRefresh) {
-          return data; // Refresh resets list
-        } else {
-          return [...prevCoins, ...data]; // Append new data
-        }
+        const newCoins = isRefresh ? data : [...prevCoins, ...data];
+        window.cryptoChartData = newCoins;
+        return newCoins;
       });
 
       if (!isRefresh) setPage((prevPage) => prevPage + 1);
@@ -49,18 +57,87 @@ export default function CryptoChart() {
     }
   }, [loading, page]);
 
-  useEffect(() => {
-    fetchCoins();
+  // Debounced version of fetchCoins for scroll events
+  const debouncedFetchCoins = useCallback(debounce(() => fetchCoins(), 1000), [fetchCoins]);
+
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > 300) {
+      setIsBackToTopVisible(true);
+    } else {
+      setIsBackToTopVisible(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (inView) {
-      fetchCoins();
+    fetchCoins(); // Initial fetch (not debounced)
+
+    if (window.Tawk_API && window.Tawk_API.onLoad) {
+      window.Tawk_API.onLoad = function () {
+        window.Tawk_API.setAttributes({ name: "Crypto Bot" });
+        window.Tawk_API.onChatMessageVisitor = function (message) {
+          const userMessage = message.toLowerCase().trim();
+          const coinsData = window.cryptoChartData || coins;
+
+          if (loading) {
+            window.Tawk_API.sendMessage("I’m still loading the coin data, please wait a moment...");
+            return;
+          }
+
+          if (coinsData.length === 0) {
+            window.Tawk_API.sendMessage("Sorry, I couldn’t load the cryptocurrency data. Please try again later.");
+            return;
+          }
+
+          let detectedCoin = null;
+          let coinName = "";
+          for (const coin of coinsData) {
+            const nameMatch = userMessage.includes(coin.name.toLowerCase());
+            const symbolMatch = userMessage.includes(coin.symbol.toLowerCase());
+            if (nameMatch || symbolMatch) {
+              detectedCoin = coin;
+              coinName = nameMatch ? coin.name : coin.symbol;
+              break;
+            }
+          }
+
+          if (!detectedCoin) {
+            window.Tawk_API.sendMessage("Sorry, I couldn’t find that cryptocurrency in the chart data. Try another coin.");
+            return;
+          }
+
+          if (userMessage.includes("price") || userMessage.includes("how much is")) {
+            window.Tawk_API.sendMessage(
+              `The current price of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${detectedCoin.current_price?.toLocaleString() ?? "N/A"} USD.`
+            );
+          } else if (userMessage.includes("market cap")) {
+            window.Tawk_API.sendMessage(
+              `The market cap of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${formatMarketCap(detectedCoin.market_cap)} USD.`
+            );
+          } else if (userMessage.includes("24h change") || userMessage.includes("24 hour change")) {
+            window.Tawk_API.sendMessage(
+              `The 24h price change of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is ${detectedCoin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%.`
+            );
+          } else {
+            window.Tawk_API.sendMessage(
+              `I can help with price, market cap, or 24h change for ${detectedCoin.name}. What would you like to know?`
+            );
+          }
+        };
+      };
     }
-  }, [inView, fetchCoins]);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [fetchCoins, handleScroll]);
+
+  useEffect(() => {
+    if (inView && !loading) {
+      debouncedFetchCoins(); // Debounced fetch on scroll
+    }
+  }, [inView, debouncedFetchCoins]);
 
   return (
-    <div className={styles.chartContainer}>
+    <div className={`${styles.chartContainer} content-container`}>
       <h1 className={styles.title}>📈 Crypto Prices (Live Updates)</h1>
       <button onClick={() => fetchCoins(true)} className={styles.refreshButton}>🔄 Refresh Data</button>
       <table className={styles.cryptoTable}>
@@ -76,7 +153,7 @@ export default function CryptoChart() {
         <tbody>
           {coins.length > 0 ? (
             coins.map((coin, index) => (
-              <tr key={coin.id}>
+              <tr key={`${coin.id}-${index}`}>
                 <td>{index + 1}</td>
                 <td>
                   <Image
@@ -107,6 +184,22 @@ export default function CryptoChart() {
       <div ref={ref} style={{ height: "70px" }}>
         {loading ? "Loading..." : ""}
       </div>
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`${styles.backToTop} back-to-top ${isBackToTopVisible ? "visible" : ""}`}
+        style={{
+          padding: "5px 10px",
+          fontSize: "0.8rem",
+          minWidth: "auto",
+          background: "rgba(255, 215, 0, 0.5)", // Faded yellow (50% opacity)
+          color: "#1a1a2e",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        ↑
+      </button>
     </div>
   );
 }

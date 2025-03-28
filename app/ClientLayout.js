@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "./navbar";
 import { Analytics } from "@vercel/analytics/react";
+import "./global.css";
 
 export default function ClientLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,33 +60,29 @@ export default function ClientLayout({ children }) {
 
   return (
     <div className="dashboard-layout">
-      <button
-        className="sidebar-toggle"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
+      {/* Sidebar Toggle Button */}
+      <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
         {sidebarOpen ? "✖" : "☰"}
       </button>
 
-      <aside
-        ref={sidebarRef}
-        className={`sidebar ${sidebarOpen ? "open" : ""}`}
-      >
-        <Link href="/articles" className="articles-button">
-          📜 Articles
-        </Link>
-
+      {/* Sidebar Section */}
+      <aside ref={sidebarRef} className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <Link href="/articles" className="articles-button">📜 Articles</Link>
         <h2 className="sidebar-title">📊 Dashboard</h2>
+
+        {/* Navigation Links */}
         <nav>
           <ul>
             <li><Link href="/">🏠 Home</Link></li>
             <li><Link href="/articles">📜 Articles</Link></li>
             <li><Link href="/chart">📈 Chart</Link></li>
-            <li><Link href="/news">🚪 News</Link></li>
+            <li><Link href="/news">🚀 News</Link></li>
             <li><Link href="/history">📜 History</Link></li>
             <li><Link href="/analytics">📊 Analytics</Link></li>
           </ul>
         </nav>
 
+        {/* Latest Articles Section */}
         <div className="sidebar-articles">
           <h3 className="sidebar-articles-title">Latest Articles</h3>
           {articles.map((article, index) => (
@@ -99,14 +96,13 @@ export default function ClientLayout({ children }) {
         </div>
       </aside>
 
+      {/* Main Content */}
       <div className="main-container" ref={mainContainerRef}>
         <header className="top-header">
           <Navbar />
         </header>
 
-        <main className="dashboard-content">
-          {children}
-        </main>
+        <main className="dashboard-content">{children}</main>
 
         <footer className="footer">
           <p>© 2025 CryptoPulse</p>

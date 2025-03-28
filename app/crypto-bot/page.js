@@ -1,19 +1,29 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useInView } from "react-intersection-observer";
 import coinListData from "../data/coin-list.json";
+import styles from "../chart/cryptoChart.module.css";
 
 export default function CryptoBotPage() {
+  const [coins, setCoins] = useState([]);
   const [coinList, setCoinList] = useState(coinListData);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const { ref, inView } = useInView();
+
+  const formatMarketCap = (value) => {
+    if (!value) return "N/A";
+    if (value >= 1_000_000_000_000) return (value / 1_000_000_000_000).toFixed(2) + "T";
+    if (value >= 1_000_000_000) return (value / 1_000_000_000).toFixed(2) + "B";
+    if (value >= 1_000_000) return (value / 1_000_000).toFixed(2) + "M";
+    return value.toLocaleString();
+  };
 
   const fetchCoinList = useCallback(async () => {
     try {
-      setIsLoading(true);
       const response = await fetch("/api/get-coin-list");
-      if (!response.ok) {
-        throw new Error("Failed to fetch coin list");
-      }
+      if (!response.ok) throw new Error("Failed to fetch coin list");
       const data = await response.json();
       setCoinList(data);
       console.log("Coin list loaded from API, total coins:", data.length);
@@ -21,288 +31,124 @@ export default function CryptoBotPage() {
       console.error("Error fetching coin list, using cached data:", error.message);
       setCoinList(coinListData);
       console.log("Coin list loaded from cache, total coins:", coinListData.length);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
+  const fetchCoins = useCallback(async (isRefresh = false, attempt = 1) => {
+    if (isLoading && !isRefresh) return;
+    setIsLoading(true);
+
+    try {
+      console.log(`Fetching data... Attempt ${attempt}`);
+      const response = await fetch(`/api/coins?page=${isRefresh ? 1 : page}`);
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Failed to fetch");
+
+      setCoins((prevCoins) => {
+        const newCoins = isRefresh ? data : [...prevCoins, ...data];
+        window.cryptoChartData = newCoins;
+        return newCoins;
+      });
+
+      if (!isRefresh) setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error(`Error fetching coins (Attempt ${attempt}):`, error);
+      if (attempt < 3) {
+        setTimeout(() => fetchCoins(isRefresh, attempt + 1), 3000);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading, page]);
+
   useEffect(() => {
     fetchCoinList();
+    fetchCoins();
 
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.async = true;
-    script.src = "https://embed.tawk.to/67e617ed84c833190b654d9f/1indcqu9r";
-    script.charset = "UTF-8";
-    script.setAttribute("crossorigin", "*");
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      window.Tawk_API = window.Tawk_API || {};
+    // Configure Tawk.to (script is in RootLayout)
+    if (window.Tawk_API && window.Tawk_API.onLoad) {
       window.Tawk_API.onLoad = function () {
-        window.Tawk_API.setAttributes({
-          name: "Crypto Bot",
-        });
+        window.Tawk_API.setAttributes({ name: "Crypto Bot" });
+        window.Tawk_API.hideWidget();
 
-        window.Tawk_API.onChatMessageVisitor = async function (message) {
-          console.log("User message received:", message);
+        window.Tawk_API.onChatMessageVisitor = function (message) {
           const userMessage = message.toLowerCase().trim();
+          const coinsData = window.cryptoChartData || coins;
 
           if (isLoading) {
-            window.Tawk_API.addMessage({
-              type: "msg",
-              text: "I’m still loading the coin list, please wait a moment...",
-            });
+            window.Tawk_API.sendMessage("I’m still loading the coin data, please wait a moment...");
             return;
           }
 
-          if (coinList.length === 0) {
-            window.Tawk_API.addMessage({
-              type: "msg",
-              text: "Sorry, I couldn’t load the list of cryptocurrencies. Please try again later.",
-            });
+          if (coinsData.length === 0) {
+            window.Tawk_API.sendMessage("Sorry, I couldn’t load the cryptocurrency data. Please try again later.");
             return;
           }
 
           let detectedCoin = null;
           let coinName = "";
-          let coinSymbol = "";
-          for (const coin of coinList) {
+          for (const coin of coinsData) {
             const nameMatch = userMessage.includes(coin.name.toLowerCase());
             const symbolMatch = userMessage.includes(coin.symbol.toLowerCase());
             if (nameMatch || symbolMatch) {
               detectedCoin = coin;
               coinName = nameMatch ? coin.name : coin.symbol;
-              coinSymbol = coin.symbol;
               break;
             }
           }
 
-          console.log("Detected coin:", detectedCoin, "Display name:", coinName);
-
           if (!detectedCoin) {
-            window.Tawk_API.addMessage({
-              type: "msg",
-              text: "Sorry, I couldn’t find that cryptocurrency. Please try another coin or check the spelling.",
-            });
+            window.Tawk_API.sendMessage("Sorry, I couldn’t find that cryptocurrency in the chart data. Try another coin.");
             return;
           }
 
-          if (
-            userMessage.includes("price of") ||
-            userMessage.includes("price") ||
-            userMessage.includes("how much is")
-          ) {
-            try {
-              console.log("Fetching price for:", coinSymbol);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Fetching the price of ${coinName}, please wait...`,
-              });
-              const response = await fetch(`/api/get-price?symbol=${coinSymbol}`);
-              if (!response.ok) {
-                throw new Error("Failed to fetch price from server");
-              }
-              const data = await response.json();
-              console.log("Price response:", data);
-              if (data.error) {
-                throw new Error(data.error);
-              }
-              const price = data.price;
-              if (price) {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `The current price of ${coinName} (${coinSymbol}) is $${price.toLocaleString()} USD.`,
-                });
-              } else {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `Sorry, I couldn’t fetch the price of ${coinName}.`,
-                });
-              }
-            } catch (error) {
-              console.error("Price fetch error:", error.message);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Error: ${error.message}. Try again later.`,
-              });
-            }
-          } else if (
-            userMessage.includes("market cap of") ||
-            userMessage.includes("market cap")
-          ) {
-            try {
-              console.log("Fetching market cap for:", coinSymbol);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Fetching the market cap of ${coinName}, please wait...`,
-              });
-              const response = await fetch(`/api/get-coin-data?symbol=${coinSymbol}`);
-              if (!response.ok) {
-                throw new Error("Failed to fetch coin data from server");
-              }
-              const data = await response.json();
-              console.log("Coin data response:", data);
-              if (data.error) {
-                throw new Error(data.error);
-              }
-              const marketCap = data.market_data?.market_cap;
-              if (marketCap) {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `The market cap of ${coinName} (${coinSymbol}) is $${marketCap.toLocaleString()} USD.`,
-                });
-              } else {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `Sorry, I couldn’t fetch the market cap of ${coinName}.`,
-                });
-              }
-            } catch (error) {
-              console.error("Market cap fetch error:", error.message);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Error: ${error.message}. Try again later.`,
-              });
-            }
-          } else if (
-            userMessage.includes("24h change of") ||
-            userMessage.includes("24h change") ||
-            userMessage.includes("24 hour change")
-          ) {
-            try {
-              console.log("Fetching 24h change for:", coinSymbol);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Fetching the 24h price change of ${coinName}, please wait...`,
-              });
-              const response = await fetch(`/api/get-coin-data?symbol=${coinSymbol}`);
-              if (!response.ok) {
-                throw new Error("Failed to fetch coin data from server");
-              }
-              const data = await response.json();
-              console.log("Coin data response:", data);
-              if (data.error) {
-                throw new Error(data.error);
-              }
-              const priceChange = data.market_data?.price_change_percentage_24h;
-              if (priceChange !== undefined) {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `The 24h price change of ${coinName} (${coinSymbol}) is ${priceChange.toFixed(2)}%.`,
-                });
-              } else {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `Sorry, I couldn’t fetch the 24h price change of ${coinName}.`,
-                });
-              }
-            } catch (error) {
-              console.error("24h change fetch error:", error.message);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Error: ${error.message}. Try again later.`,
-              });
-            }
-          } else if (
-            userMessage.includes("24h volume of") ||
-            userMessage.includes("24h volume") ||
-            userMessage.includes("24 hour volume")
-          ) {
-            try {
-              console.log("Fetching 24h volume for:", coinSymbol);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Fetching the 24h trading volume of ${coinName}, please wait...`,
-              });
-              const response = await fetch(`/api/get-coin-data?symbol=${coinSymbol}`);
-              if (!response.ok) {
-                throw new Error("Failed to fetch coin data from server");
-              }
-              const data = await response.json();
-              console.log("Coin data response:", data);
-              if (data.error) {
-                throw new Error(data.error);
-              }
-              const volume = data.market_data?.total_volume;
-              if (volume) {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `The 24h trading volume of ${coinName} (${coinSymbol}) is $${volume.toLocaleString()} USD.`,
-                });
-              } else {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `Sorry, I couldn’t fetch the 24h trading volume of ${coinName}.`,
-                });
-              }
-            } catch (error) {
-              console.error("24h volume fetch error:", error.message);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Error: ${error.message}. Try again later.`,
-              });
-            }
-          } else if (
-            userMessage.includes("circulating supply of") ||
-            userMessage.includes("circulating supply")
-          ) {
-            try {
-              console.log("Fetching circulating supply for:", coinSymbol);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Fetching the circulating supply of ${coinName}, please wait...`,
-              });
-              const response = await fetch(`/api/get-coin-data?symbol=${coinSymbol}`);
-              if (!response.ok) {
-                throw new Error("Failed to fetch coin data from server");
-              }
-              const data = await response.json();
-              console.log("Coin data response:", data);
-              if (data.error) {
-                throw new Error(data.error);
-              }
-              const supply = data.market_data?.circulating_supply;
-              if (supply) {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `The circulating supply of ${coinName} (${coinSymbol}) is ${supply.toLocaleString()} tokens.`,
-                });
-              } else {
-                window.Tawk_API.addMessage({
-                  type: "msg",
-                  text: `Sorry, I couldn’t fetch the circulating supply of ${coinName}.`,
-                });
-              }
-            } catch (error) {
-              console.error("Circulating supply fetch error:", error.message);
-              window.Tawk_API.addMessage({
-                type: "msg",
-                text: `Error: ${error.message}. Try again later.`,
-              });
-            }
+          if (userMessage.includes("price") || userMessage.includes("how much is")) {
+            window.Tawk_API.sendMessage(
+              `The current price of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${detectedCoin.current_price?.toLocaleString() ?? "N/A"} USD.`
+            );
+          } else if (userMessage.includes("market cap")) {
+            window.Tawk_API.sendMessage(
+              `The market cap of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is $${formatMarketCap(detectedCoin.market_cap)} USD.`
+            );
+          } else if (userMessage.includes("24h change") || userMessage.includes("24 hour change")) {
+            window.Tawk_API.sendMessage(
+              `The 24h price change of ${detectedCoin.name} (${detectedCoin.symbol.toUpperCase()}) is ${detectedCoin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%.`
+            );
           } else {
-            window.Tawk_API.addMessage({
-              type: "msg",
-              text: `I can help with questions about price, market cap, 24h change, 24h volume, or circulating supply for ${coinName}. What would you like to know?`,
-            });
+            window.Tawk_API.sendMessage(
+              `I can help with price, market cap, or 24h change for ${detectedCoin.name}. What would you like to know?`
+            );
           }
         };
       };
-    };
+    }
+  }, [fetchCoinList, fetchCoins]);
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [fetchCoinList, isLoading, coinList]);
+  useEffect(() => {
+    if (inView) fetchCoins();
+  }, [inView, fetchCoins]);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>Crypto Assistant</h1>
-      <p>
-        Ask me about crypto prices, market cap, 24h change, 24h volume, or circulating supply for any cryptocurrency (e.g., \'Price of Bitcoin\', \'Market cap of Litecoin\', \'24h volume of Namecoin\', \'Circulating supply of Phoenixcoin\')
-      </p>
-      <p>Use the chat widget in the bottom-right corner to ask questions!</p>
+    <div className={`${styles.chartContainer} content-container crypto-section`}>
+      <h1 className={styles.title}>📈 Crypto Assistant</h1>
+      <button onClick={() => fetchCoins(true)} className={styles.refreshButton}>🔄 Refresh Data</button>
+      <div id="tawkto-container" className="price-list">
+        <iframe
+          src="https://tawk.to/chat/67e617ed84c833190b654d9f/1indcqu9r"
+          style={{ width: "100%", height: "500px", border: "none" }}
+          title="Crypto Bot Chat"
+        />
+      </div>
+      <div ref={ref} style={{ height: "70px" }}>
+        {isLoading ? "Loading..." : ""}
+      </div>
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`${styles.backToTop} back-to-top`}
+      >
+        ↑ Back to Top
+      </button>
     </div>
   );
 }

@@ -7,6 +7,7 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     overflow-x: auto;
+    position: relative;
 }
 
 /* 📌 Title */
@@ -44,14 +45,14 @@
 
 /* 📉 Coin Image (Reduced Size) */
 .coinImage {
-    width: 25px; /* Reduced from 35px */
+    width: 25px;
     height: 25px;
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 8px;
 }
 
-/* 🔺 Price Up & Down */
+/* 🔺 Price Up & Down - Not used, kept for reference */
 .priceUp {
     color: #00ff00;
     font-weight: bold;
@@ -60,4 +61,51 @@
 .priceDown {
     color: #ff4444;
     font-weight: bold;
+}
+
+/* 🔄 Refresh Button */
+.refreshButton {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 20px;
+    background-color: #292b2f;
+    color: #00d1ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.refreshButton:hover {
+    background-color: #3a3c41;
+}
+
+/* 🔝 Back to Top Button */
+.backToTop {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 20px;
+    background-color: #292b2f;
+    color: #00d1ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.backToTop:hover {
+    background-color: #3a3c41;
+}
+
+/* Tawk.to Chat Container */
+#tawkto-container {
+    background: #1a1a1d;
+    padding: 10px;
+    color: #ddd;
+    overflow-y: auto;
 }
