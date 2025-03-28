@@ -1,6 +1,6 @@
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const symbol = searchParams.get("symbol");
+    const symbol = searchParams.get("symbol")?.toUpperCase(); // Convert to uppercase
   
     if (!symbol) {
       return new Response(JSON.stringify({ error: "Symbol parameter is required" }), {
@@ -9,42 +9,35 @@ export async function GET(request) {
       });
     }
   
+    // Convert symbol to CoinPaprika ID
+    const coinId = coinSymbolToId[symbol];
+  
+    if (!coinId) {
+      return new Response(JSON.stringify({ error: "Symbol not found in CoinPaprika" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  
     try {
-      console.log(`Fetching coin data for: ${symbol}`);
-      const response = await fetch(
-        `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`,
-        {
-          method: "GET",
-          headers: {
-            "X-CMC_PRO_API_KEY": "5d02a207-b568-416f-8978-38f8fe3e7450", // 
-            Accept: "application/json",
-          },
-        }
-      );
+      console.log(`Fetching data for: ${symbol} -> ${coinId}`);
+  
+      const response = await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
   
       if (!response.ok) {
-        console.error(`CoinMarketCap coin data fetch failed: ${response.status} ${response.statusText}`);
-        throw new Error("Failed to fetch coin data from CoinMarketCap");
+        throw new Error(`CoinPaprika API error: ${response.statusText}`);
       }
   
       const data = await response.json();
-      console.log(`Coin data for ${symbol}:`, data);
-  
-      const coinData = data.data[symbol];
-      if (!coinData) {
-        throw new Error(`No data found for symbol: ${symbol}`);
-      }
   
       const formattedData = {
-        name: coinData.name,
-        symbol: coinData.symbol,
-        market_data: {
-          price: coinData.quote.USD.price,
-          market_cap: coinData.quote.USD.market_cap,
-          price_change_percentage_24h: coinData.quote.USD.percent_change_24h,
-          total_volume: coinData.quote.USD.volume_24h,
-          circulating_supply: coinData.circulating_supply,
-        },
+        name: data.name,
+        symbol: data.symbol,
+        price: data.quotes.USD.price,
+        market_cap: data.quotes.USD.market_cap,
+        volume_24h: data.quotes.USD.volume_24h,
+        percent_change_24h: data.quotes.USD.percent_change_24h,
+        circulating_supply: data.circulating_supply,
       };
   
       return new Response(JSON.stringify(formattedData), {
@@ -59,3 +52,4 @@ export async function GET(request) {
       });
     }
   }
+  

@@ -12,55 +12,37 @@ export default function CryptoChart() {
   const { ref, inView } = useInView();
 
   const formatMarketCap = (value) => {
-    if (value >= 1_000_000_000_000) {
-      return (value / 1_000_000_000_000).toFixed(2) + "T";
-    } else if (value >= 1_000_000_000) {
-      return (value / 1_000_000_000).toFixed(2) + "B";
-    } else if (value >= 1_000_000) {
-      return (value / 1_000_000).toFixed(2) + "M";
-    } else {
-      return value.toLocaleString();
-    }
+    if (!value) return "N/A";
+    if (value >= 1_000_000_000_000) return (value / 1_000_000_000_000).toFixed(2) + "T";
+    if (value >= 1_000_000_000) return (value / 1_000_000_000).toFixed(2) + "B";
+    if (value >= 1_000_000) return (value / 1_000_000).toFixed(2) + "M";
+    return value.toLocaleString();
   };
 
-  const fetchCoins = useCallback(async (isLiveUpdate = false, attempt = 1) => {
-    if (loading && !isLiveUpdate) return;
+  const fetchCoins = useCallback(async (isRefresh = false, attempt = 1) => {
+    if (loading) return;
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `/api/coins?page=${isLiveUpdate ? 1 : page}`
-      );
+      console.log(`Fetching data... Attempt ${attempt}`);
+      const response = await fetch(`/api/coins?page=${isRefresh ? 1 : page}`);
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.error || "Failed to fetch");
 
-      if (isLiveUpdate) {
-        setCoins((prevCoins) =>
-          prevCoins.map((coin) => {
-            const updatedCoin = data.find((c) => c.id === coin.id);
-            return updatedCoin
-              ? {
-                  ...coin,
-                  current_price: updatedCoin.current_price,
-                  market_cap: updatedCoin.market_cap,
-                  price_change_percentage_24h: updatedCoin.price_change_percentage_24h,
-                }
-              : coin;
-          })
-        );
-      } else {
-        setCoins((prevCoins) => {
-          const existingIds = new Set(prevCoins.map((coin) => coin.id));
-          const newCoins = data.filter((coin) => !existingIds.has(coin.id));
-          return [...prevCoins, ...newCoins];
-        });
-        setPage((prevPage) => prevPage + 1);
-      }
+      setCoins((prevCoins) => {
+        if (isRefresh) {
+          return data; // Refresh resets list
+        } else {
+          return [...prevCoins, ...data]; // Append new data
+        }
+      });
+
+      if (!isRefresh) setPage((prevPage) => prevPage + 1);
     } catch (error) {
-      console.error("Error fetching coins:", error);
+      console.error(`Error fetching coins (Attempt ${attempt}):`, error);
       if (attempt < 3) {
-        setTimeout(() => fetchCoins(isLiveUpdate, attempt + 1), 3000);
+        setTimeout(() => fetchCoins(isRefresh, attempt + 1), 3000);
       }
     } finally {
       setLoading(false);
@@ -69,14 +51,7 @@ export default function CryptoChart() {
 
   useEffect(() => {
     fetchCoins();
-  }, [fetchCoins]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchCoins(true);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [fetchCoins]);
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -87,6 +62,7 @@ export default function CryptoChart() {
   return (
     <div className={styles.chartContainer}>
       <h1 className={styles.title}>📈 Crypto Prices (Live Updates)</h1>
+      <button onClick={() => fetchCoins(true)} className={styles.refreshButton}>🔄 Refresh Data</button>
       <table className={styles.cryptoTable}>
         <thead>
           <tr>
@@ -98,31 +74,39 @@ export default function CryptoChart() {
           </tr>
         </thead>
         <tbody>
-          {coins.map((coin, index) => (
-            <tr key={coin.id}>
-              <td>{index + 1}</td>
-              <td>
-                <Image
-                  src={coin.image}
-                  alt={coin.name}
-                  width={24}
-                  height={24}
-                  className={styles.coinImage}
-                />
-                {coin.name} ({coin.symbol.toUpperCase()})
-              </td>
-              <td>${coin.current_price.toLocaleString()}</td>
-              <td>${formatMarketCap(coin.market_cap)}</td>
-              <td
-                style={{ color: coin.price_change_percentage_24h >= 0 ? "green" : "red" }}
-              >
-                {coin.price_change_percentage_24h.toFixed(2)}%
+          {coins.length > 0 ? (
+            coins.map((coin, index) => (
+              <tr key={coin.id}>
+                <td>{index + 1}</td>
+                <td>
+                  <Image
+                    src={coin.image}
+                    alt={coin.name}
+                    width={24}
+                    height={24}
+                    className={styles.coinImage}
+                  />
+                  {coin.name} ({coin.symbol.toUpperCase()})
+                </td>
+                <td>${coin.current_price?.toLocaleString() ?? "N/A"}</td>
+                <td>${formatMarketCap(coin.market_cap)}</td>
+                <td style={{ color: coin.price_change_percentage_24h >= 0 ? "green" : "red" }}>
+                  {coin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center", padding: "10px" }}>
+                {loading ? "Loading..." : "No data available"}
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
-      <div ref={ref} style={{ height: "50px" }}></div>
+      <div ref={ref} style={{ height: "70px" }}>
+        {loading ? "Loading..." : ""}
+      </div>
     </div>
   );
 }
