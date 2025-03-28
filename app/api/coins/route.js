@@ -3,7 +3,6 @@ export async function GET(request) {
     const page = parseInt(searchParams.get("page") || 1, 10);
   
     try {
-      // Temporary mock data
       const mockData = [
         {
           id: "bitcoin",
@@ -33,8 +32,6 @@ export async function GET(request) {
           price_change_percentage_24h: 0.8,
         },
       ];
-  
-      // Simulate pagination (return same data for simplicity)
       return new Response(JSON.stringify(mockData), {
         status: 200,
         headers: { "Content-Type": "application/json" },
