@@ -7,7 +7,6 @@ export default function CryptoBotPage() {
   const [coinList, setCoinList] = useState(coinListData);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch the list of coins
   const fetchCoinList = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -27,11 +26,9 @@ export default function CryptoBotPage() {
     }
   }, []);
 
-  // Fetch coins and load Tawk.to script on mount
   useEffect(() => {
     fetchCoinList();
 
-    // Load Tawk.to script
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.async = true;
@@ -40,7 +37,6 @@ export default function CryptoBotPage() {
     script.setAttribute("crossorigin", "*");
     document.body.appendChild(script);
 
-    // Wait for Tawk.to to load and add custom logic
     script.onload = () => {
       window.Tawk_API = window.Tawk_API || {};
       window.Tawk_API.onLoad = function () {
@@ -304,7 +300,7 @@ export default function CryptoBotPage() {
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
       <h1>Crypto Assistant</h1>
       <p>
-        Ask me about crypto prices, market cap, 24h change, 24h volume, or circulating supply for any cryptocurrency (e.g., 'Price of Bitcoin', 'Market cap of Litecoin', '24h volume of Namecoin', 'Circulating supply of Phoenixcoin')
+        Ask me about crypto prices, market cap, 24h change, 24h volume, or circulating supply for any cryptocurrency (e.g., \'Price of Bitcoin\', \'Market cap of Litecoin\', \'24h volume of Namecoin\', \'Circulating supply of Phoenixcoin\')
       </p>
       <p>Use the chat widget in the bottom-right corner to ask questions!</p>
     </div>
