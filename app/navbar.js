@@ -33,6 +33,11 @@ export default function Navbar() {
             Analytics
           </Link>
         </li>
+        <li>
+          <Link href="/crypto-bot" className={styles.navLink}>
+            Crypto Bot
+          </Link>
+        </li>
       </ul>
     </nav>
   );

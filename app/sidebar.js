@@ -33,6 +33,8 @@ export default function Sidebar() {
           
           <li><Link href="/history">📜 History</Link></li>
          
+          <li><Link href="/chart">🤖 Crypto-Bot</Link></li>
+
           <li><Link href="/analytics">📊 Analytics</Link></li>
           
           <li><Link href="/news">🚪 News</Link></li>
