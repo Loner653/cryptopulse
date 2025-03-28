@@ -1,33 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import coinListData from "../data/coin-list.json";
 
 export default function CryptoBotPage() {
   const [coinList, setCoinList] = useState(coinListData);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch the list of coins when the page loads
-  useEffect(() => {
-    const fetchCoinList = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch("/api/get-coin-list");
-        if (!response.ok) {
-          throw new Error("Failed to fetch coin list");
-        }
-        const data = await response.json();
-        setCoinList(data);
-        console.log("Coin list loaded from API, total coins:", data.length);
-      } catch (error) {
-        console.error("Error fetching coin list, using cached data:", error.message);
-        setCoinList(coinListData);
-        console.log("Coin list loaded from cache, total coins:", coinListData.length);
-      } finally {
-        setIsLoading(false);
+  // Fetch the list of coins
+  const fetchCoinList = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/get-coin-list");
+      if (!response.ok) {
+        throw new Error("Failed to fetch coin list");
       }
-    };
+      const data = await response.json();
+      setCoinList(data);
+      console.log("Coin list loaded from API, total coins:", data.length);
+    } catch (error) {
+      console.error("Error fetching coin list, using cached data:", error.message);
+      setCoinList(coinListData);
+      console.log("Coin list loaded from cache, total coins:", coinListData.length);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
+  // Fetch coins and load Tawk.to script on mount
+  useEffect(() => {
     fetchCoinList();
 
     // Load Tawk.to script
@@ -43,17 +44,14 @@ export default function CryptoBotPage() {
     script.onload = () => {
       window.Tawk_API = window.Tawk_API || {};
       window.Tawk_API.onLoad = function () {
-        // Set a welcome message
         window.Tawk_API.setAttributes({
           name: "Crypto Bot",
         });
 
-        // Listen for user messages
         window.Tawk_API.onChatMessageVisitor = async function (message) {
           console.log("User message received:", message);
           const userMessage = message.toLowerCase().trim();
 
-          // Check if coin list is still loading
           if (isLoading) {
             window.Tawk_API.addMessage({
               type: "msg",
@@ -62,7 +60,6 @@ export default function CryptoBotPage() {
             return;
           }
 
-          // Check if coin list failed to load
           if (coinList.length === 0) {
             window.Tawk_API.addMessage({
               type: "msg",
@@ -71,7 +68,6 @@ export default function CryptoBotPage() {
             return;
           }
 
-          // Detect coin dynamically
           let detectedCoin = null;
           let coinName = "";
           let coinSymbol = "";
@@ -96,7 +92,6 @@ export default function CryptoBotPage() {
             return;
           }
 
-          // Check for price-related questions
           if (
             userMessage.includes("price of") ||
             userMessage.includes("price") ||
@@ -136,9 +131,7 @@ export default function CryptoBotPage() {
                 text: `Error: ${error.message}. Try again later.`,
               });
             }
-          }
-          // Check for market cap questions
-          else if (
+          } else if (
             userMessage.includes("market cap of") ||
             userMessage.includes("market cap")
           ) {
@@ -176,9 +169,7 @@ export default function CryptoBotPage() {
                 text: `Error: ${error.message}. Try again later.`,
               });
             }
-          }
-          // Check for 24h price change questions
-          else if (
+          } else if (
             userMessage.includes("24h change of") ||
             userMessage.includes("24h change") ||
             userMessage.includes("24 hour change")
@@ -217,9 +208,7 @@ export default function CryptoBotPage() {
                 text: `Error: ${error.message}. Try again later.`,
               });
             }
-          }
-          // Check for 24h volume questions
-          else if (
+          } else if (
             userMessage.includes("24h volume of") ||
             userMessage.includes("24h volume") ||
             userMessage.includes("24 hour volume")
@@ -258,9 +247,7 @@ export default function CryptoBotPage() {
                 text: `Error: ${error.message}. Try again later.`,
               });
             }
-          }
-          // Check for circulating supply questions
-          else if (
+          } else if (
             userMessage.includes("circulating supply of") ||
             userMessage.includes("circulating supply")
           ) {
@@ -298,9 +285,7 @@ export default function CryptoBotPage() {
                 text: `Error: ${error.message}. Try again later.`,
               });
             }
-          }
-          // Fallback for unrecognized questions
-          else {
+          } else {
             window.Tawk_API.addMessage({
               type: "msg",
               text: `I can help with questions about price, market cap, 24h change, 24h volume, or circulating supply for ${coinName}. What would you like to know?`,
@@ -311,16 +296,15 @@ export default function CryptoBotPage() {
     };
 
     return () => {
-      // Cleanup script on unmount
       document.body.removeChild(script);
     };
-  }, []);
+  }, [fetchCoinList, isLoading, coinList]);
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
       <h1>Crypto Assistant</h1>
       <p>
-        Ask me about crypto prices, market cap, 24h change, 24h volume, or circulating supply for any cryptocurrency (e.g., "Price of Bitcoin", "Market cap of Litecoin", "24h volume of Namecoin", "Circulating supply of Phoenixcoin")
+        Ask me about crypto prices, market cap, 24h change, 24h volume, or circulating supply for any cryptocurrency (e.g., 'Price of Bitcoin', 'Market cap of Litecoin', '24h volume of Namecoin', 'Circulating supply of Phoenixcoin')
       </p>
       <p>Use the chat widget in the bottom-right corner to ask questions!</p>
     </div>
