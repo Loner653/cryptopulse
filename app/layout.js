@@ -19,17 +19,6 @@ export default function RootLayout({ children }) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8535596092968633"
           crossOrigin="anonymous"
         />
-        {/* Enable Auto-Ads for all pages */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-8535596092968633",
-                enable_page_level_ads: true
-              });
-            `,
-          }}
-        />
       </head>
       <body>
         <ClientLayout>{children}</ClientLayout>
