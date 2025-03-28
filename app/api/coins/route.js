@@ -1,21 +1,41 @@
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const page = searchParams.get("page") || 1;
+    const page = parseInt(searchParams.get("page") || 1, 10);
   
     try {
-      const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${page}`,
-        { cache: "no-store" }
-      );
+      // Temporary mock data
+      const mockData = [
+        {
+          id: "bitcoin",
+          symbol: "btc",
+          name: "Bitcoin",
+          image: "https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png",
+          current_price: 60000,
+          market_cap: 1200000000000,
+          price_change_percentage_24h: 2.5,
+        },
+        {
+          id: "ethereum",
+          symbol: "eth",
+          name: "Ethereum",
+          image: "https://assets.coingecko.com/coins/images/279/thumb/ethereum.png",
+          current_price: 4000,
+          market_cap: 480000000000,
+          price_change_percentage_24h: -1.2,
+        },
+        {
+          id: "binancecoin",
+          symbol: "bnb",
+          name: "BNB",
+          image: "https://assets.coingecko.com/coins/images/825/thumb/bnb-icon2_2x.png",
+          current_price: 500,
+          market_cap: 75000000000,
+          price_change_percentage_24h: 0.8,
+        },
+      ];
   
-      if (!response.ok) {
-        const errorText = await response.text(); // Get raw response body
-        console.error(`CoinGecko fetch failed: Status ${response.status}, Body: ${errorText}`);
-        throw new Error(`Failed to fetch from CoinGecko: ${response.status} - ${errorText}`);
-      }
-  
-      const data = await response.json();
-      return new Response(JSON.stringify(data), {
+      // Simulate pagination (return same data for simplicity)
+      return new Response(JSON.stringify(mockData), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
