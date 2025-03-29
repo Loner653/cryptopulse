@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, Suspense } from "react";
+import Link from "next/link";
 import { refreshAnalytics } from "./actions";
 import styles from "./page.module.css";
 
@@ -42,7 +43,7 @@ export default function AnalyticsClient({
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h1 className={styles.pageTitle}>Crypto Analytics</h1>
         <div>
-          <a href="/articles" className={styles.navLink}>Read Crypto Articles</a>
+          <Link href="/articles" className={styles.navLink}>Read Crypto Articles</Link>
           <button
             onClick={handleRefresh}
             className={styles.refreshButton}
@@ -284,7 +285,7 @@ export default function AnalyticsClient({
                     {cryptoCompareData.length > 0 ? (
                       cryptoCompareData.map((coin) => (
                         <tr key={coin.id}>
-                          <td>{coin.name}</td> {/* Using ticker only */}
+                          <td>{coin.name}</td>
                           <td>${coin.price.toLocaleString()}</td>
                           <td>{formatLargeNumber(coin.marketCap)}</td>
                           <td>{formatLargeNumber(coin.volume24h)}</td>
@@ -321,8 +322,8 @@ export default function AnalyticsClient({
                     <tr>
                       <th scope="col">Coin</th>
                       <th scope="col">Price (USD)</th>
-                      <th scope="col">MC</th> {/* Changed to MC */}
-                      <th scope="col">CS</th> {/* Changed to CS */}
+                      <th scope="col">MC</th>
+                      <th scope="col">CS</th>
                     </tr>
                   </thead>
                   <tbody>

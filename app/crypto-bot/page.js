@@ -66,7 +66,6 @@ export default function CryptoBotPage() {
     fetchCoinList();
     fetchCoins();
 
-    // Configure Tawk.to (script is in RootLayout)
     if (window.Tawk_API && window.Tawk_API.onLoad) {
       window.Tawk_API.onLoad = function () {
         window.Tawk_API.setAttributes({ name: "Crypto Bot" });
@@ -123,7 +122,7 @@ export default function CryptoBotPage() {
         };
       };
     }
-  }, [fetchCoinList, fetchCoins]);
+  }, [fetchCoinList, fetchCoins, coins, isLoading]);
 
   useEffect(() => {
     if (inView) fetchCoins();

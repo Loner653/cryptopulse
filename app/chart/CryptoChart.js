@@ -1,4 +1,3 @@
-// app/chart/CryptoChart.js
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -74,7 +73,7 @@ export default function CryptoChart() {
     [loading, page]
   );
 
-  const debouncedFetchCoins = useCallback(debounce(() => fetchCoins(), 1000), [fetchCoins]);
+  const debouncedFetchCoins = useCallback(debounce(fetchCoins, 1000), [fetchCoins]);
 
   const handleSearch = useCallback(() => {
     if (!searchQuery.trim()) {
@@ -96,7 +95,21 @@ export default function CryptoChart() {
 
   useEffect(() => {
     fetchCoins();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [fetchCoins, handleScroll]);
 
+  useEffect(() => {
+    if (inView && !loading) {
+      debouncedFetchCoins();
+    }
+  }, [inView, debouncedFetchCoins, loading, coins]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, handleSearch, coins]);
+
+  useEffect(() => {
     if (window.Tawk_API && window.Tawk_API.onLoad) {
       window.Tawk_API.onLoad = function () {
         window.Tawk_API.setAttributes({ name: "Crypto-bot" });
@@ -149,20 +162,7 @@ export default function CryptoChart() {
         };
       };
     }
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [fetchCoins, handleScroll]);
-
-  useEffect(() => {
-    if (inView && !loading) {
-      debouncedFetchCoins();
-    }
-  }, [inView, debouncedFetchCoins]);
-
-  useEffect(() => {
-    handleSearch();
-  }, [searchQuery, handleSearch]);
+  }, [coins, loading]);
 
   const displayedCoins = searchQuery ? filteredCoins : coins;
 
