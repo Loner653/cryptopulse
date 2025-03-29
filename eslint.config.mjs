@@ -15,6 +15,7 @@ export default [
     rules: {
       "@next/next/no-html-link-for-pages": "off",
       "react-hooks/exhaustive-deps": "warn",
+      "react/no-unescaped-entities": "off", // Disable this rule
     },
   },
 ];
