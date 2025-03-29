@@ -1,3 +1,5 @@
+/* ArticlesContentClient.module.css - Replicated with correct colors and improved */
+
 /* Root layout for the entire page */
 .pageLayout {
   min-height: 100vh;
@@ -5,6 +7,8 @@
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.8;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Main content area */
@@ -12,6 +16,9 @@
   padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Article section title */
@@ -137,27 +144,7 @@
   font-size: 0.9rem;
 }
 
-.articleBlockquote {
-  border-left: 4px solid #ffd700;
-  padding-left: 20px;
-  margin: 20px auto;
-  font-style: italic;
-  color: #d0d0d0;
-  text-align: left;
-  max-width: 600px;
-}
-
-.articleList {
-  list-style-type: disc;
-  padding-left: 30px;
-  margin: 15px auto;
-  text-align: left;
-  max-width: 600px;
-}
-
-.articleList li {
-  margin-bottom: 10px;
-}
+/* Note: .articleBlockquote and .articleList are not in your JSX, so I’ve omitted them unless you need them */
 
 /* Share Buttons */
 .shareButtons {
@@ -169,6 +156,12 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.shareButtons h4 {
+  font-size: 1.2rem;
+  color: #ffd700;
+  margin-bottom: 15px;
 }
 
 .shareButton {
@@ -230,24 +223,19 @@
   color: #ffd700;
 }
 
-/* Back to Top Button */
-.backToTop {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  color: #1a1a2e;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: opacity 0.3s ease;
-  display: none;
+/* Back to All Topics Link (adjusted from .backToTop to match your JSX) */
+.tocLink:not(.tocList .tocLink) {
+  display: inline-block;
+  margin-top: 20px;
+  color: #66ccff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.backToTop.visible {
-  display: block;
+.tocLink:not(.tocList .tocLink):hover {
+  color: #ffd700;
+  transform: translateY(-2px);
 }
 
 /* Responsive Adjustments */
@@ -256,7 +244,96 @@
     padding: 20px 10px;
   }
 
-  .articleSection, .tableOfContents {
+  .articleSectionTitle {
+    font-size: 2rem;
+  }
+
+  .tableOfContents {
+    position: static;
     max-width: 100%;
+    padding: 20px;
+  }
+
+  .tocTitle {
+    font-size: 1.5rem;
+  }
+
+  .tocLink {
+    font-size: 1.1rem;
+  }
+
+  .articleSection {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .articleSectionSubtitle {
+    font-size: 1.5rem;
+  }
+
+  .articleSubsectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .articleImage {
+    max-width: 100%;
+  }
+
+  .shareButtons {
+    max-width: 100%;
+  }
+
+  .shareButton {
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .relatedArticles {
+    max-width: 100%;
+  }
+
+  .relatedArticlesTitle {
+    font-size: 1.2rem;
+  }
+
+  .tocLink:not(.tocList .tocLink) {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .articleSectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .tocTitle {
+    font-size: 1.25rem;
+  }
+
+  .tocLink {
+    font-size: 1rem;
+  }
+
+  .articleSectionSubtitle {
+    font-size: 1.25rem;
+  }
+
+  .articleSubsectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .shareButton {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  .relatedArticlesTitle {
+    font-size: 1.1rem;
+  }
+
+  .tocLink:not(.tocList .tocLink) {
+    font-size: 1rem;
   }
 }

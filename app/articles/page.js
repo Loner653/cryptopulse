@@ -1,20 +1,55 @@
 // app/articles/page.js
-import { headers } from "next/headers"; // Import headers for server-side context
-import ArticlesContentServer from "./ArticlesContentServer";
-import ArticlesContentClient from "./ArticlesContentClient";
+import { headers } from "next/headers";
+import Link from "next/link";
+import styles from "./ArticlesContentClient.module.css";
 
-// Force dynamic rendering to allow headers()
-export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Crypto Articles | CryptoPulse",
+  description: "Browse cryptocurrency articles by topic.",
+};
+
+// 15 topics
+const topics = [
+  { name: "Bitcoin Origins", slug: "bitcoin-origins" },
+  { name: "Real World Assets", slug: "real-world-assets" },
+  { name: "Healthcare & Blockchain", slug: "healthcare-blockchain" },
+  { name: "Global Currency", slug: "global-currency" },
+  { name: "Ethereum Evolution", slug: "ethereum-evolution" },
+  { name: "Stablecoins", slug: "stablecoins" },
+  { name: "Gaming & Crypto", slug: "gaming-crypto" },
+  { name: "Crypto Security", slug: "security" },
+  { name: "Decentralized Finance (DeFi)", slug: "defi" },
+  { name: "Non-Fungible Tokens (NFTs)", slug: "nfts" },
+  { name: "Blockchain Scalability", slug: "blockchain-scalability" },
+  { name: "Crypto Regulation", slug: "crypto-regulation" },
+  { name: "Altcoin Innovations", slug: "altcoin-innovations" },
+  { name: "Crypto Mining", slug: "crypto-mining" },
+  { name: "Future of Money", slug: "future-of-money" },
+];
 
 export default function ArticlesPage() {
   const headersList = headers();
-  const host = headersList.get("host"); // e.g., yourdomain.com or localhost:3000
-  const protocol = headersList.get("x-forwarded-proto") || "https"; // Default to https for production
-  const origin = `${protocol}://${host}`; // e.g., https://yourdomain.com
+  const host = headersList.get("host");
+  const protocol = headersList.get("x-forwarded-proto") || "https";
+  const origin = `${protocol}://${host}`;
 
   return (
-    <ArticlesContentClient>
-      <ArticlesContentServer origin={origin} />
-    </ArticlesContentClient>
+    <div className={styles.pageLayout}>
+      <main className={styles.mainContainer}>
+        <h1 className={styles.articleSectionTitle}>Crypto Articles</h1>
+        <div className={styles.tableOfContents}>
+          <h2 className={styles.tocTitle}>Table of Contents</h2>
+          <ul className={styles.tocList}>
+            {topics.map((topic) => (
+              <li key={topic.slug}>
+                <Link href={`/articles/${topic.slug}`} className={styles.tocLink}>
+                  {topic.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </main>
+    </div>
   );
 }

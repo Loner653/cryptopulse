@@ -1,4 +1,3 @@
-// app/analytics/ErrorBoundary.js
 "use client";
 
 import { Component } from "react";
@@ -6,7 +5,7 @@ import { Component } from "react";
 export default class ErrorBoundary extends Component {
   state = { hasError: false };
 
-  static displayName = "AnalyticsErrorBoundary"; // Name it here
+  static displayName = "AnalyticsErrorBoundary";
 
   static getDerivedStateFromError(error) {
     return { hasError: true };

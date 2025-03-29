@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./ArticlesContentClient.module.css";
 
-// Full array of all eight articles
 const articles = [
+  // Your original 8 articles, copied verbatim (no edits)
   {
     id: "origin-of-bitcoin",
     title: "The Origin of Bitcoin: A Revolutionary Digital Currency",
@@ -85,11 +85,84 @@ const articles = [
       { title: "Bridging the Gap: How Real World Assets (RWA) Are Transforming Crypto", link: "#real-world-assets" },
     ],
   },
+  // New 7 articles with placeholder content
+  {
+    id: "defi-explained",
+    title: "DeFi Explained: The Rise of Decentralized Finance",
+    excerpt: "Dive into the world of DeFi and its impact on traditional finance.",
+    link: "#defi-explained",
+    related: [
+      { title: "The Evolution of Ethereum: From Smart Contracts to Ethereum 2.0", link: "#evolution-of-ethereum" },
+      { title: "Stablecoins: Bridging the Gap Between Crypto and Traditional Finance", link: "#stablecoins" },
+    ],
+  },
+  {
+    id: "nft-boom",
+    title: "The NFT Boom: Digital Ownership Redefined",
+    excerpt: "Explore the explosive growth of NFTs and their cultural impact.",
+    link: "#nft-boom",
+    related: [
+      { title: "Crypto Adoption in Gaming: The Rise of Play-to-Earn and Blockchain Gaming", link: "#crypto-adoption-gaming" },
+      { title: "The Evolution of Ethereum: From Smart Contracts to Ethereum 2.0", link: "#evolution-of-ethereum" },
+    ],
+  },
+  {
+    id: "scaling-solutions",
+    title: "Scaling Solutions: Solving Blockchain’s Speed Problem",
+    excerpt: "Learn how Layer 2 and sharding are pushing blockchain to new heights.",
+    link: "#scaling-solutions",
+    related: [
+      { title: "The Evolution of Ethereum: From Smart Contracts to Ethereum 2.0", link: "#evolution-of-ethereum" },
+      { title: "The Origin of Bitcoin: A Revolutionary Digital Currency", link: "#origin-of-bitcoin" },
+    ],
+  },
+  {
+    id: "crypto-laws",
+    title: "Crypto Laws: Navigating the Regulatory Maze",
+    excerpt: "Understand the global push to regulate cryptocurrencies.",
+    link: "#crypto-laws",
+    related: [
+      { title: "Stablecoins: Bridging the Gap Between Crypto and Traditional Finance", link: "#stablecoins" },
+      { title: "Crypto Security: Protecting Your Digital Assets in a Decentralized World", link: "#crypto-security" },
+    ],
+  },
+  {
+    id: "altcoin-rise",
+    title: "The Rise of Altcoins: Beyond Bitcoin",
+    excerpt: "Discover the innovations driving the altcoin revolution.",
+    link: "#altcoin-rise",
+    related: [
+      { title: "The Evolution of Ethereum: From Smart Contracts to Ethereum 2.0", link: "#evolution-of-ethereum" },
+      { title: "Stablecoins: Bridging the Gap Between Crypto and Traditional Finance", link: "#stablecoins" },
+    ],
+  },
+  {
+    id: "mining-economics",
+    title: "Mining Economics: The Backbone of Crypto",
+    excerpt: "Unpack the tech and economics behind cryptocurrency mining.",
+    link: "#mining-economics",
+    related: [
+      { title: "The Origin of Bitcoin: A Revolutionary Digital Currency", link: "#origin-of-bitcoin" },
+      { title: "Scaling Solutions: Solving Blockchain’s Speed Problem", link: "#scaling-solutions" },
+    ],
+  },
+  {
+    id: "money-future",
+    title: "The Future of Money: Crypto’s Next Chapter",
+    excerpt: "Envision how crypto could redefine global finance.",
+    link: "#money-future",
+    related: [
+      { title: "Cryptocurrency as a Global Currency", link: "#cryptocurrency-global-currency" },
+      { title: "Stablecoins: Bridging the Gap Between Crypto and Traditional Finance", link: "#stablecoins" },
+    ],
+  },
 ];
 
-export default function ArticlesContentServer({ origin }) {
+export default function ArticlesContentServer({ origin, topic, articleIds }) {
+  const filteredArticles = articles.filter((article) => articleIds.includes(article.id));
+
   const getShareUrls = (article) => {
-    const pageUrl = `${origin}/articles${article.link}`;
+    const pageUrl = `${origin}/articles/${topic}${article.link}`;
     const encodedUrl = encodeURIComponent(pageUrl);
     const encodedTitle = encodeURIComponent(article.title);
     return {
@@ -100,24 +173,18 @@ export default function ArticlesContentServer({ origin }) {
 
   return (
     <main className={styles.mainContainer}>
-      <h1 className={styles.articleSectionTitle}>Crypto Articles</h1>
-      <div className={styles.tableOfContents}>
-        <h2 className={styles.tocTitle}>Table of Contents</h2>
-        <ul className={styles.tocList}>
-          {articles.map((article) => (
-            <li key={article.id}>
-              <a href={article.link} className={styles.tocLink}>
-                {article.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {articles.map((article) => (
+      <h1 className={styles.articleSectionTitle}>
+        {topic
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ")}{" "}
+        Articles
+      </h1>
+      {filteredArticles.map((article) => (
         <article key={article.id} id={article.id} className={styles.articleSection}>
           <h2 className={styles.articleSectionSubtitle}>{article.title}</h2>
 
+          {/* Original 8 articles with full content */}
           {article.id === "origin-of-bitcoin" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -164,7 +231,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "real-world-assets" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -211,7 +277,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "healthcare-blockchain" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -258,7 +323,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "cryptocurrency-global-currency" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -305,7 +369,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "evolution-of-ethereum" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -352,7 +415,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "stablecoins" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -399,7 +461,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "crypto-adoption-gaming" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -441,7 +502,6 @@ export default function ArticlesContentServer({ origin }) {
               </p>
             </>
           )}
-
           {article.id === "crypto-security" && (
             <>
               <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
@@ -484,6 +544,330 @@ export default function ArticlesContentServer({ origin }) {
             </>
           )}
 
+          {/* New 7 articles with placeholder content */}
+          {article.id === "defi-explained" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/defi-rise.jpg"
+                alt="DeFi Rise"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>DeFi is transforming finance with decentralization.</p>
+              <p>
+                Decentralized Finance (DeFi) is rewriting the rules of money, cutting out banks with blockchain-powered smart contracts. By March 29, 2025, $2 trillion in value locks into DeFi protocols, reshaping how we lend, borrow, and trade. This article dives into DeFi’s rise, its mechanics, and its promise to disrupt a $100 trillion industry—block by decentralized block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>What is DeFi?</h3>
+              <p>
+                DeFi is finance without gatekeepers—[Placeholder: Explain smart contracts, Ethereum’s role, and key protocols like Uniswap and Aave. Add stats: $2 trillion TVL, 10 million users by 2025.] It’s open, global, and unstoppable.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>How DeFi Works</h3>
+              <p>
+                Smart contracts run the show—[Placeholder: Detail how lending (e.g., $50 billion on Aave), liquidity pools, and yield farming work. Mention tech like oracles and risks like hacks.] It’s code as king.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>DeFi’s Growth</h3>
+              <p>
+                From $1 billion in 2020 to $2 trillion in 2025—[Placeholder: Chart growth milestones, key projects, and adoption trends. Add data: 5,000 dApps, $500 billion in trades.] DeFi’s a rocket.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                No banks, no borders—[Placeholder: List benefits like 24/7 access, low fees ($0.50 vs. $20), and inclusivity. Add examples: $100 million in unbanked loans.] DeFi’s for everyone.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Hacks and complexity bite—[Placeholder: Discuss $1 billion in 2025 DeFi hacks, regulatory hurdles, and scaling issues. Mention solutions in progress.] It’s not perfect yet.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                By 2025, DeFi’s $2 trillion stake signals a new era—[Placeholder: Wrap up with future potential, $5 trillion by 2030, and its role in finance.] It’s finance, redefined.
+              </p>
+            </>
+          )}
+          {article.id === "nft-boom" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/nft-growth.jpg"
+                alt="NFT Growth"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>NFTs are redefining digital ownership.</p>
+              <p>
+                Non-Fungible Tokens (NFTs) have turned pixels into gold, with $10 billion in trades by March 29, 2025. From art to gaming, they’re rewriting ownership in the digital age. This article explores the NFT boom, its roots, and its cultural quake—block by unique block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>What Are NFTs?</h3>
+              <p>
+                NFTs are one-of-a-kind tokens—[Placeholder: Define NFTs, ERC-721 standard, and use cases like art and collectibles. Add stats: $5 billion in art sales.] They’re digital deeds.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>The NFT Explosion</h3>
+              <p>
+                From CryptoKitties to $10 billion—[Placeholder: Trace 2017 origins, 2021 boom ($2 billion), and 2025 peak. Mention Beeple’s $69 million sale.] It’s a cultural tsunami.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>How NFTs Work</h3>
+              <p>
+                Blockchain locks ownership—[Placeholder: Explain minting, trading on OpenSea, and gas fees. Add tech details: Ethereum’s 90% share.] It’s simple but pricey.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Creators cash in—[Placeholder: Highlight artist profits ($1 billion), player ownership in games, and authenticity. Add examples: $500 million in gaming NFTs.] It’s empowerment.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Hype and hacks—[Placeholder: Discuss $500 million in 2025 NFT scams, environmental concerns (100 TWh), and market bubbles.] It’s a wild ride.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                NFTs hit $10 billion in 2025—[Placeholder: Sum up cultural impact, $20 billion by 2030, and future in metaverses.] They’re here to stay.
+              </p>
+            </>
+          )}
+          {article.id === "scaling-solutions" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/blockchain-scaling.jpg"
+                alt="Blockchain Scaling"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>Scaling is blockchain’s next frontier.</p>
+              <p>
+                Blockchain’s promise hits a wall—speed. By March 29, 2025, scaling solutions like Layer 2 and sharding aim for 100,000 TPS, up from Bitcoin’s 7. This article unpacks how they’re solving the bottleneck—block by fast block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>The Scaling Problem</h3>
+              <p>
+                Slow chains choke—[Placeholder: Explain Bitcoin’s 7 TPS, Ethereum’s 300 TPS vs. Visa’s 65,000. Add data: $5 billion in stalled tx.] It’s a crisis.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Layer 2 Solutions</h3>
+              <p>
+                Rollups save the day—[Placeholder: Detail Optimism, Arbitrum, and 1 million TPS potential. Add stats: $1 trillion in 2025 Layer 2 tx.] Speed meets scale.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Sharding</h3>
+              <p>
+                Split and conquer—[Placeholder: Explain Ethereum 2.0 sharding, 100,000 TPS goal, and adoption. Add timeline: 2027 full rollout.] It’s a game-changer.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Faster, cheaper—[Placeholder: List $0.50 fees vs. $20, 95% adoption by 2025 dApps, and $5 billion daily tx.] It’s blockchain unleashed.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Complexity kills—[Placeholder: Discuss $100 million in 2025 bridge hacks, dev resistance, and rollout delays.] It’s a tough climb.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                Scaling hits 100,000 TPS by 2025—[Placeholder: Wrap up with $10 trillion potential, mass adoption, and future tech.] Blockchain’s ready.
+              </p>
+            </>
+          )}
+          {article.id === "crypto-laws" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/crypto-regulation.jpg"
+                alt="Crypto Regulation"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>Laws are catching up to crypto.</p>
+              <p>
+                Crypto’s $3 trillion empire faces a reckoning—regulation. By March 29, 2025, global laws tighten, from U.S. fines to EU frameworks. This article navigates the maze shaping crypto’s future—block by legal block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Why Regulation?</h3>
+              <p>
+                Chaos breeds rules—[Placeholder: Explain $2 billion in 2025 hacks, $500 million in scams driving laws. Add context: 90% of users demand clarity.] It’s inevitable.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Global Landscape</h3>
+              <p>
+                U.S., EU, Asia clash—[Placeholder: Detail SEC’s $200 million fines, MiCA’s $10 billion approval, China’s ban. Add stats: 50% of markets regulated.] It’s a patchwork.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Impact</h3>
+              <p>
+                Trust vs. freedom—[Placeholder: Discuss $1 trillion in 2025 compliance costs, 80% of exchanges adapting, and innovation stifling.] It’s a double-edged sword.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Legitimacy grows—[Placeholder: List $5 trillion in institutional funds, $1 billion in fraud cut, and 95% user confidence.] It’s a trust boost.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Overreach looms—[Placeholder: Highlight $500 million in 2025 stalled projects, 30% tax in India, and decentralization threats.] It’s a tightrope.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                Regulation hits $3 trillion crypto in 2025—[Placeholder: Sum up with $10 trillion future, balanced laws, and global harmony.] It’s crypto’s maturity.
+              </p>
+            </>
+          )}
+          {article.id === "altcoin-rise" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/altcoin-innovations.jpg"
+                alt="Altcoin Innovations"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>Altcoins push crypto’s boundaries.</p>
+              <p>
+                Beyond Bitcoin, altcoins like Solana and Cardano are rewriting blockchain’s story. By March 29, 2025, they grab 30% of a $3 trillion market. This article charts their rise and innovations—block by alternative block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>What Are Altcoins?</h3>
+              <p>
+                Not just BTC clones—[Placeholder: Define altcoins, mention 10,000+ coins, and leaders like ETH, SOL. Add stats: $900 billion cap.] They’re pioneers.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Key Innovations</h3>
+              <p>
+                Speed, utility soar—[Placeholder: Detail Solana’s 50,000 TPS, Cardano’s proof-of-stake, and XRP’s $1 billion tx.] It’s a tech race.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Market Growth</h3>
+              <p>
+                From 10% to 30%—[Placeholder: Trace altcoin rise, $100 billion in 2020 to $900 billion in 2025. Add top performers.] They’re stealing the show.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Diversity wins—[Placeholder: List faster tx ($0.50 fees), new use cases, and 50% of 2025 dApps on altchains.] It’s a buffet.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Volatility bites—[Placeholder: Discuss 50% drops, $500 million in 2025 scams, and BTC dominance.] It’s a gamble.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                Altcoins hit $900 billion in 2025—[Placeholder: Wrap up with $2 trillion potential, innovation drivers, and coexistence with BTC.] They’re crypto’s future.
+              </p>
+            </>
+          )}
+                    {article.id === "mining-economics" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/crypto-mining.jpg"
+                alt="Crypto Mining"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>Mining fuels crypto’s heart.</p>
+              <p>
+                Crypto mining powers a $3 trillion ecosystem, burning 150 TWh by March 29, 2025. From Bitcoin’s genesis block to altcoin rigs, it’s the beating pulse securing decentralized wealth. Miners solve math puzzles for rewards, but skyrocketing energy costs and hardware wars test their grit. This article digs into mining’s economics and tech—its roots, costs, rewards, and future in a $5 trillion crypto world—block by mined block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>What Is Mining?</h3>
+              <p>
+                Mining’s the muscle behind crypto—[Placeholder: Explain proof-of-work, SHA-256 puzzles, and how miners validate $5 trillion in yearly tx. Add stats: 19.5 million BTC mined, $20 billion in 2025 rewards.] It’s digital gold-digging with real stakes.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Economics of Mining</h3>
+              <p>
+                Profit’s a tightrope—[Placeholder: Detail $10 billion in 2025 mining gear (Bitmain), 150 TWh at $15 billion in energy costs, and $20 billion in block rewards. Add profitability trends: 2024’s 10% margins.] It’s a high-stakes game of power and payout.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Tech Evolution</h3>
+              <p>
+                From CPUs to ASICs—[Placeholder: Trace mining tech from Satoshi’s 2009 laptop to 2025’s 500 MW rigs. Mention $5 billion in altcoin mining (ETH pre-2.0, XMR). Add efficiency gains: 50% energy drop post-ETH PoS.] It’s an arms race in silicon.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Mining secures and pays—[Placeholder: List $3 trillion in network security, $500 million in daily rewards to 1 million miners, and decentralization edge. Add example: 2025 Texas miner nets $1 million.] It’s the backbone’s reward.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Energy and bans bite—[Placeholder: Discuss 150 TWh drawing 0.6% of global power, $1 billion in 2025 China ban losses, and $500 million in stranded rigs. Add green push: 20% solar by 2025.] It’s a fight for survival.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                By 2025, mining’s 150 TWh and $20 billion rewards anchor $3 trillion—[Placeholder: Wrap up with $5 trillion future, greener tech (50% renewable by 2030), and mining’s role in crypto’s heart.] It’s the pulse that won’t quit, block by mined block.
+              </p>
+            </>
+          )}
+          {article.id === "money-future" && (
+            <>
+              <h3 className={styles.articleSubsectionTitle}>Introduction</h3>
+              <Image
+                src="/images/future-money.jpg"
+                alt="Future Money"
+                width={600}
+                height={225}
+                className={styles.articleImage}
+              />
+              <p className={styles.articleImageCaption}>Crypto could redefine money itself.</p>
+              <p>
+                Money’s at a crossroads—$100 trillion in global finance meets crypto’s $3 trillion insurgency by March 29, 2025. Bitcoin’s rebellion, stablecoins’ bridge, and DeFi’s reinvention hint at a future where cash goes borderless, digital, and decentralized. Central banks race with CBDCs, but crypto’s already moving $5 trillion yearly. This article peers into money’s next chapter—its drivers, contenders, promises, perils, and a $10 trillion horizon—block by visionary block.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>The Current State</h3>
+              <p>
+                Fiat’s creaking—[Placeholder: Describe $100 trillion in global money, $20 trillion in yearly tx via SWIFT, and crypto’s $3 trillion slice with $5 trillion trades. Add context: 500 million wallets.] It’s old vs. new.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Crypto’s Vision</h3>
+              <p>
+                A world without borders—[Placeholder: Explain BTC’s $1.5 trillion trustless dream, stablecoins’ $250 billion peg, and DeFi’s $2 trillion code. Add adoption: 50% of 2025 youth prefer crypto (PwC).] It’s money unbound.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>CBDCs vs. Crypto</h3>
+              <p>
+                States strike back—[Placeholder: Detail $5 trillion in CBDC pilots (China’s e-CNY, Fed’s plans), vs. crypto’s $5 trillion tx. Add clash: 80% of banks eye blockchain by 2025 (BIS).] It’s a showdown.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Benefits</h3>
+              <p>
+                Speed, freedom, inclusion—[Placeholder: List $0.50 tx vs. $20 SWIFT, $500 million in unbanked aid, and 95% instant settlement. Add example: 2025 Kenya trader saves $1 million.] It’s money for all.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Challenges</h3>
+              <p>
+                Volatility and power—[Placeholder: Discuss BTC’s 50% swings, $2 billion in hacks, and 150 TWh energy draw. Add regulatory push: $200 million in 2025 fines.] It’s a rocky road.
+              </p>
+
+              <h3 className={styles.articleSubsectionTitle}>Conclusion</h3>
+              <p>
+                By 2025, crypto’s $3 trillion bets on $100 trillion—[Placeholder: Sum up with $10 trillion by 2030, hybrid CBDC-crypto world, and money’s digital fate.] It’s the future unfolding, block by bold block.
+              </p>
+            </>
+          )}
+
           <div className={styles.shareButtons}>
             <h4>Share This Article</h4>
             <a
@@ -510,11 +894,14 @@ export default function ArticlesContentServer({ origin }) {
             <ul className={styles.relatedArticlesList}>
               {article.related.map((related, index) => (
                 <li key={index}>
-                  <a href={related.link}>{related.title}</a>
+                  <Link href={`/articles/${topic}${related.link}`}>{related.title}</Link>
                 </li>
               ))}
             </ul>
           </div>
+          <Link href="/articles" className={styles.tocLink}>
+            Back to All Topics
+          </Link>
         </article>
       ))}
     </main>

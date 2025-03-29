@@ -14,6 +14,10 @@ export default function AnalyticsClient({
   trendingError,
   binanceData,
   binanceError,
+  cryptoCompareData,
+  cryptoCompareError,
+  messariData,
+  messariError,
 }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -23,7 +27,15 @@ export default function AnalyticsClient({
     setIsRefreshing(false);
   };
 
-  const allFailed = marketError && defiError && trendingError && binanceError;
+  const formatLargeNumber = (value) => {
+    if (value === undefined || value === null) return "$0";
+    if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(2)}T`;
+    if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`;
+    if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}M`;
+    return `$${value.toLocaleString()}`;
+  };
+
+  const allFailed = marketError && defiError && trendingError && binanceError && cryptoCompareError && messariError;
 
   return (
     <div className={styles.container}>
@@ -76,7 +88,25 @@ export default function AnalyticsClient({
                   <tbody>
                     {marketData.length > 0 ? (
                       marketData.map((coin) => (
-                        <tr key={coin.id}><td><Image src={coin.image} alt={`${coin.name} logo`} width={24} height={24} className={styles.coinImage} priority={false} />{coin.name}</td><td>${coin.current_price.toLocaleString()}</td><td className={coin.price_change_percentage_24h >= 0 ? styles.positive : styles.negative}>{coin.price_change_percentage_24h.toFixed(2)}%</td><td>${coin.market_cap.toLocaleString()}</td><td>${coin.total_volume.toLocaleString()}</td></tr>
+                        <tr key={coin.id}>
+                          <td>
+                            <Image
+                              src={coin.image}
+                              alt={`${coin.name} logo`}
+                              width={24}
+                              height={24}
+                              className={styles.coinImage}
+                              priority={false}
+                            />
+                            {coin.name}
+                          </td>
+                          <td>${coin.current_price.toLocaleString()}</td>
+                          <td className={coin.price_change_percentage_24h >= 0 ? styles.positive : styles.negative}>
+                            {coin.price_change_percentage_24h.toFixed(2)}%
+                          </td>
+                          <td>{formatLargeNumber(coin.market_cap)}</td>
+                          <td>{formatLargeNumber(coin.total_volume)}</td>
+                        </tr>
                       ))
                     ) : (
                       <tr><td colSpan={5}>No market data available.</td></tr>
@@ -112,7 +142,11 @@ export default function AnalyticsClient({
                   <tbody>
                     {defiData.length > 0 ? (
                       defiData.map((protocol, index) => (
-                        <tr key={protocol.name || index}><td>{protocol.name}</td><td>${protocol.tvl.toLocaleString()}</td><td>{protocol.chain || "Multi-Chain"}</td></tr>
+                        <tr key={protocol.name || index}>
+                          <td>{protocol.name}</td>
+                          <td>{formatLargeNumber(protocol.tvl)}</td>
+                          <td>{protocol.chain || "Multi-Chain"}</td>
+                        </tr>
                       ))
                     ) : (
                       <tr><td colSpan={3}>No DeFi data available.</td></tr>
@@ -148,7 +182,21 @@ export default function AnalyticsClient({
                   <tbody>
                     {trendingData && trendingData.length > 0 ? (
                       trendingData.map((coin) => (
-                        <tr key={coin.item.id}><td><Image src={coin.item.small} alt={`${coin.item.name} logo`} width={24} height={24} className={styles.coinImage} priority={false} />{coin.item.name}</td><td>{coin.item.market_cap_rank || "N/A"}</td><td>{coin.item.price_btc ? coin.item.price_btc.toFixed(8) : "N/A"}</td></tr>
+                        <tr key={coin.item.id}>
+                          <td>
+                            <Image
+                              src={coin.item.small}
+                              alt={`${coin.item.name} logo`}
+                              width={24}
+                              height={24}
+                              className={styles.coinImage}
+                              priority={false}
+                            />
+                            {coin.item.name}
+                          </td>
+                          <td>{coin.item.market_cap_rank || "N/A"}</td>
+                          <td>{coin.item.price_btc ? coin.item.price_btc.toFixed(8) : "N/A"}</td>
+                        </tr>
                       ))
                     ) : (
                       <tr><td colSpan={3}>No trending data available.</td></tr>
@@ -188,7 +236,14 @@ export default function AnalyticsClient({
                   <tbody>
                     {binanceData.length > 0 ? (
                       binanceData.map((coin) => (
-                        <tr key={coin.id}><td>{coin.name}</td><td>${coin.price.toLocaleString()}</td><td className={coin.priceChangePercent >= 0 ? styles.positive : styles.negative}>{coin.priceChangePercent.toFixed(2)}%</td><td>${coin.volume.toLocaleString()}</td></tr>
+                        <tr key={coin.id}>
+                          <td>{coin.name}</td>
+                          <td>${coin.price.toLocaleString()}</td>
+                          <td className={coin.priceChangePercent >= 0 ? styles.positive : styles.negative}>
+                            {coin.priceChangePercent.toFixed(2)}%
+                          </td>
+                          <td>{formatLargeNumber(coin.volume)}</td>
+                        </tr>
                       ))
                     ) : (
                       <tr><td colSpan={4}>No Binance data available.</td></tr>
@@ -198,6 +253,96 @@ export default function AnalyticsClient({
               </div>
               <p className={styles.note}>
                 Prices reflect top coins with significant volume on Binance (via CoinGecko).
+              </p>
+            </Suspense>
+          </section>
+
+          {/* CryptoCompare Top Coins Section */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Top Coins by Market Cap (CryptoCompare)</h2>
+            <Suspense
+              fallback={
+                <div className={styles.skeleton}>
+                  <div className={styles.skeletonRow} />
+                  <div className={styles.skeletonRow} />
+                  <div className={styles.skeletonRow} />
+                </div>
+              }
+            >
+              {cryptoCompareError && <p className={styles.error}>{cryptoCompareError}</p>}
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th scope="col">Coin</th>
+                      <th scope="col">Price (USD)</th>
+                      <th scope="col">Market Cap</th>
+                      <th scope="col">24h Volume</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cryptoCompareData.length > 0 ? (
+                      cryptoCompareData.map((coin) => (
+                        <tr key={coin.id}>
+                          <td>{coin.name}</td> {/* Using ticker only */}
+                          <td>${coin.price.toLocaleString()}</td>
+                          <td>{formatLargeNumber(coin.marketCap)}</td>
+                          <td>{formatLargeNumber(coin.volume24h)}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr><td colSpan={4}>No CryptoCompare data available.</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <p className={styles.note}>
+                Data sourced from CryptoCompare’s top coins by market cap.
+              </p>
+            </Suspense>
+          </section>
+
+          {/* Messari Asset Overview Section */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Messari Asset Overview</h2>
+            <Suspense
+              fallback={
+                <div className={styles.skeleton}>
+                  <div className={styles.skeletonRow} />
+                  <div className={styles.skeletonRow} />
+                  <div className={styles.skeletonRow} />
+                </div>
+              }
+            >
+              {messariError && <p className={styles.error}>{messariError}</p>}
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th scope="col">Coin</th>
+                      <th scope="col">Price (USD)</th>
+                      <th scope="col">MC</th> {/* Changed to MC */}
+                      <th scope="col">CS</th> {/* Changed to CS */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {messariData.length > 0 ? (
+                      messariData.map((asset) => (
+                        <tr key={asset.id}>
+                          <td>{asset.name} ({asset.fullName})</td>
+                          <td>${asset.price.toLocaleString()}</td>
+                          <td>{formatLargeNumber(asset.marketCap)}</td>
+                          <td>{formatLargeNumber(asset.supply)}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr><td colSpan={4}>No Messari data available.</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <p className={styles.note}>
+                Data sourced from Messari’s asset metrics.
               </p>
             </Suspense>
           </section>

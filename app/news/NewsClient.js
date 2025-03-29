@@ -17,6 +17,20 @@ export default function NewsClient({ newsData, newsError }) {
     );
   };
 
+  const shareToWhatsApp = (url, title) => {
+    window.open(
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} - ${url}`)}`,
+      '_blank'
+    );
+  };
+
+  const shareToTelegram = (url, title) => {
+    window.open(
+      `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+      '_blank'
+    );
+  };
+
   if (newsError) {
     return <p>Error loading news: {newsError}</p>;
   }
@@ -34,7 +48,7 @@ export default function NewsClient({ newsData, newsError }) {
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.navLink}
+              className={styles.readMore} // Updated class for visibility
             >
               Read More
             </a>
@@ -50,6 +64,18 @@ export default function NewsClient({ newsData, newsError }) {
                 onClick={() => shareToLinkedIn(article.url)}
               >
                 LinkedIn
+              </button>
+              <button
+                className={`${styles.shareButton} ${styles.whatsapp}`}
+                onClick={() => shareToWhatsApp(article.url, article.title)}
+              >
+                WhatsApp
+              </button>
+              <button
+                className={`${styles.shareButton} ${styles.telegram}`}
+                onClick={() => shareToTelegram(article.url, article.title)}
+              >
+                Telegram
               </button>
             </div>
           </div>

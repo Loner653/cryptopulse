@@ -25,8 +25,8 @@ async function fetchNewsData() {
   try {
     await delay(1000); // Simulate delay for testing
     const response = await fetchWithRetry(
-      `https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=d2ace4ea1aa84228853c072414e47606`,
-      { next: { revalidate: 300 } }
+      `https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=publishedAt&language=en&from=${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}&apiKey=d2ace4ea1aa84228853c072414e47606`,
+      { next: { revalidate: 300 } } // Revalidate every 5 minutes
     );
     return {
       data: response.articles
@@ -37,7 +37,7 @@ async function fetchNewsData() {
           publishedAt: article.publishedAt,
           url: article.url,
         }))
-        .slice(0, 10), // Show 10 articles on a dedicated page
+        .slice(0, 10), // Show 10 articles
       error: null,
     };
   } catch (error) {

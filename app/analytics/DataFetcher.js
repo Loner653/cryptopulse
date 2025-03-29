@@ -69,12 +69,67 @@ async function fetchBinanceData() {
   }
 }
 
+async function fetchCryptoCompareData() {
+  try {
+    await delay(4000);
+    const response = await fetch(
+      "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD",
+      { cache: "no-store" }
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch CryptoCompare data: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return {
+      data: data.Data.map((coin) => ({
+        id: coin.CoinInfo.Id,
+        name: coin.CoinInfo.Name, // Using ticker only
+        price: coin.RAW?.USD?.PRICE ?? 0, // Fallback to 0
+        marketCap: coin.RAW?.USD?.MKTCAP ?? 0, // Fallback to 0
+        volume24h: coin.RAW?.USD?.VOLUME24HOUR ?? 0, // Fallback to 0
+      })),
+      error: null,
+    };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
+
+async function fetchMessariData() {
+  try {
+    await delay(5000);
+    const response = await fetch(
+      "https://data.messari.io/api/v1/assets?fields=id,name,symbol,metrics/market_data/price_usd,metrics/marketcap/current_marketcap_usd,metrics/supply/circulating",
+      { cache: "no-store" }
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch Messari data: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return {
+      data: data.data.slice(0, 5).map((asset) => ({
+        id: asset.id,
+        name: asset.symbol.toUpperCase(),
+        fullName: asset.name,
+        price: asset.metrics.market_data.price_usd || 0,
+        marketCap: asset.metrics.marketcap.current_marketcap_usd || 0,
+        supply: asset.metrics.supply.circulating || 0,
+      })),
+      error: null,
+    };
+  } catch (error) {
+    return { data: [], error: error.message };
+  }
+}
+
 export default async function DataFetcher({ children }) {
-  const [marketResult, defiResult, trendingResult, binanceResult] = await Promise.all([
+  const [marketResult, defiResult, trendingResult, binanceResult, cryptoCompareResult, messariResult] = await Promise.all([
     fetchMarketData(),
     fetchDefiData(),
     fetchTrendingData(),
     fetchBinanceData(),
+    fetchCryptoCompareData(),
+    fetchMessariData(),
   ]);
 
   return children({
@@ -86,5 +141,9 @@ export default async function DataFetcher({ children }) {
     trendingError: trendingResult.error,
     binanceData: binanceResult.data,
     binanceError: binanceResult.error,
+    cryptoCompareData: cryptoCompareResult.data,
+    cryptoCompareError: cryptoCompareResult.error,
+    messariData: messariResult.data,
+    messariError: messariResult.error,
   });
 }

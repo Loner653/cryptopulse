@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import NewsFeed from "./Newsfeed"; // Adjusted to point to app/Newsfeed.js
+import NewsFeed from "./Newsfeed";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 
@@ -10,10 +10,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function Dashboard() {
-  // State to store crypto prices
   const [prices, setPrices] = useState({ bitcoin: 0, ethereum: 0, bnb: 0 });
 
-  // Fetch crypto prices on component mount
   useEffect(() => {
     async function fetchPrices() {
       try {
@@ -35,7 +33,6 @@ export default function Dashboard() {
 
   return (
     <div className="content-container">
-      {/* Crypto Prices Section */}
       <section className="crypto-section">
         <h2>
           <span className="section-icon">📈</span> Real-Time Crypto Prices
@@ -47,7 +44,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Airdrop Section */}
       <section className="airdrop-section">
         <h2>
           <span className="section-icon">🎁</span> Latest Airdrop
@@ -66,7 +62,6 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {/* Crypto Bot Section */}
       <section className="crypto-bot-section">
         <h2>
           <span className="section-icon">🧠</span> Crypto Assistant
@@ -79,7 +74,6 @@ export default function Dashboard() {
         </Link>
       </section>
 
-      {/* News Section */}
       <section className="news-section">
         <h2>
           <span className="section-icon">📰</span> Latest Crypto News
@@ -87,14 +81,13 @@ export default function Dashboard() {
         <NewsFeed />
       </section>
 
-      {/* Article Section (Preview) */}
       <section className="article-section">
         <h1>
           <span className="section-icon">📜</span> Featured Article
         </h1>
         <h2>The Origin of Bitcoin: A Revolutionary Digital Currency</h2>
         <p>
-          Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis, a period marked by widespread distrust in traditional banking systems. It was created as a radical alternative to centralized financial systems, offering a decentralized, peer-to-peer network that operates without the need for intermediaries like banks or governments.
+          Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis.
         </p>
         <Link href="/articles#origin-of-bitcoin" className="read-more-button">
           Read More →

@@ -105,7 +105,14 @@ export default function ClientLayout({ children }) {
         <main className="dashboard-content">{children}</main>
 
         <footer className="footer">
-          <p>© 2025 CryptoPulse</p>
+          <p>© 2025 CryptoGlobal</p>
+          <div className="footer-links">
+            <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
+            <Link href="/about" className="footer-link">About</Link>
+            <a href="mailto:cryptoglobalive@gmail.com" className="footer-link">
+              cryptoglobalive@gmail.com
+            </a>
+          </div>
         </footer>
       </div>
 

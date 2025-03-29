@@ -1,41 +1,62 @@
 .navbar {
-  background: #121212;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  position: relative;
   z-index: 1000;
+  padding: 0; /* Remove padding to control child elements */
 }
 
 .title {
-  color: #ffd700;
   font-size: 1.5rem;
+  color: #ffd700;
+  text-align: center;
+  padding: 15px 20px;
   margin: 0;
+  background: inherit; /* Match navbar background */
+  position: sticky;
+  top: 0;
+  z-index: 1100; /* Above navList */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .navList {
   list-style: none;
-  display: flex;
-  gap: 20px;
+  padding: 10px 20px;
   margin: 0;
-  padding: 0;
+  max-height: 200px; /* Limit height to trigger scrolling */
+  overflow-y: auto; /* Make it scrollable */
+  -webkit-overflow-scrolling: touch;
+}
+
+.navList li {
+  margin-bottom: 10px;
 }
 
 .navLink {
-  color: white;
+  color: #00ccff;
   text-decoration: none;
-  font-size: 16px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background 0.3s ease-in-out;
+  font-size: 1.1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .navLink:hover {
-  background: #00d1ff;
-  color: #121212;
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.3rem;
+    padding: 10px 15px;
+  }
+
+  .navList {
+    padding: 5px 15px;
+    max-height: 150px; /* Smaller height on mobile */
+  }
+
+  .navLink {
+    font-size: 1rem;
+  }
 }

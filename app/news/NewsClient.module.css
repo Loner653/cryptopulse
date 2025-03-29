@@ -29,33 +29,54 @@
   margin-bottom: 10px;
 }
 
-.shareButtons {
-  margin-top: 10px;
+.readMore {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #1da1f2; /* Bright blue to stand out */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-.navLink {
-  color: #1da1f2; /* Example color */
+.readMore:hover {
+  background-color: #0d8bec; /* Darker blue on hover */
   text-decoration: none;
 }
 
-.navLink:hover {
-  text-decoration: underline;
+.shareButtons {
+  margin-top: 15px; /* Increased spacing above buttons */
+  display: flex;
+  gap: 10px; /* Space between buttons */
 }
 
 .shareButton {
   padding: 8px 15px;
-  margin-right: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+}
+
+.shareButton:hover {
+  opacity: 0.9;
 }
 
 .twitter {
   background-color: #1da1f2;
-  color: white;
 }
 
 .linkedin {
   background-color: #0077b5;
-  color: white;
+}
+
+.whatsapp {
+  background-color: #25d366; /* WhatsApp green */
+}
+
+.telegram {
+  background-color: #0088cc; /* Telegram blue */
 }

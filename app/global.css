@@ -14,7 +14,65 @@ body {
 /* Dashboard layout */
 .dashboard-layout {
   display: flex;
+  flex-direction: column; /* Stack navbar and main content vertically */
   min-height: 100vh;
+}
+
+/* Navbar styles (Horizontal) */
+.navbar {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1200; /* Above sidebar and content */
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column; /* Stack title and list vertically within navbar */
+  align-items: center;
+}
+
+.navbar-title {
+  font-size: 1.5rem;
+  color: #ffd700;
+  text-align: center;
+  margin: 0 0 10px 0; /* Space below title */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  position: sticky;
+  top: 0;
+  background: inherit; /* Match navbar background */
+  z-index: 1100; /* Above nav-list */
+  padding: 5px 0;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Horizontal layout */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  overflow-x: auto; /* Scroll horizontally if overflowing */
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap; /* Keep items in one line */
+  width: 100%; /* Full width for scrolling */
+  justify-content: center; /* Center links */
+}
+
+.nav-list li {
+  margin: 0 15px; /* Space between items */
+}
+
+.nav-link {
+  color: #00ccff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 /* Sidebar styles */
@@ -25,10 +83,10 @@ body {
   border-right: 1px solid rgba(255, 215, 0, 0.2);
   transition: transform 0.3s ease;
   position: fixed;
-  top: 0;
+  top: 0; /* Starts below navbar */
   left: 0;
   height: 100%;
-  z-index: 1000;
+  z-index: 1000; /* Below navbar */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -132,7 +190,8 @@ body {
 /* Main container */
 .main-container {
   flex: 1;
-  margin-left: 250px;
+  margin-left: 250px; /* Offset for sidebar */
+  margin-top: 100px; /* Offset for horizontal navbar height */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -148,18 +207,35 @@ body {
 /* Dashboard content */
 .dashboard-content {
   padding: 40px 20px;
-  min-height: calc(100vh - 60px);
-  padding-top: 120px;
+  min-height: calc(100vh - 100px); /* Adjusted for navbar height */
 }
 
-/* Footer */
+/* Footer Styles */
 .footer {
-  text-align: center;
-  padding: 10px;
+  padding: 20px;
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   border-top: 1px solid rgba(255, 215, 0, 0.2);
+  color: #e0e0e0;
+  text-align: center;
+}
+
+.footer-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-link {
+  color: #00ccff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.footer-link:hover {
   color: #ffd700;
-  text-shadow: 0 0 3px rgba(255, 215, 0, 0.3);
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 /* Sidebar toggle button (visible on mobile) */
@@ -184,6 +260,29 @@ body {
     flex-direction: column;
   }
 
+  .navbar {
+    position: relative; /* Static on mobile */
+    padding: 10px 15px;
+  }
+
+  .navbar-title {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+  }
+
+  .nav-list {
+    justify-content: flex-start; /* Align left on mobile for scrolling */
+    padding: 5px 0;
+  }
+
+  .nav-list li {
+    margin: 0 10px; /* Reduced spacing on mobile */
+  }
+
+  .nav-link {
+    font-size: 1rem;
+  }
+
   .sidebar {
     transform: translateX(-100%);
     width: 200px;
@@ -195,16 +294,51 @@ body {
 
   .main-container {
     margin-left: 0;
+    margin-top: 0; /* Reset on mobile since navbar is static */
   }
 
   .sidebar-toggle {
     display: block;
-    top: 70px;
+    top: 10px; /* Adjusted for mobile */
   }
 
   .dashboard-content {
     padding: 20px 10px;
-    padding-top: 120px;
+    min-height: calc(100vh - 60px); /* Reset for mobile */
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .crypto-section,
+  .airdrop-section,
+  .news-section,
+  .article-section {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .price-list p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+
+  .crypto-section h2,
+  .airdrop-section h2,
+  .news-section h2,
+  .article-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .article-section h1 {
+    font-size: 1.4rem;
+  }
+
+  .read-more-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
 }
 
@@ -217,7 +351,6 @@ body {
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.8;
-  padding-top: 80px;
   text-align: justify;
 }
 
@@ -322,6 +455,49 @@ body {
 
 .airdrop-section li {
   margin: 5px 0;
+}
+
+/* Crypto Bot Section */
+.crypto-bot-section {
+  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.crypto-bot-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, rgba(0, 0, 70, 0.9), rgba(0, 70, 120, 0.7));
+}
+
+.crypto-bot-section h2 {
+  color: #00ccff;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+  transition: text-shadow 0.3s ease;
+}
+
+.crypto-bot-section h2:hover {
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
+}
+
+.crypto-bot-section p {
+  color: white;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 300;
+  transition: color 0.3s ease;
+}
+
+.crypto-bot-section p:hover {
+  color: #e0e0e0;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 /* X Link Styles (for airdrop section) */

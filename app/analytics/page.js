@@ -1,140 +1,49 @@
-// app/analytics/page.js
-// NO 'use client' – this is a Server Component
-
+import DataFetcher from "./DataFetcher";
 import AnalyticsClient from "./AnalyticsClient";
 import ErrorBoundary from "./ErrorBoundary";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-async function fetchWithRetry(url, options = {}, retries = 3, backoff = 1000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    } catch (error) {
-      if (i === retries - 1) throw error;
-      console.warn(`Retrying fetch for ${url}... Attempt ${i + 1}/${retries}`);
-      await delay(backoff * Math.pow(2, i));
-    }
-  }
-}
-
-async function fetchMarketData() {
-  try {
-    const data = await fetchWithRetry(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false",
-      { next: { revalidate: 300 } }
-    );
-    return { data, error: null };
-  } catch (error) {
-    return { data: [], error: error.message };
-  }
-}
-
-async function fetchDefiData() {
-  try {
-    await delay(1000);
-    const data = await fetchWithRetry("https://api.llama.fi/protocols", {
-      next: { revalidate: 300 },
-    });
-    return { data: data.sort((a, b) => b.tvl - a.tvl).slice(0, 5), error: null };
-  } catch (error) {
-    return { data: [], error: error.message };
-  }
-}
-
-async function fetchTrendingData() {
-  try {
-    await delay(2000);
-    const data = await fetchWithRetry("https://api.coingecko.com/api/v3/search/trending", {
-      next: { revalidate: 300 },
-    });
-    return { data: data.coins.slice(0, 5), error: null };
-  } catch (error) {
-    return { data: [], error: error.message };
-  }
-}
-
-async function fetchBinanceData() {
-  try {
-    await delay(3000);
-    const coinIds = "bitcoin,ethereum,binancecoin,ripple,cardano";
-    const data = await fetchWithRetry(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=5&page=1&sparkline=false`,
-      { next: { revalidate: 300 } }
-    );
-    return {
-      data: data.map((coin, index) => ({
-        id: coin.id, // Use CoinGecko's unique ID
-        name: coin.symbol.toUpperCase(),
-        price: coin.current_price,
-        priceChangePercent: coin.price_change_percentage_24h || 0,
-        volume: coin.total_volume,
-      })),
-      error: null,
-    };
-  } catch (error) {
-    return { data: [], error: error.message };
-  }
-}
-
 export const metadata = {
   title: "Crypto Analytics | CryptoPulse",
-  description: "Get the latest cryptocurrency analytics, including market overview, DeFi metrics, trending coins, and Binance price data.",
+  description: "Get the latest cryptocurrency analytics, including market overview, DeFi metrics, trending coins, Binance prices, and more.",
 };
 
 export default async function Analytics() {
-  const [marketResult, defiResult, trendingResult, binanceResult] = await Promise.all([
-    fetchMarketData(),
-    fetchDefiData(),
-    fetchTrendingData(),
-    fetchBinanceData(),
-  ]);
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Crypto Analytics",
-    description: "Real-time cryptocurrency analytics including market data, DeFi metrics, trending coins, and Binance prices.",
-    mainEntity: [
-      {
-        "@type": "ItemList",
-        name: "Market Overview",
-        itemListElement: marketResult.data.map((coin, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          item: {
-            "@type": "CryptoCurrency",
-            name: coin.name,
-            currentPrice: coin.current_price,
-            currency: "USD",
-          },
-        })),
-      },
-    ],
-  };
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      <ErrorBoundary>
-        <AnalyticsClient
-          marketData={marketResult.data}
-          marketError={marketResult.error}
-          defiData={defiResult.data}
-          defiError={defiResult.error}
-          trendingData={trendingResult.data}
-          trendingError={trendingResult.error}
-          binanceData={binanceResult.data}
-          binanceError={binanceResult.error}
-        />
-      </ErrorBoundary>
-    </>
+    <ErrorBoundary>
+      <DataFetcher>
+        {(props) => (
+          <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebPage",
+                  name: "Crypto Analytics",
+                  description: "Real-time cryptocurrency analytics including market data, DeFi metrics, trending coins, Binance prices, and more.",
+                  mainEntity: [
+                    {
+                      "@type": "ItemList",
+                      name: "Market Overview",
+                      itemListElement: props.marketData.map((coin, index) => ({
+                        "@type": "ListItem",
+                        position: index + 1,
+                        item: {
+                          "@type": "CryptoCurrency",
+                          name: coin.name,
+                          currentPrice: coin.current_price,
+                          currency: "USD",
+                        },
+                      })),
+                    },
+                  ],
+                }),
+              }}
+            />
+            <AnalyticsClient {...props} />
+          </>
+        )}
+      </DataFetcher>
+    </ErrorBoundary>
   );
 }

@@ -2,8 +2,8 @@ import ClientLayout from "./ClientLayout"; // Import the client component
 import "./global.css"; // Keep global styles
 
 export const metadata = {
-  title: "CryptoPulse",
-  description: "Your hub for crypto airdrops, news, and real-time tracking",
+  title: "CryptoGlobal",
+  description: "Your hub for crypto updates, news, and real-time tracking",
   icons: {
     icon: "/favicon.ico",
   },

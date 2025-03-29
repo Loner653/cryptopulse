@@ -16,19 +16,19 @@
     transition: background-color 0.3s ease, opacity 0.3s ease;
     z-index: 1000;
     opacity: 0;
-  }
-  
-  .backToTop.visible {
+}
+
+.backToTop.visible {
     opacity: 1;
-  }
-  
-  .backToTop:hover {
+}
+
+.backToTop:hover {
     background-color: #b3d7ff;
     opacity: 0.9;
-  }
-  
-  /* 🔹 Main Container */
-  .chartContainer {
+}
+
+/* 🔹 Main Container */
+.chartContainer {
     max-width: 900px;
     margin: auto;
     padding: 20px;
@@ -37,25 +37,25 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
     position: relative;
-  }
-  
-  /* 📌 Title */
-  .title {
+}
+
+/* 📌 Title */
+.title {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  /* 🔹 Search Container */
-  .searchContainer {
+}
+
+/* 🔹 Search Container */
+.searchContainer {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px; /* Reduced to fit coin count */
-  }
-  
-  .searchInput {
+    margin-bottom: 10px;
+}
+
+.searchInput {
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ddd;
@@ -64,64 +64,83 @@
     max-width: 300px;
     background: #fff;
     color: #000;
-  }
-  
-  /* 🔹 Coin Count */
-  .coinCount {
+}
+
+/* 🔹 Coin Count */
+.coinCount {
     text-align: center;
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 15px;
-  }
-  
-  /* 🏦 Table Styling */
-  .cryptoTable {
+}
+
+/* 🏦 Table Styling */
+table.cryptoTable {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
-    background: #fff;
-  }
-  
-  /* 🔹 Table Header */
-  .cryptoTable th {
-    background: #007bff;
-    color: #fff;
-    padding: 12px;
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  /* 🔸 Table Rows */
-  .cryptoTable td {
-    padding: 14px 12px;
-    text-align: left;
-    color: #000;
-    border-bottom: 1px solid #eee;
-  }
-  
-  /* Override 24h % to keep green/red */
-  .cryptoTable td:nth-child(5) {
-    color: inherit;
-  }
-  
-  /* 📉 Coin Image */
-  .coinImage {
+    font-size: 16px !important;
+    background: #fff !important;
+}
+
+/* 🔹 Table Header */
+table.cryptoTable th {
+    background: #007bff !important;
+    color: #fff !important;
+    padding: 16px 14px !important;
+    text-align: left !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+
+/* 🔸 Table Rows */
+table.cryptoTable td {
+    padding: 16px 14px !important;
+    text-align: left !important;
+    border-bottom: 1px solid #eee !important;
+}
+
+/* 🔸 Specific Column Colors */
+table.cryptoTable td:nth-child(1) { /* # column */
+    color: #000 !important;
+}
+
+table.cryptoTable td:nth-child(2) { /* Coin column */
+    color: #000 !important;
+}
+
+table.cryptoTable td:nth-child(3) { /* Price column */
+    color: #000 !important;
+}
+
+/* 🔸 24h % column - no color override to allow inline red/green */
+table.cryptoTable td:nth-child(4) {
+    /* No color set here, letting inline style take over */
+}
+
+/* 📉 Coin Image */
+.coinImage {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 8px;
-  }
-  
-  /* 🔹 Ticker */
-  .ticker {
+}
+
+/* 🔹 Coin Info (Symbol + Market Cap) */
+.coinInfo {
     display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  /* 🔄 Loading Spinner */
-  .spinner {
+    flex-direction: column;
+    gap: 6px; /* Spacing between symbol and market cap */
+}
+
+/* 🔹 Market Cap */
+.marketCap {
+    font-size: 14px; /* Slightly smaller than main font for hierarchy */
+    color: #000 !important; /* Explicitly black */
+}
+
+/* 🔄 Loading Spinner */
+.spinner {
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -129,85 +148,118 @@
     border-top: 3px solid #007bff;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-  }
-  
-  .loading {
+}
+
+.loading {
     text-align: center;
     padding: 14px;
-  }
-  
-  /* Responsive Adjustments for Mobile */
-  @media (max-width: 600px) {
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 600px) {
     .chartContainer {
-      padding: 10px;
+        padding: 10px;
     }
-  
+
     .title {
-      font-size: 20px;
+        font-size: 20px;
     }
-  
+
     .searchInput {
-      padding: 8px;
-      font-size: 0.9rem;
+        padding: 8px;
+        font-size: 0.9rem;
     }
-  
+
     .coinCount {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
-    .cryptoTable {
-      font-size: 12px;
+
+    table.cryptoTable {
+        font-size: 14px !important;
+        background: #fff !important;
     }
-  
-    .cryptoTable th,
-    .cryptoTable td {
-      padding: 10px 8px;
+
+    table.cryptoTable th {
+        padding: 12px 10px !important;
+        color: #fff !important; /* Ensure headers stay white */
     }
-  
-    .cryptoTable th:first-child,
-    .cryptoTable td:first-child {
-      width: 10%;
-      padding-right: 4px;
+
+    table.cryptoTable td {
+        padding: 12px 10px !important;
     }
-  
-    .cryptoTable th:nth-child(2),
-    .cryptoTable td:nth-child(2) {
-      width: 20%;
-      padding-left: 4px;
+
+    table.cryptoTable th:first-child,
+    table.cryptoTable td:first-child {
+        width: 10%;
+        padding-right: 4px !important;
     }
-  
-    .cryptoTable th:nth-child(3),
-    .cryptoTable td:nth-child(3) {
-      width: 30%;
+
+    table.cryptoTable th:first-child {
+        color: #fff !important; /* Explicitly white */
     }
-  
-    .cryptoTable th:nth-child(4),
-    .cryptoTable td:nth-child(4) {
-      width: 25%;
+
+    table.cryptoTable td:first-child {
+        color: #000 !important;
     }
-  
-    .cryptoTable th:nth-child(5),
-    .cryptoTable td:nth-child(5) {
-      width: 15%;
+
+    table.cryptoTable th:nth-child(2),
+    table.cryptoTable td:nth-child(2) {
+        width: 35%;
+        padding-left: 4px !important;
     }
-  
+
+    table.cryptoTable th:nth-child(2) {
+        color: #fff !important; /* Explicitly white */
+    }
+
+    table.cryptoTable td:nth-child(2) {
+        color: #000 !important;
+    }
+
+    table.cryptoTable th:nth-child(3),
+    table.cryptoTable td:nth-child(3) {
+        width: 35%;
+    }
+
+    table.cryptoTable th:nth-child(3) {
+        color: #fff !important; /* Explicitly white */
+    }
+
+    table.cryptoTable td:nth-child(3) {
+        color: #000 !important;
+    }
+
+    table.cryptoTable th:nth-child(4),
+    table.cryptoTable td:nth-child(4) {
+        width: 20%;
+    }
+
+    table.cryptoTable th:nth-child(4) {
+        color: #fff !important; /* Explicitly white */
+    }
+
+    table.cryptoTable td:nth-child(4) {
+        /* No color set here, letting inline style take over */
+    }
+
     .coinImage {
-      width: 18px;
-      height: 18px;
+        width: 18px;
+        height: 18px;
     }
-  
-    .ticker {
-      gap: 6px;
+
+    .marketCap {
+        font-size: 12px; /* Smaller on mobile */
+        color: #000 !important; /* Explicitly black */
     }
-  
+
     .backToTop {
-      right: 10px;
-      padding: 15px 8px;
-      font-size: 0.7rem;
+        right: 10px;
+        padding: 15px 8px;
+        font-size: 0.7rem;
     }
-  }
-  
-  @keyframes spin {
+}
+
+@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}
