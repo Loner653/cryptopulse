@@ -1,3 +1,4 @@
+// app/chart/CryptoChart.js
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -7,10 +8,14 @@ import styles from "./cryptoChart.module.css";
 
 export default function CryptoChart() {
   const [coins, setCoins] = useState([]);
+  const [filteredCoins, setFilteredCoins] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const { ref, inView } = useInView({ threshold: 0.1 });
+  const COINS_PER_PAGE = 20;
 
   const formatMarketCap = (value) => {
     if (!value) return "N/A";
@@ -18,6 +23,11 @@ export default function CryptoChart() {
     if (value >= 1_000_000_000) return (value / 1_000_000_000).toFixed(2) + "B";
     if (value >= 1_000_000) return (value / 1_000_000).toFixed(2) + "M";
     return value.toLocaleString();
+  };
+
+  const formatPrice = (price) => {
+    if (!price) return "N/A";
+    return price < 1 ? price.toFixed(6) : price.toLocaleString();
   };
 
   const debounce = (func, delay) => {
@@ -28,49 +38,88 @@ export default function CryptoChart() {
     };
   };
 
-  const fetchCoins = useCallback(async (isRefresh = false, attempt = 1) => {
-    if (loading) return;
-    setLoading(true);
+  const fetchCoins = useCallback(
+    async (isRefresh = false, attempt = 1) => {
+      if (loading) return;
+      setLoading(true);
 
-    try {
-      console.log(`Fetching data... Attempt ${attempt}`);
-      const response = await fetch(`/api/coins?page=${isRefresh ? 1 : page}`);
-      const data = await response.json();
+      const cacheKey = `coins_page_${isRefresh ? 1 : page}`;
+      const cachedData = localStorage.getItem(cacheKey);
 
-      if (!response.ok) {
-        if (response.status === 429) { // Rate limit hit
-          throw new Error("API rate limit exceeded, retrying...");
+      if (cachedData && !isRefresh) {
+        try {
+          const parsedData = JSON.parse(cachedData);
+          if (Array.isArray(parsedData)) {
+            setCoins((prevCoins) => {
+              const newCoins = [...prevCoins, ...parsedData];
+              window.cryptoChartData = newCoins;
+              return newCoins;
+            });
+            setPage((prevPage) => prevPage + 1);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error("Failed to parse cached data:", e);
+          localStorage.removeItem(cacheKey); // Clear invalid cache
         }
-        throw new Error(data.error || "Failed to fetch");
       }
 
-      setCoins((prevCoins) => {
-        const newCoins = isRefresh ? data : [...prevCoins, ...data];
-        window.cryptoChartData = newCoins;
-        return newCoins;
-      });
+      try {
+        console.log(`Fetching data... Attempt ${attempt}`);
+        const response = await fetch(`/api/coins?page=${isRefresh ? 1 : page}&per_page=${COINS_PER_PAGE}`);
+        const data = await response.json();
 
-      if (!isRefresh) setPage((prevPage) => prevPage + 1);
-    } catch (error) {
-      console.error(`Error fetching coins (Attempt ${attempt}):`, error);
-      if (error.message.includes("rate limit") && attempt < 3) {
-        setTimeout(() => fetchCoins(isRefresh, attempt + 1), 5000); // Longer delay for rate limits
-      } else if (attempt < 3) {
-        setTimeout(() => fetchCoins(isRefresh, attempt + 1), 3000);
+        if (!response.ok) {
+          if (response.status === 429) {
+            const delay = Math.pow(2, attempt) * 2000;
+            console.log(`Rate limit hit, retrying in ${delay / 1000}s...`);
+            throw new Error(`Rate limit exceeded, retrying in ${delay / 1000}s`);
+          }
+          throw new Error(data.error || "Failed to fetch");
+        }
+
+        setCoins((prevCoins) => {
+          const newCoins = isRefresh ? data : [...prevCoins, ...data];
+          window.cryptoChartData = newCoins;
+          localStorage.setItem(cacheKey, JSON.stringify(data));
+          return newCoins;
+        });
+
+        if (!isRefresh) setPage((prevPage) => prevPage + 1);
+      } catch (error) {
+        console.error(`Error fetching coins (Attempt ${attempt}):`, error);
+        if (error.message.includes("rate limit") && attempt <= 3) {
+          const delay = Math.pow(2, attempt) * 2000;
+          setTimeout(() => fetchCoins(isRefresh, attempt + 1), delay);
+        } else if (attempt <= 3) {
+          setTimeout(() => fetchCoins(isRefresh, attempt + 1), 3000);
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    },
+    [loading, page]
+  );
+
+  const debouncedFetchCoins = useCallback(debounce(() => fetchCoins(), 2000), [fetchCoins]);
+
+  const handleSearch = useCallback(() => {
+    if (!searchQuery.trim()) {
+      setFilteredCoins(coins);
+      return;
     }
-  }, [loading, page]);
-
-  const debouncedFetchCoins = useCallback(debounce(() => fetchCoins(), 1000), [fetchCoins]);
+    const lowerQuery = searchQuery.toLowerCase();
+    const filtered = coins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(lowerQuery) ||
+        coin.symbol.toLowerCase().includes(lowerQuery)
+    );
+    setFilteredCoins(filtered);
+  }, [searchQuery, coins]);
 
   const handleScroll = useCallback(() => {
-    if (window.scrollY > 300) {
-      setIsBackToTopVisible(true);
-    } else {
-      setIsBackToTopVisible(false);
-    }
+    setIsBackToTopVisible(window.scrollY > 300);
   }, []);
 
   useEffect(() => {
@@ -78,7 +127,7 @@ export default function CryptoChart() {
 
     if (window.Tawk_API && window.Tawk_API.onLoad) {
       window.Tawk_API.onLoad = function () {
-        window.Tawk_API.setAttributes({ name: "Crypto Bot" });
+        window.Tawk_API.setAttributes({ name: "Crypto-bot" });
         window.Tawk_API.onChatMessageVisitor = function (message) {
           const userMessage = message.toLowerCase().trim();
           const coinsData = window.cryptoChartData || coins;
@@ -94,13 +143,11 @@ export default function CryptoChart() {
           }
 
           let detectedCoin = null;
-          let coinName = "";
           for (const coin of coinsData) {
             const nameMatch = userMessage.includes(coin.name.toLowerCase());
             const symbolMatch = userMessage.includes(coin.symbol.toLowerCase());
             if (nameMatch || symbolMatch) {
               detectedCoin = coin;
-              coinName = nameMatch ? coin.name : coin.symbol;
               break;
             }
           }
@@ -112,7 +159,7 @@ export default function CryptoChart() {
 
           if (userMessage.includes("price") || userMessage.includes("how much is")) {
             window.Tawk_API.sendMessage(
-              `The current price of ${detectedCoin.symbol.toUpperCase()} is $${detectedCoin.current_price?.toLocaleString() ?? "N/A"} USD.`
+              `The current price of ${detectedCoin.symbol.toUpperCase()} is $${formatPrice(detectedCoin.current_price)} USD.`
             );
           } else if (userMessage.includes("market cap")) {
             window.Tawk_API.sendMessage(
@@ -141,10 +188,27 @@ export default function CryptoChart() {
     }
   }, [inView, debouncedFetchCoins]);
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, handleSearch]);
+
+  const displayedCoins = searchQuery ? filteredCoins : coins;
+
   return (
     <div className={`${styles.chartContainer} content-container`}>
       <h1 className={styles.title}>📈 Crypto Prices (Live Updates)</h1>
-      <button onClick={() => fetchCoins(true)} className={styles.refreshButton}>🔄 Refresh Data</button>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search coins (e.g., Bitcoin, BTC)"
+          className={styles.searchInput}
+        />
+      </div>
+      <div className={styles.coinCount}>
+        {displayedCoins.length} out of a vast array of coins
+      </div>
       <table className={styles.cryptoTable}>
         <thead>
           <tr>
@@ -156,8 +220,8 @@ export default function CryptoChart() {
           </tr>
         </thead>
         <tbody>
-          {coins.length > 0 ? (
-            coins.map((coin, index) => (
+          {displayedCoins.length > 0 ? (
+            displayedCoins.map((coin, index) => (
               <tr key={`${coin.id}-${index}`}>
                 <td>{index + 1}</td>
                 <td>
@@ -170,7 +234,7 @@ export default function CryptoChart() {
                   />
                   {coin.symbol.toUpperCase()}
                 </td>
-                <td>${coin.current_price?.toLocaleString() ?? "N/A"}</td>
+                <td>${formatPrice(coin.current_price)}</td>
                 <td>${formatMarketCap(coin.market_cap)}</td>
                 <td style={{ color: coin.price_change_percentage_24h >= 0 ? "green" : "red" }}>
                   {coin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%
@@ -179,19 +243,19 @@ export default function CryptoChart() {
             ))
           ) : (
             <tr>
-              <td colSpan="5" style={{ textAlign: "center", padding: "10px" }}>
-                {loading ? "Loading..." : "No data available"}
+              <td colSpan="5" style={{ textAlign: "center", padding: "12px" }}>
+                {loading ? <span className={styles.spinner}></span> : searchQuery ? "No matching coins found" : "No data available"}
               </td>
             </tr>
           )}
         </tbody>
       </table>
-      <div ref={ref} style={{ height: "50px" }}>
-        {loading ? "Loading..." : ""}
+      <div ref={ref} className={styles.loading}>
+        {loading && <span className={styles.spinner}></span>}
       </div>
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`${styles.backToTop} ${isBackToTopVisible ? "visible" : ""}`}
+        className={`${styles.backToTop} ${isBackToTopVisible ? styles.visible : ""}`}
       >
         ↑
       </button>
