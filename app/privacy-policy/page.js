@@ -15,7 +15,9 @@ export default function PrivacyPolicy() {
       <section className="article-section">
         <h2 className="article-section-subtitle">Introduction</h2>
         <p>
-          At <strong>CryptoGlobal</strong>, we value your privacy and are committed to protecting any information you share with us. This Privacy Policy outlines how we collect, use, and safeguard your data when you visit our website, accessible at [www.cryptoglobalive.com]. By using CryptoGlobal, you agree to the practices described in this policy.
+          At <strong>CryptoGlobal</strong>, we value your privacy and are committed to protecting any information you share with us. This Privacy Policy outlines how we collect, use, and safeguard your data when you visit our website, accessible at <a href='https://www.cryptoglobalive.com' target='_blank' rel='noopener noreferrer'>www.cryptoglobalive.com</a>. By using CryptoGlobal,
+
+, you agree to the practices described in this policy.
         </p>
         <p>
           Our services include cryptocurrency analytics, news headlines, and original articles. We rely on trusted third-party data sources and schema-based feeds, but we prioritize transparency and user trust in everything we do.
