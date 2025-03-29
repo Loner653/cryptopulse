@@ -1,0 +1,39 @@
+.ticker {
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    color: #e0e0e0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1300;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .ticker span {
+    color: #00ccff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    margin: 0 15px;
+  }
+  
+  .ticker span:hover {
+    color: #ffd700;
+  }
+  
+  @media (max-width: 768px) {
+    .ticker {
+      font-size: 0.9rem;
+      padding: 8px 10px;
+    }
+    .ticker span {
+      margin: 0 10px;
+    }
+  }

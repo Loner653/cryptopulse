@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import Navbar from "./navbar";
+import Navbar from "./navbar"; // Matches your original import
+import PriceTicker from "./price ticker/PriceTicker"; // Your custom path
 import { Analytics } from "@vercel/analytics/react";
 import "./global.css";
 
@@ -79,6 +80,8 @@ export default function ClientLayout({ children }) {
             <li><Link href="/news">🚀 News</Link></li>
             <li><Link href="/history">📜 History</Link></li>
             <li><Link href="/analytics">📊 Analytics</Link></li>
+            <li><Link href="/faq">❓ FAQ</Link></li>
+            <li><Link href="/chat">💬 Chat</Link></li>
           </ul>
         </nav>
 
@@ -99,6 +102,7 @@ export default function ClientLayout({ children }) {
       {/* Main Content */}
       <div className="main-container" ref={mainContainerRef}>
         <header className="top-header">
+          <PriceTicker />
           <Navbar />
         </header>
 

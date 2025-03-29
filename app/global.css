@@ -18,18 +18,49 @@ body {
   min-height: 100vh;
 }
 
+/* Price Ticker */
+.price-ticker {
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  color: #e0e0e0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  font-size: 1rem;
+  font-family: 'Arial', sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1300; /* Above navbar */
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.price-ticker span {
+  color: #00ccff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin: 0 15px;
+}
+
+.price-ticker span:hover {
+  color: #ffd700;
+}
+
 /* Navbar styles (Horizontal) */
 .navbar {
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
   position: fixed;
-  top: 0;
+  top: 40px; /* Below ticker */
   left: 0;
   width: 100%;
-  z-index: 1200; /* Above sidebar and content */
+  z-index: 1200; /* Above sidebar and content, below ticker */
   padding: 15px 20px;
   display: flex;
-  flex-direction: column; /* Stack title and list vertically within navbar */
+  flex-direction: column; /* Stack title and list vertically */
   align-items: center;
 }
 
@@ -37,13 +68,9 @@ body {
   font-size: 1.5rem;
   color: #ffd700;
   text-align: center;
-  margin: 0 0 10px 0; /* Space below title */
+  margin-bottom: 15px; /* Increased space below title to separate from links */
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  position: sticky;
-  top: 0;
-  background: inherit; /* Match navbar background */
-  z-index: 1100; /* Above nav-list */
-  padding: 5px 0;
+  /* Removed position: sticky, top, background, z-index, padding - not needed */
 }
 
 .nav-list {
@@ -83,9 +110,9 @@ body {
   border-right: 1px solid rgba(255, 215, 0, 0.2);
   transition: transform 0.3s ease;
   position: fixed;
-  top: 0; /* Starts below navbar */
+  top: 100px; /* Below ticker (40px) + navbar (~60px) */
   left: 0;
-  height: 100%;
+  height: calc(100% - 100px); /* Adjust for ticker + navbar */
   z-index: 1000; /* Below navbar */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -191,7 +218,7 @@ body {
 .main-container {
   flex: 1;
   margin-left: 250px; /* Offset for sidebar */
-  margin-top: 100px; /* Offset for horizontal navbar height */
+  margin-top: 100px; /* Offset for ticker (40px) + navbar (~60px) */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -200,14 +227,14 @@ body {
 /* Top header */
 .top-header {
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-  padding: 10px 20px;
+  padding: 0; /* Remove padding since ticker and navbar handle it */
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 /* Dashboard content */
 .dashboard-content {
   padding: 40px 20px;
-  min-height: calc(100vh - 100px); /* Adjusted for navbar height */
+  min-height: calc(100vh - 100px); /* Adjusted for ticker + navbar */
 }
 
 /* Footer Styles */
@@ -242,7 +269,7 @@ body {
 .sidebar-toggle {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 110px; /* Below ticker (40px) + navbar (~60px) + buffer */
   left: 10px;
   z-index: 1100;
   background: linear-gradient(135deg, #ffd700, #ffaa00);
@@ -260,14 +287,24 @@ body {
     flex-direction: column;
   }
 
+  .price-ticker {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .price-ticker span {
+    margin: 0 10px;
+  }
+
   .navbar {
     position: relative; /* Static on mobile */
+    top: 0; /* Reset since ticker is above */
     padding: 10px 15px;
   }
 
   .navbar-title {
     font-size: 1.3rem;
-    margin-bottom: 5px;
+    margin-bottom: 10px; /* Adjusted for mobile */
   }
 
   .nav-list {
@@ -286,6 +323,8 @@ body {
   .sidebar {
     transform: translateX(-100%);
     width: 200px;
+    top: 0; /* Full height on mobile */
+    height: 100%;
   }
 
   .sidebar.open {
@@ -299,7 +338,7 @@ body {
 
   .sidebar-toggle {
     display: block;
-    top: 10px; /* Adjusted for mobile */
+    top: 50px; /* Below ticker on mobile */
   }
 
   .dashboard-content {
@@ -700,7 +739,7 @@ body {
   margin-bottom: 40px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   position: sticky;
-  top: 80px;
+  top: 140px; /* Below ticker + navbar */
 }
 
 .toc-title {
