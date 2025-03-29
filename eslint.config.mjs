@@ -9,13 +9,12 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+export default [
   ...compat.extends("next/core-web-vitals"),
   {
     rules: {
-      "react/no-unescaped-entities": "off", // Disable the rule causing the error
+      "@next/next/no-html-link-for-pages": "off",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
 ];
-
-export default eslintConfig;

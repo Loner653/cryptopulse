@@ -80,10 +80,10 @@ export default function AnalyticsClient({
                   <thead>
                     <tr>
                       <th scope="col">Coin</th>
-                      <th scope="col">Price (USD)</th>
-                      <th scope="col">24h Change</th>
-                      <th scope="col">Market Cap</th>
-                      <th scope="col">24h Volume</th>
+                      <th scope="col">Price ($)</th>
+                      <th scope="col">24h %</th>
+                      <th scope="col">MC</th>
+                      <th scope="col">24h Vol</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,7 +136,7 @@ export default function AnalyticsClient({
                   <thead>
                     <tr>
                       <th scope="col">Protocol</th>
-                      <th scope="col">Total Value Locked (TVL)</th>
+                      <th scope="col">TVL</th>
                       <th scope="col">Chain</th>
                     </tr>
                   </thead>
@@ -176,7 +176,7 @@ export default function AnalyticsClient({
                   <thead>
                     <tr>
                       <th scope="col">Coin</th>
-                      <th scope="col">Market Cap Rank</th>
+                      <th scope="col">MC Rank</th>
                       <th scope="col">Price (BTC)</th>
                     </tr>
                   </thead>
@@ -229,9 +229,9 @@ export default function AnalyticsClient({
                   <thead>
                     <tr>
                       <th scope="col">Coin</th>
-                      <th scope="col">Price (USD)</th>
-                      <th scope="col">24h Change</th>
-                      <th scope="col">24h Volume</th>
+                      <th scope="col">Price $</th>
+                      <th scope="col">24h %</th>
+                      <th scope="col">24h Vol</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -277,7 +277,7 @@ export default function AnalyticsClient({
                     <tr>
                       <th scope="col">Coin</th>
                       <th scope="col">Price (USD)</th>
-                      <th scope="col">Market Cap</th>
+                      <th scope="col">MC</th>
                       <th scope="col">24h Volume</th>
                     </tr>
                   </thead>
