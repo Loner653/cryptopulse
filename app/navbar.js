@@ -10,30 +10,55 @@ export default function Navbar() {
     // Check login status (replace with your actual auth logic)
     useEffect(() => {
         const checkLogin = async () => {
-            // Example: Check cookie or fetch user session
-            const res = await fetch("/api/auth/check", { credentials: "include" });
-            if (res.ok) setIsLoggedIn(true);
+            try {
+                const res = await fetch("/api/auth/check", { credentials: "include" });
+                if (res.ok) {
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error("Error checking login status:", error);
+                setIsLoggedIn(false);
+            }
         };
         checkLogin();
     }, []);
 
     const handleLogout = async () => {
-        await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
-        setIsLoggedIn(false);
-        router.push("/login");
+        try {
+            const res = await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+            if (res.ok) {
+                setIsLoggedIn(false);
+                router.push("/login");
+            } else {
+                console.error("Logout failed:", res.statusText);
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
     };
+
+    // Example of programmatically triggering logout based on a condition
+    useEffect(() => {
+        if (isLoggedIn) {
+            // Replace this condition with your actual logout trigger
+            const shouldLogout = false; // Example condition
+            if (shouldLogout) {
+                handleLogout();
+            }
+        }
+    }, [isLoggedIn]);
 
     return (
         <nav className="navbar">
             <h1 className="navbar-title">Welcome to CryptoGlobal</h1>
             <ul className="nav-list">
                 <li>
-                     <Link href="/news" className="nav-link">
-                        News
-                    </Link>
-                </li>
-                <li>
-                     <Link href="/history" className="nav-link">
+                    <Link href="/history" className="nav-link">
                         History
                     </Link>
                 </li>
@@ -43,22 +68,10 @@ export default function Navbar() {
                     </Link>
                 </li>
                 <li>
-                     <Link href="/chat" className="nav-link chat-link">
+                    <Link href="/chat" className="nav-link chat-link">
                         <span className="nav-icon">💬</span> Chat
                     </Link>
                 </li>
-                {!isLoggedIn ? (
-                    <>
-                        <li>
-                        </li>
-                    </>
-                ) : (
-                    <li>
-                        <button onClick={handleLogout} className="logout-button nav-link">
-                            Logout
-                        </button>
-                    </li>
-                )}
             </ul>
         </nav>
     );
