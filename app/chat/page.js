@@ -1,84 +1,128 @@
 "use client";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
-import { useState, useEffect } from "react";
-import styles from "./chat.module.css";
+export default function Chat() {
+    const [messages, setMessages] = useState([]);
+    const [text, setText] = useState("");
+    const [userId, setUserId] = useState(null);
+    const [username, setUsername] = useState("");
+    const [error, setError] = useState("");
+    const messagesEndRef = useRef(null); // Auto-scroll
+    const chatMessagesRef = useRef(null); // Control chat height
+    const router = useRouter();
 
-export default function ChatPage() {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+    // Fetch user info
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await fetch("/api/auth/check", { credentials: "include" });
+            if (res.ok) {
+                const { userId, username } = await res.json();
+                setUserId(userId || 1);
+                setUsername(username || "Guest");
+            } else {
+                setError("Please log in to chat");
+                router.push("/login");
+            }
+        };
+        fetchUser();
+    }, [router]);
 
-  useEffect(() => {
-    console.log("Getting messages...");
-    fetch("/api/chat")
-      .then((res) => {
-        if (!res.ok) {
-          console.log("Fetch didn’t work:", res.status);
-          throw new Error("Fetch failed");
+    // SSE for messages
+    useEffect(() => {
+        if (!userId) return;
+
+        const eventSource = new EventSource("/api/chat");
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "initial") {
+                setMessages(data.messages);
+            } else if (data.type === "new") {
+                setMessages((prev) => {
+                    const newMessages = data.messages.filter(
+                        (newMsg) => !prev.some((msg) => msg.id === newMsg.id)
+                    );
+                    return [...prev, ...newMessages];
+                });
+            } else if (data.type === "error") {
+                setError(data.message);
+            }
+        };
+
+        eventSource.onerror = () => {
+            setError("Lost connection to chat server");
+            eventSource.close();
+        };
+
+        return () => eventSource.close();
+    }, [userId]);
+
+    // Auto-scroll
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleSend = async (e) => {
+        e.preventDefault();
+        if (!text.trim() || !userId) return;
+
+        try {
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text, userId }),
+            });
+            if (!res.ok) throw new Error("Failed to send message");
+            setText("");
+        } catch (err) {
+            setError(err.message);
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Here are the messages:", data);
-        setMessages(data);
-      })
-      .catch((err) => console.log("Error:", err));
-  }, []);
+    };
 
-  const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      const message = {
-        text: newMessage,
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      console.log("Sending this:", message);
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(message),
-        });
-        if (!res.ok) {
-          console.log("Send didn’t work:", res.status);
-          throw new Error("Send failed");
-        }
-        const updatedRes = await fetch("/api/chat");
-        const updatedData = await updatedRes.json();
-        setMessages(updatedData);
-        setNewMessage("");
-        console.log("Sent it!");
-      } catch (err) {
-        console.log("Send error:", err);
-      }
-    }
-  };
+    const handleLogout = async () => {
+        await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+        router.push("/login");
+    };
 
-  return (
-    <div className={styles.chatContainer}>
-      <h1 className={styles.chatTitle}>Community Chat</h1>
-      <p className={styles.chatIntro}>
-        Join the conversation! Chat with users worldwide—messages are public and permanent.
-      </p>
-      <div className={styles.messageList}>
-        {messages.map((msg) => (
-          <div key={msg.id} className={styles.messageItem}>
-            <span className={styles.messageText}>{msg.text}</span>
-            <span className={styles.messageTimestamp}>{msg.timestamp}</span>
-          </div>
-        ))}
-      </div>
-      <div className={styles.chatInput}>
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-          placeholder="Type your message..."
-          className={styles.inputField}
-        />
-        <button onClick={handleSendMessage} className={styles.sendButton}>
-          Send
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <div className="chat-container">
+            <div className="chat-header">
+                <h2>Chat Room</h2>
+                <button onClick={handleLogout} className="logout-button">
+                    Logout
+                </button>
+            </div>
+            <p className="chat-intro">Welcome, {username}! Start chatting below.</p>
+            {error && <p className="error">{error}</p>}
+            <div className="chat-messages" ref={chatMessagesRef}>
+                {messages.map((msg) => (
+                    <div
+                        key={msg.id}
+                        className={`chat-message ${msg.userId === userId ? "own-message" : "other-message"}`}
+                    >
+                        <span className="chat-sender">{msg.username}</span>
+                        <span className="chat-text">{msg.text}</span>
+                        <span className="chat-timestamp">
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                        </span>
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
+            <form onSubmit={handleSend} className="chat-form">
+                <input
+                    type="text"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Type a message..."
+                    className="chat-input"
+                    disabled={!userId}
+                />
+                <button type="submit" className="chat-button" disabled={!userId}>
+                    Send
+                </button>
+            </form>
+        </div>
+    );
 }
