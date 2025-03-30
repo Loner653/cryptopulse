@@ -2,38 +2,49 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
 import styles from "./chat.module.css";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000"); // Connect to WebSocket server
-    setSocket(newSocket);
-
-    newSocket.on("initialMessages", (data) => {
-      setMessages(data);
-    });
-
-    newSocket.on("newMessage", (message) => {
-      setMessages((prev) => [...prev, message]);
-    });
-
-    return () => newSocket.disconnect(); // Cleanup on unmount
+    console.log("Fetching initial messages...");
+    fetch("/api/chat")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched messages:", data);
+        setMessages(data);
+      })
+      .catch((err) => console.error("Failed to fetch messages:", err));
   }, []);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() && socket) {
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
       const message = {
         id: Date.now(),
         text: newMessage,
         timestamp: new Date().toLocaleTimeString(),
       };
-      socket.emit("sendMessage", message);
-      setNewMessage("");
+      console.log("Sending message:", message);
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(message),
+        });
+        console.log("Response status:", res.status);
+        if (res.ok) {
+          const updatedRes = await fetch("/api/chat");
+          const updatedData = await updatedRes.json();
+          setMessages(updatedData);
+          setNewMessage("");
+        } else {
+          console.error("POST failed with status:", res.status);
+        }
+      } catch (err) {
+        console.error("Failed to send message:", err);
+      }
     }
   };
 
@@ -56,7 +67,7 @@ export default function ChatPage() {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           placeholder="Type your message..."
           className={styles.inputField}
         />

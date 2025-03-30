@@ -3,7 +3,6 @@ import path from "path";
 
 const filePath = path.join(process.cwd(), "data", "chat.json");
 
-// Initialize chat.json if it doesn’t exist
 async function initFile() {
   try {
     await fs.access(filePath);
