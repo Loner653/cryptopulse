@@ -1,4 +1,3 @@
-// app/chat/page.js
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,41 +8,46 @@ export default function ChatPage() {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    console.log("Fetching initial messages...");
+    console.log("Getting messages...");
     fetch("/api/chat")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          console.log("Fetch didn’t work:", res.status);
+          throw new Error("Fetch failed");
+        }
+        return res.json();
+      })
       .then((data) => {
-        console.log("Fetched messages:", data);
+        console.log("Here are the messages:", data);
         setMessages(data);
       })
-      .catch((err) => console.error("Failed to fetch messages:", err));
+      .catch((err) => console.log("Error:", err));
   }, []);
 
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const message = {
-        id: Date.now(),
         text: newMessage,
         timestamp: new Date().toLocaleTimeString(),
       };
-      console.log("Sending message:", message);
+      console.log("Sending this:", message);
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(message),
         });
-        console.log("Response status:", res.status);
-        if (res.ok) {
-          const updatedRes = await fetch("/api/chat");
-          const updatedData = await updatedRes.json();
-          setMessages(updatedData);
-          setNewMessage("");
-        } else {
-          console.error("POST failed with status:", res.status);
+        if (!res.ok) {
+          console.log("Send didn’t work:", res.status);
+          throw new Error("Send failed");
         }
+        const updatedRes = await fetch("/api/chat");
+        const updatedData = await updatedRes.json();
+        setMessages(updatedData);
+        setNewMessage("");
+        console.log("Sent it!");
       } catch (err) {
-        console.error("Failed to send message:", err);
+        console.log("Send error:", err);
       }
     }
   };

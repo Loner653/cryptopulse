@@ -1,27 +1,50 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { db } from "@/lib/db";
+import { messages } from "@/lib/db/schema";
 
-const filePath = path.join(process.cwd(), "data", "chat.json");
-
-async function initFile() {
+export async function GET() {
   try {
-    await fs.access(filePath);
-  } catch {
-    await fs.writeFile(filePath, JSON.stringify([]));
+    const allMessages = await db.select().from(messages).orderBy(messages.id);
+    console.log("Fetched messages:", allMessages);
+    return new Response(JSON.stringify(allMessages), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    console.log("GET error:", err.message);
+    return new Response("Can’t get messages: " + err.message, { status: 500 });
   }
 }
 
-export async function GET() {
-  await initFile();
-  const data = await fs.readFile(filePath, "utf-8");
-  return new Response(data, { status: 200, headers: { "Content-Type": "application/json" } });
-}
-
 export async function POST(request) {
-  await initFile();
-  const newMessage = await request.json();
-  const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-  data.push(newMessage);
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-  return new Response(JSON.stringify(newMessage), { status: 201 });
+  try {
+    const newMessage = await request.json();
+    console.log("Received message:", newMessage);
+
+    let timestamp;
+    if (newMessage.timestamp) {
+      timestamp = Date.parse(newMessage.timestamp)
+        ? new Date(newMessage.timestamp)
+        : new Date();
+    } else {
+      timestamp = new Date();
+    }
+
+    if (isNaN(timestamp.getTime())) {
+      throw new Error("Invalid timestamp format");
+    }
+
+    const inserted = await db
+      .insert(messages)
+      .values({
+        text: newMessage.text,
+        timestamp,
+      })
+      .returning();
+
+    console.log("Inserted message:", inserted);
+    return new Response(JSON.stringify(inserted[0]), { status: 201 });
+  } catch (err) {
+    console.log("POST error:", err.message);
+    return new Response("Can’t save message: " + err.message, { status: 500 });
+  }
 }
