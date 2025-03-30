@@ -1,5 +1,5 @@
-import { db } from "../../../lib/db";
-import { messages } from "../../../lib/db/schema";
+import { db } from "@/lib/db";
+import { messages } from "@/lib/db/schema";
 
 export async function GET() {
     try {
