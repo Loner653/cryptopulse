@@ -1,4 +1,3 @@
-// app/articles/page.js
 import { headers } from "next/headers";
 import Link from "next/link";
 import styles from "./ArticlesContentClient.module.css";
@@ -27,8 +26,8 @@ const topics = [
   { name: "Future of Money", slug: "future-of-money" },
 ];
 
-export default function ArticlesPage() {
-  const headersList = headers();
+export default async function ArticlesPage() {
+  const headersList = await headers(); // Await headers()
   const host = headersList.get("host");
   const protocol = headersList.get("x-forwarded-proto") || "https";
   const origin = `${protocol}://${host}`;

@@ -33,7 +33,13 @@ export default function AnalyticsClient({
     if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(2)}T`;
     if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`;
     if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}M`;
-    return `$${value.toLocaleString()}`;
+    if (value >= 1_000) return `$${(value / 1_000).toFixed(2)}K`; // Added K for thousands
+    return `$${value.toLocaleString()}`; // Below 1,000
+  };
+
+  const getTicker = (data, tickerKey = "symbol") => {
+    const ticker = data.name || data[tickerKey]; // Prefer name, fall back to symbol
+    return ticker ? ticker.toUpperCase() : "N/A";
   };
 
   const allFailed = marketError && defiError && trendingError && binanceError && cryptoCompareError && messariError;
@@ -62,7 +68,7 @@ export default function AnalyticsClient({
         </div>
       ) : (
         <div>
-          {/* Market Overview Section */}
+          {/* Market Overview Section - Removed 24h Volume */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Market Overview</h2>
             <Suspense
@@ -83,34 +89,32 @@ export default function AnalyticsClient({
                       <th scope="col">Price ($)</th>
                       <th scope="col">24h %</th>
                       <th scope="col">MC</th>
-                      <th scope="col">24h Vol</th>
                     </tr>
                   </thead>
                   <tbody>
                     {marketData.length > 0 ? (
-                      marketData.map((coin) => (
-                        <tr key={coin.id}>
+                      marketData.map((coin, index) => (
+                        <tr key={coin.id || index}>
                           <td>
                             <Image
                               src={coin.image}
-                              alt={`${coin.name} logo`}
+                              alt={`${coin.name || "Coin"} logo`}
                               width={24}
                               height={24}
                               className={styles.coinImage}
                               priority={false}
                             />
-                            {coin.name}
+                            {getTicker(coin)}
                           </td>
-                          <td>${coin.current_price.toLocaleString()}</td>
-                          <td className={coin.price_change_percentage_24h >= 0 ? styles.positive : styles.negative}>
-                            {coin.price_change_percentage_24h.toFixed(2)}%
+                          <td>${(coin.current_price || 0).toLocaleString()}</td>
+                          <td className={(coin.price_change_percentage_24h || 0) >= 0 ? styles.positive : styles.negative}>
+                            {(coin.price_change_percentage_24h || 0).toFixed(2)}%
                           </td>
-                          <td>{formatLargeNumber(coin.market_cap)}</td>
-                          <td>{formatLargeNumber(coin.total_volume)}</td>
+                          <td>{formatLargeNumber(coin.market_cap || 0)}</td>
                         </tr>
                       ))
                     ) : (
-                      <tr><td colSpan={5}>No market data available.</td></tr>
+                      <tr><td colSpan={4}>No market data available.</td></tr>
                     )}
                   </tbody>
                 </table>
@@ -144,8 +148,8 @@ export default function AnalyticsClient({
                     {defiData.length > 0 ? (
                       defiData.map((protocol, index) => (
                         <tr key={protocol.name || index}>
-                          <td>{protocol.name}</td>
-                          <td>{formatLargeNumber(protocol.tvl)}</td>
+                          <td>{protocol.name || "N/A"}</td>
+                          <td>{formatLargeNumber(protocol.tvl || 0)}</td>
                           <td>{protocol.chain || "Multi-Chain"}</td>
                         </tr>
                       ))
@@ -182,18 +186,18 @@ export default function AnalyticsClient({
                   </thead>
                   <tbody>
                     {trendingData && trendingData.length > 0 ? (
-                      trendingData.map((coin) => (
-                        <tr key={coin.item.id}>
+                      trendingData.map((coin, index) => (
+                        <tr key={coin.item.id || index}>
                           <td>
                             <Image
                               src={coin.item.small}
-                              alt={`${coin.item.name} logo`}
+                              alt={`${coin.item.name || "Coin"} logo`}
                               width={24}
                               height={24}
                               className={styles.coinImage}
                               priority={false}
                             />
-                            {coin.item.name}
+                            {getTicker(coin.item)}
                           </td>
                           <td>{coin.item.market_cap_rank || "N/A"}</td>
                           <td>{coin.item.price_btc ? coin.item.price_btc.toFixed(8) : "N/A"}</td>
@@ -236,14 +240,14 @@ export default function AnalyticsClient({
                   </thead>
                   <tbody>
                     {binanceData.length > 0 ? (
-                      binanceData.map((coin) => (
-                        <tr key={coin.id}>
-                          <td>{coin.name}</td>
-                          <td>${coin.price.toLocaleString()}</td>
-                          <td className={coin.priceChangePercent >= 0 ? styles.positive : styles.negative}>
-                            {coin.priceChangePercent.toFixed(2)}%
+                      binanceData.map((coin, index) => (
+                        <tr key={coin.id || index}>
+                          <td>{getTicker(coin)}</td>
+                          <td>${(coin.price || 0).toLocaleString()}</td>
+                          <td className={(coin.priceChangePercent || 0) >= 0 ? styles.positive : styles.negative}>
+                            {(coin.priceChangePercent || 0).toFixed(2)}%
                           </td>
-                          <td>{formatLargeNumber(coin.volume)}</td>
+                          <td>{formatLargeNumber(coin.volume || 0)}</td>
                         </tr>
                       ))
                     ) : (
@@ -283,12 +287,12 @@ export default function AnalyticsClient({
                   </thead>
                   <tbody>
                     {cryptoCompareData.length > 0 ? (
-                      cryptoCompareData.map((coin) => (
-                        <tr key={coin.id}>
-                          <td>{coin.name}</td>
-                          <td>${coin.price.toLocaleString()}</td>
-                          <td>{formatLargeNumber(coin.marketCap)}</td>
-                          <td>{formatLargeNumber(coin.volume24h)}</td>
+                      cryptoCompareData.map((coin, index) => (
+                        <tr key={coin.id || index}>
+                          <td>{getTicker(coin)}</td>
+                          <td>${(coin.price || 0).toLocaleString()}</td>
+                          <td>{formatLargeNumber(coin.marketCap || 0)}</td>
+                          <td>{formatLargeNumber(coin.volume24h || 0)}</td>
                         </tr>
                       ))
                     ) : (
@@ -303,7 +307,7 @@ export default function AnalyticsClient({
             </Suspense>
           </section>
 
-          {/* Messari Asset Overview Section */}
+          {/* Messari Asset Overview Section - Name Only */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Messari Asset Overview</h2>
             <Suspense
@@ -328,12 +332,12 @@ export default function AnalyticsClient({
                   </thead>
                   <tbody>
                     {messariData.length > 0 ? (
-                      messariData.map((asset) => (
-                        <tr key={asset.id}>
-                          <td>{asset.name} ({asset.fullName})</td>
-                          <td>${asset.price.toLocaleString()}</td>
-                          <td>{formatLargeNumber(asset.marketCap)}</td>
-                          <td>{formatLargeNumber(asset.supply)}</td>
+                      messariData.map((asset, index) => (
+                        <tr key={asset.id || index}>
+                          <td>{asset.name || "N/A"}</td>
+                          <td>${(asset.price || 0).toLocaleString()}</td>
+                          <td>{formatLargeNumber(asset.marketCap || 0)}</td>
+                          <td>{formatLargeNumber(asset.supply || 0)}</td>
                         </tr>
                       ))
                     ) : (

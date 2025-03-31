@@ -9,6 +9,7 @@ body {
   font-family: 'Arial', sans-serif;
   background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
   color: #e0e0e0;
+  font-size: 1.1rem; /* Increased from implied default of 1rem (16px) to 1.1rem (~17.6px) */
 }
 
 /* Dashboard layout */
@@ -27,7 +28,7 @@ body {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   font-family: 'Arial', sans-serif;
   position: fixed;
   top: 0;
@@ -45,54 +46,57 @@ body {
   margin: 0 15px;
 }
 
-.price-ticker span:hover {
-  color: #ffd700;
-}
-
-/* Navbar styles (Centered) */
+/* Navbar styles (Centered for all screens) */
 .navbar {
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding: 0; /* Remove padding to control child elements */
   display: flex;
-  justify-content: center; /* Center horizontally */
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   position: fixed;
-  top: 40px; /* Below ticker if you have one */
+  top: 40px; /* Below price ticker */
+  left: 0;
   width: 100%;
   z-index: 1200;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  flex-direction: column; /* Stack title and nav-list vertically */
 }
 
-.navbar-title {
-  font-size: 1.8rem;
+.title {
+  font-size: 1.75rem; /* Increased from 1.5rem to 1.75rem */
   color: #ffd700;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  letter-spacing: 1px;
   text-align: center;
-  margin-bottom: 15px;
+  padding: 15px 20px;
+  margin: 0;
+  background: inherit; /* Match navbar background */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  width: 100%; /* Ensure it spans full width */
 }
 
-.nav-list {
-  display: flex;
+.navList {
   list-style: none;
+  padding: 10px 20px;
   margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: center;
   flex-wrap: nowrap;
   overflow-x: auto;
   white-space: nowrap;
-  justify-content: center; /* Center the nav items */
+  max-height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%; /* Ensure it spans full width */
 }
 
-.nav-list li {
+.navList li {
   margin: 0 15px;
 }
 
-.nav-link {
+.navLink {
   color: #00ccff;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.25rem; /* Increased from 1.1rem to 1.25rem */
   padding: 8px 16px;
   border-radius: 25px;
   background: rgba(0, 204, 255, 0.1);
@@ -103,7 +107,7 @@ body {
   border: 1px solid rgba(0, 204, 255, 0.3);
 }
 
-.nav-link:hover {
+.navLink:hover {
   color: #ffd700;
   background: rgba(255, 215, 0, 0.2);
   transform: translateY(-2px);
@@ -111,29 +115,8 @@ body {
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
-.chat-link {
-  color: #00ccff;
-  text-decoration: none;
-  font-size: 1.2rem;
-  padding: 8px 16px;
-  border-radius: 25px;
-  background: rgba(0, 204, 255, 0.1);
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(0, 204, 255, 0.3);
-}
-
-.chat-link:hover {
-  color: #ffd700;
-  background: rgba(255, 215, 0, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-}
-
 .nav-icon {
-  font-size: 1.3rem;
+  font-size: 1.5rem; /* Increased from 1.3rem to 1.5rem */
 }
 
 /* Sidebar styles */
@@ -152,7 +135,7 @@ body {
 }
 
 .sidebar-title {
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Increased from 1.5rem to 1.75rem */
   color: #ffd700;
   margin-bottom: 30px;
   text-align: center;
@@ -167,7 +150,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.25rem; /* Increased from 1.1rem to 1.25rem */
   margin-bottom: 20px;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -188,7 +171,7 @@ body {
 .sidebar nav ul li a {
   color: #00ccff;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.25rem; /* Increased from 1.1rem to 1.25rem */
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
@@ -204,7 +187,7 @@ body {
 }
 
 .sidebar-articles-title {
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   color: #ffd700;
   margin-bottom: 15px;
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
@@ -220,7 +203,7 @@ body {
 }
 
 .sidebar-article-item h4 {
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   color: #00ccff;
   margin-bottom: 5px;
   transition: color 0.3s ease, text-shadow 0.3s ease;
@@ -232,7 +215,7 @@ body {
 }
 
 .sidebar-article-item p {
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased from 0.9rem to 1rem */
   color: #e0e0e0;
   line-height: 1.4;
   font-weight: 300;
@@ -284,7 +267,7 @@ body {
 .footer-link {
   color: #00ccff;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased from 0.9rem to 1rem */
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
@@ -307,276 +290,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* Signup Container */
-.signup-container {
-  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
-  border-radius: 12px;
-  padding: 30px;
-  margin: 100px auto 20px; /* Offset for navbar + ticker */
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.signup-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-
-.signup-container h2 {
-  color: #ffd700;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
-.signup-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #00ccff;
-  border-radius: 5px;
-  background: #1a1a1a;
-  color: #e0e0e0;
-  font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.signup-input:focus {
-  border-color: #ffd700;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  outline: none;
-}
-
-.signup-button {
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
-  color: #1a1a1a;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.signup-button:hover {
-  background: linear-gradient(135deg, #ffaa00, #ffd700);
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
-}
-
-.signup-error {
-  color: #ff4444;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  text-shadow: 0 0 3px rgba(255, 68, 68, 0.3);
-}
-
-.signup-link {
-  color: #00ccff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin-top: 15px;
-  display: inline-block;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.signup-link:hover {
-  color: #ffd700;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
-/* Login Container */
-.login-container {
-  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
-  border-radius: 12px;
-  padding: 30px;
-  margin: 100px auto 20px; /* Offset for navbar + ticker */
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-
-.login-container h2 {
-  color: #ffd700;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
-.login-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #00ccff;
-  border-radius: 5px;
-  background: #1a1a1a;
-  color: #e0e0e0;
-  font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-input:focus {
-  border-color: #ffd700;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  outline: none;
-}
-
-.login-button {
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
-  color: #1a1a1a;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-button:hover {
-  background: linear-gradient(135deg, #ffaa00, #ffd700);
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
-}
-
-.login-error {
-  color: #ff4444;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  text-shadow: 0 0 3px rgba(255, 68, 68, 0.3);
-}
-
-.login-link {
-  color: #00ccff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin-top: 15px;
-  display: inline-block;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.login-link:hover {
-  color: #ffd700;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
-/* Chat Container */
-.chat-container {
-  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.chat-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-}
-
-.chat-container h2 {
-  color: #00ccff;
-  margin-bottom: 15px;
-  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
-}
-
-.chat-intro {
-  color: #e0e0e0;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.chat-messages {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: 15px;
-}
-
-.chat-message {
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
-  margin-bottom: 10px;
-  color: #e0e0e0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.chat-sender {
-  color: #ffd700;
-  font-weight: bold;
-}
-
-.chat-text {
-  flex: 1;
-}
-
-.chat-timestamp {
-  font-size: 0.85rem;
-  color: #b0b0b0;
-}
-
-.chat-form {
-  display: flex;
-  gap: 10px;
-}
-
-.chat-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #00ccff;
-  border-radius: 5px;
-  background: #1a1a1a;
-  color: #e0e0e0;
-  font-size: 1rem;
-}
-
-.chat-button {
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
-  color: #1a1a1a;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.chat-button:hover {
-  background: linear-gradient(135deg, #ffaa00, #ffd700);
-  transform: scale(1.05);
-}
-
-/* Logout Button */
-.logout-button {
-  background: linear-gradient(135deg, #ff4444, #cc0000);
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.logout-button:hover {
-  background: linear-gradient(135deg, #cc0000, #ff4444);
-  transform: scale(1.05);
+  font-size: 1.1rem; /* Added explicit font-size, slightly larger */
 }
 
 /* Responsive design */
@@ -586,7 +300,7 @@ body {
   }
 
   .price-ticker {
-    font-size: 0.9rem;
+    font-size: 1rem; /* Increased from 0.9rem to 1rem */
     padding: 8px 10px;
   }
 
@@ -595,37 +309,28 @@ body {
   }
 
   .navbar {
-    flex-direction: column;
-    padding: 50px 15px 10px; /* Adjust if ticker exists */
-    position: relative;
-    top: 0;
+    padding: 0;
+    position: fixed; /* Keep it fixed on mobile */
+    top: 40px; /* Below price ticker */
+    width: 100%;
+    z-index: 1200; /* Ensure it’s above other content */
+  }
+
+  .title {
+    font-size: 1.5rem; /* Increased from 1.3rem to 1.5rem */
+    padding: 10px 15px;
+    position: relative; /* Remove sticky to prevent overlap issues */
     width: 100%;
   }
 
-  .navbar-title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    padding: 8px 10px;
-    line-height: 1.4;
+  .navList {
+    padding: 5px 15px;
+    max-height: 150px;
+    width: 100%;
   }
 
-  .nav-list {
-    justify-content: center;
-    padding: 5px 0;
-    margin-top: 10px;
-  }
-
-  .nav-list li {
-    margin: 0 10px;
-  }
-
-  .nav-link {
-    font-size: 1.1rem;
-    padding: 6px 12px;
-  }
-
-  .chat-link {
-    font-size: 1.1rem;
+  .navLink {
+    font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
     padding: 6px 12px;
   }
 
@@ -642,7 +347,7 @@ body {
 
   .main-container {
     margin-left: 0;
-    margin-top: 0;
+    margin-top: 120px; /* Adjust for navbar height on mobile */
   }
 
   .sidebar-toggle {
@@ -652,41 +357,15 @@ body {
 
   .dashboard-content {
     padding: 20px 10px;
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 120px); /* Adjust for navbar height */
   }
 
   .footer-links {
     flex-direction: column;
     gap: 10px;
   }
-
-  .signup-container,
-  .login-container,
-  .chat-container {
-    margin: 60px auto 20px; /* Adjust for mobile navbar */
-    padding: 20px;
-    max-width: 90%;
-  }
-
-  .signup-container h2,
-  .login-container h2 {
-    font-size: 1.5rem;
-  }
-
-  .signup-input,
-  .login-input {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-
-  .signup-button,
-  .login-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-  }
 }
 
-/* Rest of your original CSS remains unchanged below */
 /* General container for all content */
 .content-container {
   max-width: 1000px;
@@ -702,7 +381,7 @@ body {
 /* Section Icon (for emojis) */
 .section-icon {
   margin-right: 8px;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
 }
 
 /* Crypto Prices Section */
@@ -723,7 +402,7 @@ body {
 
 .crypto-section h2 {
   color: #00ccff;
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Increased from 1.5rem to 1.75rem */
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -737,7 +416,7 @@ body {
 
 .price-list p {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   margin: 8px 0;
   font-weight: 300;
   transition: color 0.3s ease;
@@ -766,7 +445,7 @@ body {
 
 .airdrop-section h2 {
   color: #00ccff;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -781,7 +460,7 @@ body {
 .airdrop-section p,
 .airdrop-section li {
   color: white;
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   line-height: 1.6;
   font-weight: 300;
   transition: color 0.3s ease;
@@ -820,7 +499,7 @@ body {
 
 .crypto-bot-section h2 {
   color: #00ccff;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -834,7 +513,7 @@ body {
 
 .crypto-bot-section p {
   color: white;
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   line-height: 1.6;
   font-weight: 300;
   transition: color 0.3s ease;
@@ -876,7 +555,7 @@ body {
 
 .news-section h2 {
   color: #00ccff;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -908,7 +587,7 @@ body {
 }
 
 .news-item h3 {
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   margin-bottom: 8px;
 }
 
@@ -924,7 +603,7 @@ body {
 }
 
 .news-item p {
-  font-size: 0.95rem;
+  font-size: 1.05rem; /* Increased from 0.95rem to 1.05rem */
   color: #e0e0e0;
   margin: 0;
   line-height: 1.5;
@@ -937,7 +616,7 @@ body {
 }
 
 .news-date {
-  font-size: 0.85rem;
+  font-size: 0.95rem; /* Increased from 0.85rem to 0.95rem */
   color: #b0b0b0;
   margin-top: 5px;
 }
@@ -945,14 +624,14 @@ body {
 .error {
   text-align: center;
   color: #ff0000;
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   margin: 20px 0;
   text-shadow: 0 0 3px rgba(255, 0, 0, 0.3);
 }
 
 /* Article Page Styles (for /articles page) */
 .article-section-title {
-  font-size: 2.5rem;
+  font-size: 2.75rem; /* Increased from 2.5rem to 2.75rem */
   text-align: center;
   margin-bottom: 40px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -977,7 +656,7 @@ body {
 }
 
 .article-section-subtitle {
-  font-size: 1.8rem;
+  font-size: 2rem; /* Increased from 1.8rem to 2rem */
   margin-bottom: 20px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
@@ -987,7 +666,7 @@ body {
 }
 
 .article-subsection-title {
-  font-size: 1.8rem;
+  font-size: 2rem; /* Increased from 1.8rem to 2rem */
   margin-top: 30px;
   margin-bottom: 20px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -1013,7 +692,7 @@ body {
   color: #b0b0b0;
   margin-top: -10px;
   margin-bottom: 20px;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased from 0.9rem to 1rem */
 }
 
 .article-blockquote {
@@ -1049,7 +728,7 @@ body {
 }
 
 .toc-title {
-  font-size: 1.8rem;
+  font-size: 2rem; /* Increased from 1.8rem to 2rem */
   margin-bottom: 20px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
@@ -1067,7 +746,7 @@ body {
 .toc-link {
   color: #66ccff;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   display: block;
   margin-bottom: 10px;
   padding: 5px 10px;
@@ -1093,7 +772,7 @@ body {
 }
 
 .share-buttons h4 {
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* Increased from 1.2rem to 1.35rem */
   color: #ffd700;
   margin-bottom: 15px;
   text-align: center;
@@ -1120,7 +799,7 @@ body {
   color: #e0e0e0;
   padding: 5px 10px;
   border-radius: 3px;
-  font-size: 0.8rem;
+  font-size: 0.9rem; /* Increased from 0.8rem to 0.9rem */
   display: none;
 }
 
@@ -1151,7 +830,7 @@ body {
 }
 
 .related-articles-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem; /* Increased from 1.4rem to 1.5rem */
   color: #ffd700;
   margin-bottom: 15px;
   text-align: left;
@@ -1175,6 +854,7 @@ body {
   display: inline-block;
   transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
   text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
+  font-size: 1.1rem; /* Added explicit size, slightly larger */
 }
 
 .related-articles-list a:hover {
@@ -1198,6 +878,7 @@ body {
   font-weight: bold;
   display: none;
   transition: opacity 0.3s ease;
+  font-size: 1.1rem; /* Added explicit size, slightly larger */
 }
 
 .back-to-top.visible {
@@ -1226,7 +907,7 @@ body {
 
 .article-section:not([id]) h1 {
   color: #ffd700;
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Increased from 1.5rem to 1.75rem */
   margin-bottom: 15px;
   font-weight: 600;
   display: flex;
@@ -1241,7 +922,7 @@ body {
 
 .article-section:not([id]) h2 {
   color: #00ccff;
-  font-size: 1.3rem;
+  font-size: 1.5rem; /* Increased from 1.3rem to 1.5rem */
   margin: 10px 0;
   font-weight: 500;
   text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
@@ -1254,7 +935,7 @@ body {
 
 .article-section:not([id]) p {
   color: white;
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   line-height: 1.6;
   font-weight: 300;
   margin-bottom: 15px;
@@ -1274,7 +955,7 @@ body {
   padding: 8px 16px;
   border-radius: 5px;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem; /* Increased from 1rem to 1.1rem */
   font-weight: 500;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1298,12 +979,12 @@ body {
   }
 
   .article-section-title {
-    font-size: 2rem;
+    font-size: 2.25rem; /* Increased from 2rem to 2.25rem */
   }
 
   .article-section-subtitle,
   .article-subsection-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem; /* Increased from 1.5rem to 1.75rem */
   }
 }
 
@@ -1311,8 +992,4 @@ body {
   .article-image {
     max-width: 100%;
   }
-}
-
-.hidden-admin-link {
-  display: none;
 }

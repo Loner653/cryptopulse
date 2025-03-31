@@ -1,4 +1,3 @@
-// app/articles/[topic]/page.js
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import ArticlesContentClient from "../ArticlesContentClient";
@@ -26,7 +25,7 @@ const topicMapping = {
 };
 
 export async function generateMetadata({ params }) {
-  const { topic } = params;
+  const { topic } = await params; // Await params
   const topicName = topic
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -37,15 +36,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function TopicPage({ params }) {
-  const { topic } = params;
+export default async function TopicPage({ params }) {
+  const { topic } = await params; // Await params
   const articleIds = topicMapping[topic];
 
   if (!articleIds) {
     notFound();
   }
 
-  const headersList = headers();
+  const headersList = await headers(); // Await headers()
   const host = headersList.get("host");
   const protocol = headersList.get("x-forwarded-proto") || "https";
   const origin = `${protocol}://${host}`;
