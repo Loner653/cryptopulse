@@ -232,11 +232,12 @@
   }
 
   .articleItem h4 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .articleItem p {
-    font-size: 0.75rem;
+    font-size: 0.95rem; /* Increased for better readability */
+    line-height: 1.5; /* Improved line spacing */
   }
 }
 
@@ -261,5 +262,18 @@
   .navList li a {
     font-size: 1rem;
     padding: 0.4rem 0.6rem;
+  }
+
+  .articlesTitle {
+    font-size: 1.2rem;
+  }
+
+  .articleItem h4 {
+    font-size: 1rem;
+  }
+
+  .articleItem p {
+    font-size: 0.9rem; /* Further increased for mobile */
+    line-height: 1.5;
   }
 }

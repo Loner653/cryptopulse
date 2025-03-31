@@ -17,7 +17,7 @@
 }
 
 .faqContainer:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4); /* Subtle lift on hover */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
 .faqContainer::before {
@@ -27,22 +27,22 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(255, 215, 0, 0.1) 100%); /* Updated to match blue theme */
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(255, 215, 0, 0.1) 100%);
   opacity: 0.3;
   pointer-events: none;
   z-index: 0;
 }
 
-/* FAQ Title - More eye-catching */
+/* FAQ Title */
 .faqTitle {
   font-size: 3rem;
   text-align: center;
   margin-bottom: 2.5rem;
-  background: linear-gradient(90deg, #00d4ff, #00f0ff); /* Bright blue gradient */
+  background: linear-gradient(90deg, #00d4ff, #00f0ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #00d4ff; /* Fallback */
-  text-shadow: 0 0 6px rgba(0, 212, 255, 0.7); /* Stronger blue glow */
+  color: #00d4ff;
+  text-shadow: 0 0 6px rgba(0, 212, 255, 0.7);
   padding: 8px 16px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
@@ -52,7 +52,7 @@
 
 .faqTitle:hover {
   transform: scale(1.02);
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.9); /* Enhanced glow on hover */
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.9);
 }
 
 /* FAQ Intro */
@@ -70,12 +70,12 @@
 }
 
 .faqIntro:hover {
-  background: rgba(255, 255, 255, 0.06); /* Subtle hover effect */
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* FAQ List */
 .faqList {
-  border-top: 1px solid rgba(0, 212, 255, 0.3); /* Bright blue border */
+  border-top: 1px solid rgba(0, 212, 255, 0.3);
 }
 
 /* FAQ Item */
@@ -83,7 +83,7 @@
   border-bottom: 1px solid rgba(0, 212, 255, 0.3);
 }
 
-/* FAQ Question - Sleeker and more vibrant */
+/* FAQ Question */
 .faqQuestion {
   width: 100%;
   text-align: left;
@@ -97,7 +97,7 @@
   justify-content: space-between;
   align-items: center;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  color: #00d4ff; /* Bright blue text */
+  color: #00d4ff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -113,12 +113,12 @@
 .arrow {
   font-size: 1.25rem;
   transition: transform 0.3s ease, color 0.3s ease;
-  color: #00f0ff; /* Bright blue arrow */
+  color: #00f0ff;
 }
 
 .faqQuestion[aria-expanded="true"] .arrow {
   transform: rotate(180deg);
-  color: #ffd700; /* Gold when expanded */
+  color: #ffd700;
 }
 
 /* FAQ Answer */
@@ -168,7 +168,7 @@
 /* Links */
 .contactLink,
 .twitterLink {
-  color: #00d4ff; /* Bright blue */
+  color: #00d4ff;
   text-decoration: none;
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
@@ -180,12 +180,12 @@
   transform: translateX(2px);
 }
 
-/* Back to Top Button - Sleeker */
+/* Back to Top Button */
 .backToTop {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: linear-gradient(90deg, #00d4ff, #00f0ff); /* Bright blue gradient */
+  background: linear-gradient(90deg, #00d4ff, #00f0ff);
   color: #1a1a2e;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -200,7 +200,7 @@
 }
 
 .backToTop:hover {
-  background: linear-gradient(90deg, #00b7eb, #00d4ff); /* Slightly darker blue */
+  background: linear-gradient(90deg, #00b7eb, #00d4ff);
   transform: scale(1.05);
   opacity: 1;
   box-shadow: 0 6px 14px rgba(0, 212, 255, 0.5);
@@ -224,13 +224,13 @@
   }
 
   .faqQuestion {
-    font-size: 1.25rem;
+    font-size: 1.4rem; /* Increased for better readability */
     padding: 0.75rem;
     border-radius: 6px;
   }
 
   .faqAnswer p {
-    font-size: 1rem;
+    font-size: 1.1rem; /* Increased for better readability */
     padding: 3px 0;
   }
 
@@ -250,7 +250,7 @@
 
 @media (max-width: 480px) {
   .faqContainer {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.5rem; /* Reduced to use full width */
     padding-top: 7rem;
   }
 
@@ -260,19 +260,25 @@
   }
 
   .faqQuestion {
-    font-size: 1.125rem;
+    font-size: 1.25rem; /* Increased for better readability */
     padding: 0.75rem;
     border-radius: 5px;
   }
 
   .faqAnswer p {
-    font-size: 0.95rem;
+    font-size: 1rem; /* Increased for better readability */
     padding: 2px 0;
+  }
+
+  .addMoreNote {
+    font-size: 0.95rem;
   }
 
   .backToTop {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
     border-radius: 4px;
+    right: 1rem;
+    bottom: 1rem;
   }
 }
