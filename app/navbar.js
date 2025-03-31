@@ -20,8 +20,8 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
           </Link>
         </li>
         <li>
-          <Link href="/analytics" className={styles.navLink}>
-            Analytics
+          <Link href="/faq" className={styles.navLink}>
+          🧠 FAQ
           </Link>
         </li>
         <li>

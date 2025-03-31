@@ -32,7 +32,6 @@ export default function Sidebar({ isOpen, articles, ref }) {
           <li><Link href="/articles">📚 Articles</Link></li>
           <li><Link href="/history">📜 History</Link></li>
           <li><Link href="/faq"> 🧠 FAQ</Link></li>
-          <li><Link href="/analytics">📊 Analytics</Link></li>
           <li><Link href="/news">🚪 News</Link></li>
           <li><Link href="/chart">📈 Chart Page</Link></li>
           <li>
