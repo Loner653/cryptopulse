@@ -1,8 +1,12 @@
 "use client";
 
-import styles from "./page.module.css";
+import styles from "./history.module.css";
 
 export default function History() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.pageTitle}>History of Cryptocurrencies</h1>
@@ -181,6 +185,10 @@ export default function History() {
           The crypto space remains a mix of innovation, speculation, and regulation. While established coins like Bitcoin and Ethereum provide stability, new projects push the boundaries of what blockchain can achieve, promising a decentralized future—if they can overcome the challenges of adoption, scalability, and governance.
         </p>
       </section>
+
+      <button className={styles.backToTop} onClick={scrollToTop}>
+        ↑ Back to Top
+      </button>
     </div>
   );
 }

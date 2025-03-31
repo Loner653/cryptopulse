@@ -5,8 +5,8 @@ import Link from "next/link";
 import NewsFeed from "./Newsfeed";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import styles from "./page.module.css";
 
-// Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function Dashboard() {
@@ -32,21 +32,21 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="content-container">
-      <section className="crypto-section">
+    <div className={styles.contentContainer}>
+      <section className={styles.cryptoSection}>
         <h2>
-          <span className="section-icon">📈</span> Real-Time Crypto Prices
+          <span className={styles.sectionIcon}>📈</span> Real-Time Crypto Prices
         </h2>
-        <div className="price-list">
+        <div className={styles.priceList}>
           <p>Bitcoin: ${prices.bitcoin.toLocaleString()}</p>
           <p>Ethereum: ${prices.ethereum.toLocaleString()}</p>
           <p>BNB: ${prices.bnb.toLocaleString()}</p>
         </div>
       </section>
 
-      <section className="airdrop-section">
+      <section className={styles.airdropSection}>
         <h2>
-          <span className="section-icon">🎁</span> Latest Airdrop
+          <span className={styles.sectionIcon}>🎁</span> Latest Airdrop
         </h2>
         <p>
           Don’t miss out on the hottest airdrop opportunities! Follow Blockchain Bro on X at{" "}
@@ -54,7 +54,7 @@ export default function Dashboard() {
             href="https://x.com/Philkeyz_01"
             target="_blank"
             rel="noopener noreferrer"
-            className="x-link"
+            className={styles.xLink}
           >
             @Philkeyz_01
           </a>{" "}
@@ -62,34 +62,34 @@ export default function Dashboard() {
         </p>
       </section>
 
-      <section className="crypto-bot-section">
+      <section className={styles.cryptoBotSection}>
         <h2>
-          <span className="section-icon">🧠</span> Crypto Assistant
+          <span className={styles.sectionIcon}>🧠</span> Crypto Assistant
         </h2>
         <p>
           Get personalized insights and guidance with our Crypto Assistant! Analyze market trends, receive trading recommendations, and make informed decisions to grow your crypto portfolio.
         </p>
-        <Link href="/crypto-bot" className="read-more-button">
+        <Link href="/crypto-bot" className={styles.readMoreButton}>
           Explore Crypto Assistant →
         </Link>
       </section>
 
-      <section className="news-section">
+      <section className={styles.newsSection}>
         <h2>
-          <span className="section-icon">📰</span> Latest Crypto News
+          <span className={styles.sectionIcon}>📰</span> Latest Crypto News
         </h2>
         <NewsFeed />
       </section>
 
-      <section className="article-section">
+      <section className={styles.articleSection}>
         <h1>
-          <span className="section-icon">📜</span> Featured Article
+          <span className={styles.sectionIcon}>📜</span> Featured Article
         </h1>
         <h2>The Origin of Bitcoin: A Revolutionary Digital Currency</h2>
         <p>
           Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis.
         </p>
-        <Link href="/articles#origin-of-bitcoin" className="read-more-button">
+        <Link href="/articles#origin-of-bitcoin" className={styles.readMoreButton}>
           Read More →
         </Link>
       </section>

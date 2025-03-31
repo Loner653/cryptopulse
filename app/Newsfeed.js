@@ -1,24 +1,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import styles from "./Newsfeed.module.css";
+
+const CACHE_KEY = "newsfeed-cache";
+const CLIENT_CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 export default function NewsFeed() {
   const [newsItems, setNewsItems] = useState([]);
   const [displayedNews, setDisplayedNews] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch news data from the API route
   useEffect(() => {
     async function fetchNews() {
+      // Check localStorage first
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CLIENT_CACHE_DURATION) {
+          console.log("Using client-side cache");
+          setNewsItems(data);
+          setError(null);
+          return;
+        }
+      }
+
       try {
         const res = await fetch("/api/news");
         if (!res.ok) {
-          throw new Error("Failed to fetch news from API route");
+          const errorData = await res.json();
+          throw new Error(errorData.error || `Failed to fetch news (Status: ${res.status})`);
         }
         const data = await res.json();
-        if (data.error) {
-          throw new Error(data.error);
-        }
         const news = data.map((article) => ({
           id: article.id,
           title: article.title,
@@ -28,31 +41,29 @@ export default function NewsFeed() {
         }));
         setNewsItems(news);
         setError(null);
+        // Cache in localStorage
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: news, timestamp: Date.now() }));
       } catch (error) {
         console.error("Error fetching news:", error);
-        setError(error.message);
+        setError(`Failed to fetch news: ${error.message}`);
       }
     }
     fetchNews();
   }, []);
 
-  // Rotate news every 24 hours
   useEffect(() => {
     function updateDisplayedNews() {
       if (newsItems.length === 0) return;
 
-      // Get the current day as a number (e.g., day 1 of the year to day 365)
       const today = new Date();
       const dayOfYear = Math.floor(
         (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
       );
 
-      // Calculate the starting index for the 3 news items based on the day
       const totalNews = newsItems.length;
       const newsPerDay = 3;
       const startIndex = (dayOfYear * newsPerDay) % totalNews;
 
-      // Select 3 news items, wrapping around if necessary
       const selectedNews = [];
       for (let i = 0; i < newsPerDay; i++) {
         const index = (startIndex + i) % totalNews;
@@ -62,27 +73,26 @@ export default function NewsFeed() {
       setDisplayedNews(selectedNews);
     }
 
-    // Update news immediately and then every 24 hours
     updateDisplayedNews();
-    const interval = setInterval(updateDisplayedNews, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+    const interval = setInterval(updateDisplayedNews, 24 * 60 * 60 * 1000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [newsItems]);
 
   return (
-    <div className="news-feed">
+    <div className={styles.newsFeed}>
       {error ? (
-        <p className="error">Error: {error}</p>
+        <p className={styles.error}>Error: {error}</p>
       ) : displayedNews.length > 0 ? (
         displayedNews.map((news) => (
-          <div key={news.id} className="news-item">
+          <div key={news.id} className={styles.newsItem}>
             <h3>
               <a href={news.url} target="_blank" rel="noopener noreferrer">
                 {news.title}
               </a>
             </h3>
             <p>{news.description}</p>
-            <p className="news-date">{news.date}</p>
+            <p className={styles.newsDate}>{news.date}</p>
           </div>
         ))
       ) : (

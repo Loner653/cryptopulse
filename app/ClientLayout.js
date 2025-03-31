@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import Navbar from "./navbar"; // Matches your original import
-import PriceTicker from "./price ticker/PriceTicker"; // Your custom path
+import Navbar from "./navbar";
+import Sidebar from "./sidebar";
+import PriceTicker from "./price ticker/PriceTicker";
 import { Analytics } from "@vercel/analytics/react";
 import "./global.css";
 
@@ -11,6 +12,8 @@ export default function ClientLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const mainContainerRef = useRef(null);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   useEffect(() => {
     const mainContainer = mainContainerRef.current;
@@ -61,52 +64,13 @@ export default function ClientLayout({ children }) {
 
   return (
     <div className="dashboard-layout">
-      {/* Sidebar Toggle Button */}
-      <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        {sidebarOpen ? "✖" : "☰"}
-      </button>
-
-      {/* Sidebar Section */}
-      <aside ref={sidebarRef} className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <Link href="/articles" className="articles-button">📜 Articles</Link>
-        <h2 className="sidebar-title">📊 Dashboard</h2>
-
-        {/* Navigation Links */}
-        <nav>
-          <ul>
-            <li><Link href="/">🏠 Home</Link></li>
-            <li><Link href="/articles">📜 Articles</Link></li>
-            <li><Link href="/chart">📈 Chart</Link></li>
-            <li><Link href="/news">🚀 News</Link></li>
-            <li><Link href="/history">📜 History</Link></li>
-            <li><Link href="/analytics">📊 Analytics</Link></li>
-            <li><Link href="/faq">❓ FAQ</Link></li>
-          </ul>
-        </nav>
-
-        {/* Latest Articles Section */}
-        <div className="sidebar-articles">
-          <h3 className="sidebar-articles-title">Latest Articles</h3>
-          {articles.map((article, index) => (
-            <div key={index} className="sidebar-article-item">
-              <Link href={article.link}>
-                <h4>{article.title}</h4>
-                <p>{article.excerpt}</p>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </aside>
-
-      {/* Main Content */}
+      <Sidebar ref={sidebarRef} isOpen={sidebarOpen} articles={articles} />
       <div className="main-container" ref={mainContainerRef}>
         <header className="top-header">
           <PriceTicker />
-          <Navbar />
+          <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
         </header>
-
         <main className="dashboard-content">{children}</main>
-
         <footer className="footer">
           <p>© 2025 CryptoGlobal</p>
           <div className="footer-links">
@@ -118,7 +82,6 @@ export default function ClientLayout({ children }) {
           </div>
         </footer>
       </div>
-
       <Analytics />
     </div>
   );

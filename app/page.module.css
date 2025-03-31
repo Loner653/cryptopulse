@@ -1,94 +1,196 @@
-/* app/page.module.css */
+/* Content Container */
 .contentContainer {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 30px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  padding-top: 120px; /* Matches .dashboard-content in global.css */
-  margin-left: 250px;
+  padding-top: 12rem;
   min-height: 100vh;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.cryptoSection,
-.airdropSection,
-.newsSection,
-.articleSection {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 30px;
-  margin-bottom: 60px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.contentContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, rgba(0, 204, 255, 0.1) 100%);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.cryptoSection:hover,
-.airdropSection:hover,
-.newsSection:hover,
-.articleSection:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.cryptoSection h2,
-.airdropSection h2,
-.newsSection h2,
-.articleSection h1 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.articleSection h2 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.sectionIcon {
-  margin-right: 8px;
-}
-
-.priceList p,
-.airdropSection p,
-.articleSection p {
-  margin: 10px 0;
-  color: #e0e0e0;
-}
-
-.airdropSection ul {
-  list-style-type: disc;
-  padding-left: 20px;
-  color: #e0e0e0;
-}
-
-.airdropSection li {
-  margin: 8px 0;
-}
-
-.readMoreButton {
-  display: inline-block;
-  padding: 10px 20px;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  color: #1a1a2e;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: opacity 0.3s ease;
-}
-
-.readMoreButton:hover {
-  opacity: 0.9;
+@media (min-width: 769px) {
+  .contentContainer {
+    padding-top: 13rem;
+    padding: 60px 40px;
+  }
 }
 
 @media (max-width: 768px) {
   .contentContainer {
-    margin-left: 0;
-    padding-top: 120px; /* Consistent with desktop */
+    padding-top: 11rem;
+    padding: 40px 25px;
   }
+}
+
+@media (max-width: 480px) {
+  .contentContainer {
+    padding-top: 10rem;
+    padding: 30px 20px;
+    border-radius: 12px;
+  }
+}
+
+/* Sections */
+.cryptoSection,
+.airdropSection,
+.cryptoBotSection,
+.newsSection,
+.articleSection {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.cryptoSection { padding: 40px; }
+.airdropSection,
+.cryptoBotSection,
+.newsSection,
+.articleSection { padding: 25px; }
+
+.cryptoSection:hover,
+.airdropSection:hover,
+.cryptoBotSection:hover,
+.newsSection:hover,
+.articleSection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Section Titles - Improved clarity */
+.cryptoSection h2,
+.airdropSection h2,
+.cryptoBotSection h2,
+.newsSection h2,
+.articleSection h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 1px rgba(255, 215, 0, 0.3);
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.articleSection h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 1px rgba(0, 204, 255, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 2;
+}
+
+/* Section Icon */
+.sectionIcon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+  color: #00ffff;
+  transition: transform 0.3s ease;
+}
+
+.cryptoSection:hover .sectionIcon,
+.airdropSection:hover .sectionIcon,
+.cryptoBotSection:hover .sectionIcon,
+.newsSection:hover .sectionIcon,
+.articleSection:hover .sectionIcon {
+  transform: rotate(15deg);
+}
+
+/* Price List */
+.priceList p {
+  margin: 12px 0;
+  color: #e0e0e0;
+  font-size: 1.25rem;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.priceList p:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Paragraphs */
+.airdropSection p,
+.cryptoBotSection p,
+.articleSection p {
+  margin: 8px 0;
+  color: #e0e0e0;
+  font-size: 1.125rem;
+  overflow-wrap: break-word;
+  padding: 4px 10px;
+  border-left: 3px solid #00ccff;
+  z-index: 1;
+}
+
+/* Links */
+.airdropSection a,
+.cryptoBotSection a {
+  color: #00ccff;
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.airdropSection a:hover,
+.cryptoBotSection a:hover {
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+  transform: translateX(2px);
+}
+
+/* Read More Button */
+.readMoreButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #ffd700, #00ffff);
+  color: #1a1a1a;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.125rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.readMoreButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }

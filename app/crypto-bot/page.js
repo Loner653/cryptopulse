@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
 import coinListData from "../data/coin-list.json";
-import styles from "../chart/cryptoChart.module.css";
+import styles from "./crypto-bot.module.css"; // Updated to new CSS module
 
 export default function CryptoBotPage() {
   const [coins, setCoins] = useState([]);
@@ -129,18 +129,23 @@ export default function CryptoBotPage() {
   }, [inView, fetchCoins]);
 
   return (
-    <div className={`${styles.chartContainer} content-container crypto-section`}>
+    <div className={`${styles.botContainer} content-container crypto-section`}>
       <h1 className={styles.title}>📈 Crypto Assistant</h1>
       <button onClick={() => fetchCoins(true)} className={styles.refreshButton}>🔄 Refresh Data</button>
-      <div id="tawkto-container" className="price-list">
+      <div id="tawkto-container" className={styles.chatContainer}>
         <iframe
           src="https://tawk.to/chat/67e617ed84c833190b654d9f/1indcqu9r"
-          style={{ width: "100%", height: "500px", border: "none" }}
+          className={styles.chatIframe}
           title="Crypto Bot Chat"
         />
       </div>
-      <div ref={ref} style={{ height: "70px" }}>
-        {isLoading ? "Loading..." : ""}
+      <div ref={ref} className={styles.loading}>
+        {isLoading && (
+          <>
+            <span>Loading...</span>
+            <span className={styles.spinner}></span>
+          </>
+        )}
       </div>
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

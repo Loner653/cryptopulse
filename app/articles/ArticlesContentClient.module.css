@@ -1,20 +1,20 @@
-/* ArticlesContentClient.module.css - Replicated with correct colors and improved */
-
 /* Root layout for the entire page */
 .pageLayout {
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
-  line-height: 1.8;
+  line-height: 1.6;
   display: flex;
   flex-direction: column;
+  padding: 3rem;
+  position: relative; /* Added to ensure z-index context */
 }
 
 /* Main content area */
 .mainContainer {
-  padding: 40px 20px;
-  max-width: 1000px;
+  padding: 3rem 2rem;
+  max-width: 1200px;
   margin: 0 auto;
   flex: 1;
   overflow-y: auto;
@@ -23,14 +23,14 @@
 
 /* Article section title */
 .articleSectionTitle {
-  font-size: 2.5rem;
+  font-size: 3rem;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 3rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  color: #ffd700; /* Fallback */
+  color: #ffd700;
 }
 
 /* Table of Contents */
@@ -38,42 +38,42 @@
   background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
   border: 2px solid #ffd700;
   border-radius: 10px;
-  padding: 30px;
-  margin-bottom: 40px;
+  padding: 3rem;
+  margin-bottom: 3rem;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   position: sticky;
-  top: 20px;
+  top: 9.5rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .tocTitle {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-  color: #ffd700; /* Fallback */
+  color: #ffd700;
 }
 
 .tocList {
   list-style: none;
   padding: 0;
-  text-align: center;
+  text-align: left;
 }
 
 .tocLink {
   color: #66ccff;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.75rem;
   display: block;
-  margin-bottom: 10px;
-  padding: 5px 10px;
+  margin-bottom: 1rem;
+  padding: 1rem 1.5rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 5px;
-  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
   text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
   max-width: 600px;
   margin-left: auto;
@@ -82,16 +82,17 @@
 
 .tocLink:hover {
   color: #ffd700;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 215, 0, 0.1);
   transform: translateY(-2px);
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 /* Article section */
 .articleSection {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
-  padding: 30px;
-  margin-bottom: 40px;
+  padding: 3rem;
+  margin-bottom: 3rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   max-width: 800px;
@@ -105,32 +106,32 @@
 }
 
 .articleSectionSubtitle {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-align: center;
-  color: #ffd700; /* Fallback */
+  text-align: left;
+  color: #ffd700;
 }
 
 .articleSubsectionTitle {
-  font-size: 1.8rem;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-align: center;
-  color: #ffd700; /* Fallback */
+  text-align: left;
+  color: #ffd700;
 }
 
 .articleImage {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   height: auto;
   display: block;
-  margin: 20px auto;
+  margin: 1.5rem auto;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -139,17 +140,15 @@
   text-align: center;
   font-style: italic;
   color: #b0b0b0;
-  margin-top: -10px;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
 }
-
-/* Note: .articleBlockquote and .articleList are not in your JSX, so I’ve omitted them unless you need them */
 
 /* Share Buttons */
 .shareButtons {
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
   max-width: 600px;
@@ -159,20 +158,20 @@
 }
 
 .shareButtons h4 {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: #ffd700;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .shareButton {
   display: inline-block;
-  padding: 10px 20px;
-  margin: 0 10px;
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.75rem;
   border-radius: 5px;
   text-decoration: none;
-  color: #1a1a2e;
+  color: #fff;
   font-weight: bold;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .shareButton.twitter {
@@ -185,14 +184,15 @@
 
 .shareButton:hover {
   transform: scale(1.05);
+  opacity: 0.9;
 }
 
 /* Related Articles */
 .relatedArticles {
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: center;
+  text-align: left;
   max-width: 600px;
   width: 100%;
   margin-left: auto;
@@ -200,9 +200,9 @@
 }
 
 .relatedArticlesTitle {
-  font-size: 1.4rem;
+  font-size: 1.75rem;
   color: #ffd700;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .relatedArticlesList {
@@ -216,59 +216,81 @@
 .relatedArticlesList li a {
   color: #66ccff;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
 }
 
 .relatedArticlesList li a:hover {
   color: #ffd700;
-}
-
-/* Back to All Topics Link (adjusted from .backToTop to match your JSX) */
-.tocLink:not(.tocList .tocLink) {
-  display: inline-block;
-  margin-top: 20px;
-  color: #66ccff;
-  text-decoration: none;
-  font-size: 1.2rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.tocLink:not(.tocList .tocLink):hover {
-  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
   transform: translateY(-2px);
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Back to Top Link (adjusted from .tocLink:not(.tocList .tocLink)) */
+.backToTop {
+  position: fixed; /* Sticks to the side */
+  right: 1rem; /* Positioned on the right */
+  top: 50%; /* Vertically centered */
+  transform: translateY(-50%); /* Adjusts for vertical centering */
+  color: rgba(102, 204, 255, 0.5); /* Pale blue color */
+  text-decoration: none;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
+  z-index: 1000; /* Ensures it’s above other content */
+}
+
+.backToTop:hover {
+  color: rgba(255, 215, 0, 0.7); /* Pale gold on hover */
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-50%) translateX(-2px); /* Slight movement on hover */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .pageLayout {
+    padding: 2rem;
+  }
+
   .mainContainer {
-    padding: 20px 10px;
+    padding: 2rem 1.5rem;
   }
 
   .articleSectionTitle {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
 
   .tableOfContents {
     position: static;
     max-width: 100%;
-    padding: 20px;
+    padding: 2rem;
   }
 
   .tocTitle {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .tocLink {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
   }
 
   .articleSection {
     max-width: 100%;
-    padding: 20px;
+    padding: 2rem;
   }
 
   .articleSectionSubtitle {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .articleSubsectionTitle {
@@ -285,7 +307,7 @@
 
   .shareButton {
     display: block;
-    margin: 10px auto;
+    margin: 0.75rem auto;
     width: 100%;
     max-width: 200px;
   }
@@ -295,29 +317,34 @@
   }
 
   .relatedArticlesTitle {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
-  .tocLink:not(.tocList .tocLink) {
-    font-size: 1.1rem;
+  .backToTop {
+    font-size: 1.125rem;
+    right: 0.5rem; /* Adjusted for smaller screens */
   }
 }
 
 @media (max-width: 480px) {
+  .pageLayout {
+    padding: 1.5rem;
+  }
+
   .articleSectionTitle {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
   .tocTitle {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 
   .tocLink {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
   .articleSectionSubtitle {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .articleSubsectionTitle {
@@ -325,15 +352,16 @@
   }
 
   .shareButton {
-    font-size: 0.9rem;
-    padding: 8px 16px;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
   }
 
   .relatedArticlesTitle {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
   }
 
-  .tocLink:not(.tocList .tocLink) {
+  .backToTop {
     font-size: 1rem;
+    padding: 0.5rem;
   }
 }

@@ -1,3 +1,6 @@
+/* page.module.css */
+
+/* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -6,9 +9,11 @@
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  padding-top: 80px;
+  padding-top: clamp(7rem, 8vh, 9rem);
+  min-height: 100vh;
 }
 
+/* Page Title */
 .pageTitle {
   font-size: 2.5rem;
   text-align: center;
@@ -20,6 +25,7 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Section */
 .section {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
@@ -43,51 +49,81 @@
   color: #ffd700;
 }
 
+/* Table Container */
 .tableContainer {
   overflow-x: auto;
   width: 100%;
+  margin: 0 auto;
 }
 
+/* Table Styling */
 .table {
   width: 100%;
   border-collapse: collapse;
   background: rgba(255, 255, 255, 0.05);
   table-layout: fixed;
+  font-size: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+/* Table Headers and Cells */
 .table th,
 .table td {
-  padding: 12px;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: middle;
   white-space: nowrap;
 }
 
+/* Table Headers */
 .table th {
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: rgba(255, 255, 255, 0.08);
   color: #ffd700;
   font-weight: 600;
-  border-bottom: 2px solid #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
 }
 
+/* Table Cells */
 .table td {
   color: #e0e0e0;
 }
 
-/* Column widths for all tables */
+/* Column Widths for All Tables (Default) */
 .table th:nth-child(1),
-.table td:nth-child(1) { width: 25%; } /* Coin/Protocol */
+.table td:nth-child(1) { width: 25%; }
 .table th:nth-child(2),
-.table td:nth-child(2) { width: 20%; } /* Price */
+.table td:nth-child(2) { width: 20%; }
 .table th:nth-child(3),
-.table td:nth-child(3) { width: 20%; } /* 24h Change/Market Cap/Chain */
+.table td:nth-child(3) { width: 20%; }
 .table th:nth-child(4),
-.table td:nth-child(4) { width: 20%; } /* Market Cap/24h Volume/Circulating Supply */
+.table td:nth-child(4) { width: 20%; }
 .table th:nth-child(5),
-.table td:nth-child(5) { width: 15%; } /* 24h Volume (where applicable) */
+.table td:nth-child(5) { width: 15%; }
 
+/* Specific Adjustments for Messari Table */
+.messariTable th:nth-child(1),
+.messariTable td:nth-child(1) { width: 30%; } /* Coin - Wider to anchor */
+.messariTable th:nth-child(2),
+.messariTable td:nth-child(2) { 
+  width: 20%; 
+  padding-right: 8px; /* Reduced right padding to shift closer to Coin */
+} /* Price - Closer to Coin */
+.messariTable th:nth-child(3),
+.messariTable td:nth-child(3) { 
+  width: 25%; 
+  padding-left: 12px; /* Slightly reduced left padding to shift left */
+} /* MC - Shifted left */
+.messariTable th:nth-child(4),
+.messariTable td:nth-child(4) { 
+  width: 25%; 
+  padding-left: 12px; /* Slightly reduced left padding to shift left */
+} /* CS - Shifted left */
+
+/* Coin Image */
 .coinImage {
   vertical-align: middle;
   margin-right: 8px;
@@ -95,6 +131,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Positive/Negative */
 .positive {
   color: #00ff00;
 }
@@ -103,6 +140,7 @@
   color: #ff0000;
 }
 
+/* Note */
 .note {
   font-size: 0.9rem;
   color: #b0b0b0;
@@ -110,6 +148,7 @@
   text-align: center;
 }
 
+/* Loading/Error */
 .loading {
   text-align: center;
   font-size: 1.2rem;
@@ -123,6 +162,7 @@
   margin: 20px 0;
 }
 
+/* Navigation Link */
 .navLink {
   margin-right: 16px;
   color: #00ffff;
@@ -133,6 +173,7 @@
   color: #ffd700;
 }
 
+/* Refresh Button */
 .refreshButton {
   padding: 10px 20px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -152,6 +193,7 @@
   cursor: not-allowed;
 }
 
+/* Skeleton */
 .skeleton {
   padding: 16px;
 }
@@ -170,10 +212,11 @@
   100% { opacity: 0.4; }
 }
 
-/* Mobile Adjustments */
-@media (max-width: 600px) {
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .container {
-    padding: 20px 10px;
+    padding: 20px 15px;
+    padding-top: 7.5rem;
   }
 
   .pageTitle {
@@ -189,10 +232,14 @@
     font-size: 1.5rem;
   }
 
+  .table {
+    font-size: 0.9rem;
+  }
+
   .table th,
   .table td {
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 10px 12px;
+    min-width: 80px;
   }
 
   .table th:nth-child(1),
@@ -206,8 +253,93 @@
   .table th:nth-child(5),
   .table td:nth-child(5) { width: auto; }
 
+  /* Messari Table on Tablets */
+  .messariTable th:nth-child(1),
+  .messariTable td:nth-child(1) { width: 35%; }
+  .messariTable th:nth-child(2),
+  .messariTable td:nth-child(2) { 
+    width: 25%; 
+    padding-right: 6px; /* Closer to Coin */
+  }
+  .messariTable th:nth-child(3),
+  .messariTable td:nth-child(3) { 
+    width: 20%; 
+    padding-left: 10px; /* Shift left */
+  }
+  .messariTable th:nth-child(4),
+  .messariTable td:nth-child(4) { 
+    width: 20%; 
+    padding-left: 10px; /* Shift left */
+  }
+
   .coinImage {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 15px 10px;
+    padding-top: 7rem;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .table thead,
+  .table tbody,
+  .table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 10px;
+    display: inline-block;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
+    width: calc(20% - 20px);
+  }
+
+  /* Messari Table on Phones */
+  .messariTable th:nth-child(1),
+  .messariTable td:nth-child(1) { width: calc(30% - 20px); }
+  .messariTable th:nth-child(2),
+  .messariTable td:nth-child(2) { 
+    width: calc(25% - 20px); 
+    padding-right: 4px; /* Even closer to Coin */
+  }
+  .messariTable th:nth-child(3),
+  .messariTable td:nth-child(3) { 
+    width: calc(25% - 20px); 
+    padding-left: 8px; /* Shift left */
+  }
+  .messariTable th:nth-child(4),
+  .messariTable td:nth-child(4) { 
+    width: calc(20% - 20px); 
+    padding-left: 8px; /* Shift left */
+  }
+
+  .coinImage {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+  }
+
+  .table th {
+    font-size: 0.8rem;
   }
 }

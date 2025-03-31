@@ -33,12 +33,13 @@ export default function AnalyticsClient({
     if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(2)}T`;
     if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`;
     if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}M`;
-    if (value >= 1_000) return `$${(value / 1_000).toFixed(2)}K`; // Added K for thousands
-    return `$${value.toLocaleString()}`; // Below 1,000
+    if (value >= 1_000) return `$${(value / 1_000).toFixed(2)}K`;
+    return `$${value.toLocaleString()}`;
   };
 
+  // Modified to prioritize symbol over name for Market Overview
   const getTicker = (data, tickerKey = "symbol") => {
-    const ticker = data.name || data[tickerKey]; // Prefer name, fall back to symbol
+    const ticker = data[tickerKey] || data.name; // Prefer symbol, fall back to name
     return ticker ? ticker.toUpperCase() : "N/A";
   };
 
@@ -68,7 +69,7 @@ export default function AnalyticsClient({
         </div>
       ) : (
         <div>
-          {/* Market Overview Section - Removed 24h Volume */}
+          {/* Market Overview Section - Using Ticker Only */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Market Overview</h2>
             <Suspense
@@ -98,13 +99,13 @@ export default function AnalyticsClient({
                           <td>
                             <Image
                               src={coin.image}
-                              alt={`${coin.name || "Coin"} logo`}
+                              alt={`${coin.symbol || "Coin"} logo`}
                               width={24}
                               height={24}
                               className={styles.coinImage}
                               priority={false}
                             />
-                            {getTicker(coin)}
+                            {getTicker(coin)} {/* Will use symbol like "BTC" */}
                           </td>
                           <td>${(coin.current_price || 0).toLocaleString()}</td>
                           <td className={(coin.price_change_percentage_24h || 0) >= 0 ? styles.positive : styles.negative}>
@@ -191,7 +192,7 @@ export default function AnalyticsClient({
                           <td>
                             <Image
                               src={coin.item.small}
-                              alt={`${coin.item.name || "Coin"} logo`}
+                              alt={`${coin.item.symbol || "Coin"} logo`}
                               width={24}
                               height={24}
                               className={styles.coinImage}

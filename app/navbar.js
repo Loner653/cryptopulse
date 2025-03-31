@@ -1,39 +1,32 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import styles from "./navbar.module.css";
 
-export default function Navbar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    // Assuming the sidebar has a class of 'sidebar' and toggles with 'open'
-    const sidebar = document.querySelector(".sidebar");
-    if (sidebar) {
-      sidebar.classList.toggle("open");
-    }
-  };
-
+export default function Navbar({ toggleSidebar, isSidebarOpen }) {
   return (
-    <nav className="navbar">
-      <h1 className="title">Welcome to CryptoGlobal</h1>
-      <button className="sidebar-toggle" onClick={toggleSidebar}>
-        ☰
+    <nav className={styles.navbar}>
+      <h1 className={styles.title}>Welcome to CryptoGlobal</h1>
+      <button
+        className={styles.sidebarToggle}
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        {isSidebarOpen ? "✖" : "☰"}
       </button>
-      <ul className="navList">
+      <ul className={styles.navList}>
         <li>
-          <Link href="/history" className="navLink">
+          <Link href="/history" className={styles.navLink}>
             History
           </Link>
         </li>
         <li>
-          <Link href="/analytics" className="navLink">
+          <Link href="/analytics" className={styles.navLink}>
             Analytics
           </Link>
         </li>
         <li>
-          <Link href="/news" className="navLink">
-            <span className="nav-icon">💬</span> News
+          <Link href="/news" className={styles.navLink}>
+            <span className={styles.navIcon}>💬</span> News
           </Link>
         </li>
       </ul>
