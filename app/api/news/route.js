@@ -1,34 +1,33 @@
-import fs from "fs/promises";
-import path from "path";
-
-const CACHE_FILE = path.join(process.cwd(), "tmp", "news-cache.json");
+// In-memory cache (persists until server restart)
+let memoryCache = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
-async function readCache() {
-  try {
-    const data = await fs.readFile(CACHE_FILE, "utf8");
-    const { news, timestamp } = JSON.parse(data);
+async function getCachedNews() {
+  if (memoryCache) {
+    const { news, timestamp } = memoryCache;
+    console.log("Cache found. Checking freshness...");
     if (Date.now() - timestamp < CACHE_DURATION) {
-      return { news, timestamp };
+      console.log("Returning fresh cached news");
+    } else {
+      console.log("Cache is stale but still returning it until new data is fetched");
     }
-    return null; // Cache is stale
-  } catch (error) {
-    return null; // Cache doesn’t exist or is invalid
+    return memoryCache;
   }
+  console.log("No cache available");
+  return null;
 }
 
-async function writeCache(news, timestamp) {
-  await fs.mkdir(path.dirname(CACHE_FILE), { recursive: true });
-  await fs.writeFile(CACHE_FILE, JSON.stringify({ news, timestamp }), "utf8");
+async function setCachedNews(news, timestamp) {
+  memoryCache = { news, timestamp };
+  console.log("Updated cache with new news");
 }
 
 export async function GET() {
   const now = Date.now();
 
-  // Check file cache first
-  const cached = await readCache();
+  // Always check cache first
+  const cached = await getCachedNews();
   if (cached) {
-    console.log("Returning cached news from file");
     return new Response(JSON.stringify(cached.news), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -36,15 +35,27 @@ export async function GET() {
   }
 
   try {
-    console.log("Fetching from CoinGecko");
+    console.log("Fetching from CoinGecko (no cache available)");
     const res = await fetch("https://api.coingecko.com/api/v3/news?page=1", {
       headers: { "Accept": "application/json" },
     });
-    if (!res.ok) {
+
+    if (res.status === 429) {
+      console.warn("Rate limit hit (429). Returning cached news or fallback.");
+      const cachedFallback = await getCachedNews();
+      if (cachedFallback) {
+        return new Response(JSON.stringify(cachedFallback.news), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      // If no cache, proceed to fallback below
+    } else if (!res.ok) {
       const errorText = await res.text();
       console.error("CoinGecko fetch failed:", res.status, errorText);
       throw new Error(`Failed to fetch news from CoinGecko: ${res.status} - ${errorText}`);
     }
+
     const data = await res.json();
     const articles = data.data || data;
     if (!articles || articles.length === 0) {
@@ -62,9 +73,8 @@ export async function GET() {
         : "Unknown",
     }));
 
-    // Write to file cache
-    await writeCache(news, now);
-    console.log("Fetched and cached news successfully");
+    // Store in memory cache
+    await setCachedNews(news, now);
 
     return new Response(JSON.stringify(news), {
       status: 200,
@@ -73,16 +83,17 @@ export async function GET() {
   } catch (error) {
     console.error("API Route Error:", error.message);
 
-    // Fallback if fetch fails but cache might still exist
-    const cachedFallback = await readCache();
+    // Return cached news even if stale, if it exists
+    const cachedFallback = await getCachedNews();
     if (cachedFallback) {
-      console.log("Falling back to cached news from file");
+      console.log("Fetch failed, returning cached news (may be stale)");
       return new Response(JSON.stringify(cachedFallback.news), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
     }
 
+    // Only use fallback if no cache exists at all
     const fallbackNews = [
       {
         id: "fallback-1",
@@ -106,7 +117,7 @@ export async function GET() {
         date: "2025-03-31",
       },
     ];
-    console.log("Using fallback news");
+    console.log("No cache available, using fallback news");
     return new Response(JSON.stringify(fallbackNews), {
       status: 200,
       headers: { "Content-Type": "application/json" },
