@@ -236,8 +236,8 @@
   }
 
   .articleItem p {
-    font-size: 0.95rem; /* Increased for better readability */
-    line-height: 1.5; /* Improved line spacing */
+    font-size: 1rem; /* Increased for better readability */
+    line-height: 1.5;
   }
 }
 
@@ -273,7 +273,7 @@
   }
 
   .articleItem p {
-    font-size: 0.9rem; /* Further increased for mobile */
+    font-size: 0.95rem; /* Further increased for mobile */
     line-height: 1.5;
   }
 }
