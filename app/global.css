@@ -6,7 +6,6 @@
 }
 
 :root {
-  --footer-height: 60px; /* Fallback value in case JavaScript doesn't run */
   --price-ticker-height: 7.5rem; /* Price ticker height on mobile */
 }
 
@@ -16,8 +15,8 @@ body {
   color: #e0e0e0;
   font-size: 1.125rem;
   line-height: 1.6;
-  margin: 0; /* Ensure no default margin */
-  min-height: 100vh; /* Ensure body takes full viewport height */
+  margin: 0;
+  min-height: 100vh;
 }
 
 .dashboard-layout {
@@ -54,9 +53,8 @@ body {
 .main-container {
   flex: 1;
   margin-top: var(--price-ticker-height); /* Space for the fixed price ticker */
-  margin-bottom: var(--footer-height); /* Space for the fixed footer */
-  overflow-y: auto; /* Allow scrolling */
-  min-height: calc(100vh - var(--price-ticker-height) - var(--footer-height)); /* Ensure it takes remaining space */
+  overflow-y: auto;
+  min-height: calc(100vh - var(--price-ticker-height));
 }
 
 @media (min-width: 769px) {
@@ -64,8 +62,7 @@ body {
     margin-left: 280px;
     width: calc(100% - 280px);
     margin-top: 6.25rem;
-    margin-bottom: var(--footer-height);
-    min-height: calc(100vh - 6.25rem - var(--footer-height));
+    min-height: calc(100vh - 6.25rem);
   }
 }
 
@@ -77,20 +74,15 @@ body {
 
 .dashboard-content {
   padding: 2.5rem 1.5rem;
-  min-height: calc(100vh - var(--price-ticker-height) - var(--footer-height));
+  min-height: calc(100vh - var(--price-ticker-height));
 }
 
 .footer {
-  position: fixed; /* Make the footer fixed */
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 1.5rem;
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   border-top: 1px solid rgba(255, 215, 0, 0.2);
   color: #e0e0e0;
   text-align: center;
-  z-index: 1000; /* Ensure it’s above other content */
 }
 
 .footer-links {
@@ -129,13 +121,12 @@ body {
   .main-container {
     margin-left: 0;
     margin-top: var(--price-ticker-height);
-    margin-bottom: var(--footer-height);
-    min-height: calc(100vh - var(--price-ticker-height) - var(--footer-height));
+    min-height: calc(100vh - var(--price-ticker-height));
   }
 
   .dashboard-content {
     padding: 1.5rem 1rem;
-    min-height: calc(100vh - var(--price-ticker-height) - var(--footer-height));
+    min-height: calc(100vh - var(--price-ticker-height));
   }
 
   .footer-links {

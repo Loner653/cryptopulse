@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation"; // Import usePathname
 import Link from "next/link";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
@@ -12,30 +13,9 @@ export default function ClientLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const mainContainerRef = useRef(null);
-  const footerRef = useRef(null); // Add a ref for the footer
+  const pathname = usePathname(); // Get the current route
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
-  // Calculate footer height dynamically and set it as a CSS variable
-  useEffect(() => {
-    const updateFooterHeight = () => {
-      if (footerRef.current) {
-        const footerHeight = footerRef.current.offsetHeight;
-        document.documentElement.style.setProperty('--footer-height', `${footerHeight}px`);
-      }
-    };
-
-    // Initial calculation
-    updateFooterHeight();
-
-    // Recalculate on window resize
-    window.addEventListener('resize', updateFooterHeight);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', updateFooterHeight);
-    };
-  }, []);
 
   useEffect(() => {
     const mainContainer = mainContainerRef.current;
@@ -84,6 +64,9 @@ export default function ClientLayout({ children }) {
     },
   ];
 
+  // Conditionally render the footer (exclude on /chat)
+  const showFooter = pathname !== "/chat";
+
   return (
     <div className="dashboard-layout">
       <Sidebar ref={sidebarRef} isOpen={sidebarOpen} articles={articles} />
@@ -93,16 +76,18 @@ export default function ClientLayout({ children }) {
           <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
         </header>
         <main className="dashboard-content">{children}</main>
-        <footer className="footer" ref={footerRef}>
-          <p>© 2025 CryptoGlobal</p>
-          <div className="footer-links">
-            <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
-            <Link href="/about" className="footer-link">About</Link>
-            <a href="mailto:cryptoglobalive@gmail.com" className="footer-link">
-              cryptoglobalive@gmail.com
-            </a>
-          </div>
-        </footer>
+        {showFooter && (
+          <footer className="footer">
+            <p>© 2025 CryptoGlobal</p>
+            <div className="footer-links">
+              <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
+              <Link href="/about" className="footer-link">About</Link>
+              <a href="mailto:cryptoglobalive@gmail.com" className="footer-link">
+                cryptoglobalive@gmail.com
+              </a>
+            </div>
+          </footer>
+        )}
       </div>
       <Analytics />
     </div>
