@@ -54,6 +54,8 @@ export default function ChatPage() {
   useEffect(() => {
     const fetchUserProfiles = async () => {
       const userIds = [...new Set(messages.map((msg) => msg.user_id))];
+      if (userIds.length === 0) return;
+
       const { data, error } = await supabase
         .from("profiles")
         .select("id, username")
@@ -61,17 +63,25 @@ export default function ChatPage() {
 
       if (error) {
         console.error("Error fetching user profiles:", error);
-      } elses
+        return;
+      }
+
       const profiles = data.reduce((acc, profile) => {
         acc[profile.id] = profile.username;
         return acc;
       }, {});
+
+      // Debug: Log any user_ids that don't have a username
+      userIds.forEach((userId) => {
+        if (!profiles[userId]) {
+          console.warn(`No username found for user_id: ${userId}`);
+        }
+      });
+
       setUserProfiles(profiles);
     };
 
-    if (messages.length > 0) {
-      fetchUserProfiles();
-    }
+    fetchUserProfiles();
   }, [messages]);
 
   // Fetch initial messages
@@ -257,7 +267,9 @@ export default function ChatPage() {
             >
               <div className={styles.message}>
                 <span className={styles.user}>
-                  {message.user_id === user.id ? "You" : userProfiles[message.user_id] || message.user_id}
+                  {message.user_id === user.id
+                    ? "You"
+                    : userProfiles[message.user_id] || "Unknown User"}
                 </span>
                 <p>{message.text}</p>
                 <span className={styles.timestamp}>
