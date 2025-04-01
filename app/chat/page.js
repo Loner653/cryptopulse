@@ -17,7 +17,7 @@ export default function ChatPage() {
   const router = useRouter();
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-  const channel = useRef(null);
+  const channelRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -110,12 +110,13 @@ export default function ChatPage() {
   }, [user, chatRoomId]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || channelRef.current) return;
 
-    console.log("Setting up real-time subscription for chat_room_id:", chatRoomId);
+    console.log("Initializing channel for chat_room_id:", chatRoomId);
 
-    channel.current = supabase
-      .channel(`chat:${chatRoomId}`)
+    channelRef.current = supabase.channel(`chat:${chatRoomId}`);
+
+    channelRef.current
       .on(
         "postgres_changes",
         {
@@ -125,7 +126,7 @@ export default function ChatPage() {
           filter: `chat_room_id=eq.${chatRoomId}`,
         },
         (payload) => {
-          console.log("INSERT payload:", payload);
+          console.log("Received INSERT payload:", payload);
           setMessages((prevMessages) => {
             if (prevMessages.some((msg) => msg.id === payload.new.id)) {
               return prevMessages;
@@ -135,27 +136,31 @@ export default function ChatPage() {
         }
       )
       .on(
-        "broadcast",
-        { event: "message_deleted" },
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "messages",
+          filter: `chat_room_id=eq.${chatRoomId}`,
+        },
         (payload) => {
-          console.log("Broadcast DELETE payload:", payload);
+          console.log("Received DELETE payload:", payload);
           setMessages((prevMessages) =>
-            prevMessages.filter((msg) => msg.id !== payload.messageId)
+            prevMessages.filter((msg) => msg.id !== payload.old.id)
           );
         }
       )
       .subscribe((status) => {
-        console.log("Subscription status:", status);
+        console.log("Channel subscription status:", status);
         if (status === "SUBSCRIBED") {
-          console.log("Successfully subscribed to real-time updates");
+          console.log("Successfully subscribed to channel");
         } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
-          console.error("Subscription failed or closed:", status);
+          console.log("Channel status changed:", status);
         }
       });
 
     return () => {
-      console.log("Unsubscribing from channel");
-      supabase.removeChannel(channel.current);
+      console.log("Component unmounting, leaving channel active");
     };
   }, [user, chatRoomId]);
 
@@ -235,19 +240,7 @@ export default function ChatPage() {
       prevMessages.filter((msg) => msg.id !== messageId)
     );
     console.log(`Message ${messageId} deleted locally`);
-
-    const { error: broadcastError } = await supabase
-      .channel(`chat:${chatRoomId}`)
-      .send({
-        type: "broadcast",
-        event: "message_deleted",
-        payload: { messageId },
-      });
-    if (broadcastError) {
-      console.error("Broadcast error:", broadcastError);
-    } else {
-      console.log(`Broadcasted deletion of message ${messageId}`);
-    }
+    // No broadcast needed; DELETE event handles it
   };
 
   const handleUsernameSubmit = async (e) => {
@@ -267,6 +260,12 @@ export default function ChatPage() {
   };
 
   const handleLogout = async () => {
+    if (channelRef.current) {
+      await channelRef.current.unsubscribe();
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+      console.log("Channel unsubscribed and removed during logout");
+    }
     await supabase.auth.signOut();
     router.push("/auth");
   };
