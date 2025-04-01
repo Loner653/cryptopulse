@@ -87,9 +87,10 @@
 
 /* Message Container */
 .messageContainer {
-  margin-bottom: 15px;
-  max-width: 85%;
+  margin-bottom: 8px;
+  max-width: 70%; /* Constrain width to prevent stretching across the screen */
   display: flex;
+  position: relative;
 }
 
 /* Message Sent */
@@ -106,38 +107,60 @@
 
 /* Message */
 .message {
-  padding: 8px 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
+  padding: 8px 12px;
+  border-radius: 10px; /* WhatsApp-like rounded corners */
   position: relative;
-  transition: transform 0.3s ease;
-  min-height: 30px;
+  min-height: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  word-wrap: break-word; /* Ensure text wraps to the next line */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: none; /* Remove shadow for WhatsApp-like flat design */
+  backdrop-filter: none; /* Remove blur */
 }
 
 /* Message Sent Styling */
 .messageSent .message {
-  background: linear-gradient(90deg, #ffd700, #ffaa00);
-  color: #1a1a2e;
-  border-color: rgba(255, 215, 0, 0.3);
+  background: #DCF8C6; /* WhatsApp green for sent messages */
+  color: #000000; /* Black text for contrast */
+  border-radius: 10px 10px 0 10px; /* Bottom-right corner less rounded for tail */
+}
+
+/* Tail for Sent Messages */
+.messageSent .message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #DCF8C6; /* Match sent message background */
+  border-left: 8px solid transparent;
 }
 
 /* Message Received Styling */
 .messageReceived .message {
-  background: #4a90e2;
-  color: #ffffff;
-  border-color: rgba(0, 212, 255, 0.3);
-  backdrop-filter: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #ECE5DD; /* WhatsApp gray for received messages */
+  color: #000000; /* Black text for contrast */
+  border-radius: 10px 10px 10px 0; /* Bottom-left corner less rounded for tail */
+}
+
+/* Tail for Received Messages */
+.messageReceived .message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #ECE5DD; /* Match received message background */
+  border-right: 8px solid transparent;
 }
 
 .message:hover {
-  transform: translateY(-2px);
+  transform: none; /* Remove hover effect for WhatsApp-like simplicity */
 }
 
 /* Message Fade-In Animation */
@@ -159,30 +182,32 @@
 /* User */
 .user {
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   color: #fff;
 }
 
 /* Message Paragraph */
 .message p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  word-wrap: break-word; /* Ensure text wraps */
 }
 
 /* Timestamp */
 .timestamp {
-  font-size: 0.8rem;
-  color: #b0b0b0;
+  font-size: 0.75rem;
+  color: #666; /* Darker gray for timestamp */
   display: block;
-  margin-top: 5px;
+  margin-top: 2px;
+  text-align: right; /* Right-align for both sent and received */
 }
 
 /* Scroll Button */
 .scrollButton {
   position: absolute;
-  bottom: 80px; /* Adjusted to be above the message form (70px + 10px offset) */
+  bottom: 80px;
   right: 30px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   color: #1a1a2e;
@@ -213,7 +238,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   position: fixed;
-  bottom: 10px; /* Pushed up by 10px to avoid search bars */
+  bottom: 10px;
   left: 20px;
   right: 20px;
   max-width: 800px;
@@ -342,7 +367,7 @@
   }
 
   .messageContainer {
-    max-width: 90%;
+    max-width: 70%; /* Keep consistent across devices */
   }
 
   .scrollButton {
@@ -379,7 +404,7 @@
   }
 
   .messageContainer {
-    max-width: 95%;
+    max-width: 70%; /* Keep consistent across devices */
   }
 
   .messageInput {
