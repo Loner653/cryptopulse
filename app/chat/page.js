@@ -1,39 +1,78 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '../lib/supabase';
-import styles from './page.module.css';
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../lib/supabase";
+import styles from "./page.module.css";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState(null);
+  const [username, setUsername] = useState("");
+  const [showUsernamePrompt, setShowUsernamePrompt] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const chatRoomId = 'general'; // Hardcoded chat room for now
+  const [userProfiles, setUserProfiles] = useState({}); // Store user_id to username mapping
+  const chatRoomId = "general";
   const router = useRouter();
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
   // Auto-scroll to the latest message
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     setShowScrollButton(false);
   };
 
-  // Check if user is authenticated
+  // Check if user is authenticated and fetch their profile
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push('/auth');
+        router.push("/auth");
       } else {
         setUser(user);
+        // Fetch user profile
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("id", user.id)
+          .single();
+
+        if (error || !profile) {
+          setShowUsernamePrompt(true); // Prompt for username if not set
+        } else {
+          setUsername(profile.username);
+        }
       }
     };
 
     fetchUser();
   }, [router]);
+
+  // Fetch user profiles for all user_ids in messages
+  useEffect(() => {
+    const fetchUserProfiles = async () => {
+      const userIds = [...new Set(messages.map((msg) => msg.user_id))];
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, username")
+        .in("id", userIds);
+
+      if (error) {
+        console.error("Error fetching user profiles:", error);
+      } elses
+      const profiles = data.reduce((acc, profile) => {
+        acc[profile.id] = profile.username;
+        return acc;
+      }, {});
+      setUserProfiles(profiles);
+    };
+
+    if (messages.length > 0) {
+      fetchUserProfiles();
+    }
+  }, [messages]);
 
   // Fetch initial messages
   useEffect(() => {
@@ -41,14 +80,14 @@ export default function ChatPage() {
 
     const fetchMessages = async () => {
       const { data, error } = await supabase
-        .from('messages')
-        .select('*')
-        .eq('chat_room_id', chatRoomId)
-        .order('created_at', { ascending: true })
+        .from("messages")
+        .select("*")
+        .eq("chat_room_id", chatRoomId)
+        .order("created_at", { ascending: true })
         .limit(50);
 
       if (error) {
-        console.error('Error fetching messages:', error);
+        console.error("Error fetching messages:", error);
       } else {
         setMessages(data);
       }
@@ -61,22 +100,21 @@ export default function ChatPage() {
   useEffect(() => {
     if (!user) return;
 
-    console.log('Setting up real-time subscription for chat_room_id:', chatRoomId);
+    console.log("Setting up real-time subscription for chat_room_id:", chatRoomId);
 
     const channel = supabase
-      .channel('messages-channel')
+      .channel("messages-channel")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
           filter: `chat_room_id=eq.${chatRoomId}`,
         },
         (payload) => {
-          console.log('New message received:', payload);
+          console.log("New message received:", payload);
           setMessages((prevMessages) => {
-            // Avoid duplicates
             if (prevMessages.some((msg) => msg.id === payload.new.id)) {
               return prevMessages;
             }
@@ -85,11 +123,11 @@ export default function ChatPage() {
         }
       )
       .subscribe((status) => {
-        console.log('Subscription status:', status);
+        console.log("Subscription status:", status);
       });
 
     return () => {
-      console.log('Unsubscribing from real-time channel');
+      console.log("Unsubscribing from real-time channel");
       channel.unsubscribe();
     };
   }, [user, chatRoomId]);
@@ -120,17 +158,17 @@ export default function ChatPage() {
       setShowScrollButton(!isScrolledToBottom);
     };
 
-    messagesContainer.addEventListener('scroll', handleScroll);
-    return () => messagesContainer.removeEventListener('scroll', handleScroll);
+    messagesContainer.addEventListener("scroll", handleScroll);
+    return () => messagesContainer.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Bad word filter
-  const badWords = ['badword1', 'badword2', 'badword3']; // Replace with actual bad words
+  const badWords = ["badword1", "badword2", "badword3"];
   const filterBadWords = (text) => {
     let filteredText = text;
     badWords.forEach((word) => {
-      const regex = new RegExp(`\\b${word}\\b`, 'gi');
-      filteredText = filteredText.replace(regex, '****');
+      const regex = new RegExp(`\\b${word}\\b`, "gi");
+      filteredText = filteredText.replace(regex, "****");
     });
     return filteredText;
   };
@@ -149,39 +187,65 @@ export default function ChatPage() {
     };
 
     const { error } = await supabase
-      .from('messages')
+      .from("messages")
       .insert(messageData);
 
     if (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     } else {
-      console.log('Message sent:', messageData);
-      setNewMessage('');
+      console.log("Message sent:", messageData);
+      setNewMessage("");
+    }
+  };
+
+  // Handle username submission
+  const handleUsernameSubmit = async (e) => {
+    e.preventDefault();
+    if (!username.trim()) return;
+
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: user.id, username: username.trim() });
+
+    if (error) {
+      console.error("Error setting username:", error);
+      alert("Failed to set username. It may already be taken.");
+    } else {
+      setShowUsernamePrompt(false);
     }
   };
 
   // Logout
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/auth');
+    router.push("/auth");
   };
 
   if (!user) return null;
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.pageTitle}>Crypto Chat</h1>
-      </div>
+      {showUsernamePrompt && (
+        <div className={styles.usernameModal}>
+          <form onSubmit={handleUsernameSubmit} className={styles.usernameForm}>
+            <h2>Choose a Username</h2>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              className={styles.usernameInput}
+              required
+            />
+            <button type="submit" className={styles.usernameSubmitButton}>
+              Save
+            </button>
+          </form>
+        </div>
+      )}
       <button onClick={handleLogout} className={styles.stickyLogoutButton}>
         Log Out
       </button>
-      <div className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>Welcome to the CryptoGlobal Community Chat! 🚀</h2>
-        <p className={styles.welcomeMessage}>
-          This chat is a space for us to learn, share, and grow together in the world of crypto. Please keep conversations respectful and constructive—no bad language or misconduct. Let’s make this a positive learning environment for everyone!
-        </p>
-      </div>
       <div className={styles.chatContainer}>
         <div className={styles.messages} ref={messagesContainerRef}>
           {messages.map((message) => (
@@ -193,7 +257,7 @@ export default function ChatPage() {
             >
               <div className={styles.message}>
                 <span className={styles.user}>
-                  {message.user_id === user.id ? 'You' : message.user_id}
+                  {message.user_id === user.id ? "You" : userProfiles[message.user_id] || message.user_id}
                 </span>
                 <p>{message.text}</p>
                 <span className={styles.timestamp}>
