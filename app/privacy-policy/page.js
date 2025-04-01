@@ -1,5 +1,5 @@
 import Link from "next/link";
-import "../global.css";
+import "./privacy-policy.css";
 
 export const metadata = {
   title: "Privacy Policy | CryptoGlobal",

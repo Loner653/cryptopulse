@@ -1,449 +1,488 @@
 /* Root layout for the entire page */
 .pageLayout {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #e0e0e0;
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  padding: 3rem;
-  position: relative;
+  min-height: 100vh; /* Articles layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)); /* Privacy UI */
+  color: #e0e0e0; /* Articles layout (fits Privacy) */
+  font-family: 'Arial', sans-serif; /* Articles layout */
+  line-height: 1.6; /* Articles layout */
+  display: flex; /* Articles layout */
+  flex-direction: column; /* Articles layout */
+  padding: 3rem; /* Articles layout */
+  position: relative; /* Articles layout */
 }
 
 /* Add light overlay inspired by history.module.css */
 .pageLayout::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, rgba(255, 215, 0, 0.04) 100%);
-  opacity: 0.2; /* Increased from 0.15 to 0.2 for a more noticeable effect */
-  pointer-events: none;
-  z-index: 0;
+  content: ''; /* Articles layout */
+  position: absolute; /* Articles layout */
+  top: 0; /* Articles layout */
+  left: 0; /* Articles layout */
+  width: 100%; /* Articles layout */
+  height: 100%; /* Articles layout */
+  background: radial-gradient(circle, rgba(0, 204, 255, 0.05), rgba(255, 215, 0, 0.03)); /* Privacy UI tweak */
+  opacity: 0.2; /* Articles layout */
+  pointer-events: none; /* Articles layout */
+  z-index: 0; /* Articles layout */
 }
 
 /* Main content area */
 .mainContainer {
-  padding: 3rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  position: relative;
-  z-index: 1;
+  padding: 3rem 2rem; /* Articles layout */
+  max-width: 1200px; /* Articles layout */
+  margin: 0 auto; /* Articles layout */
+  flex: 1; /* Articles layout */
+  overflow-y: auto; /* Articles layout */
+  -webkit-overflow-scrolling: touch; /* Articles layout */
+  position: relative; /* Articles layout */
+  z-index: 1; /* Articles layout */
 }
 
 /* Article section title */
 .articleSectionTitle {
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 3rem;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  color: #ffd700;
+  font-size: 3rem; /* Articles layout */
+  text-align: center; /* Articles layout */
+  margin-bottom: 3rem; /* Articles layout */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  transition: transform 0.3s ease; /* Privacy UI */
+}
+
+.articleSectionTitle:hover {
+  transform: scale(1.05); /* Privacy UI */
 }
 
 /* Table of Contents */
 .tableOfContents {
-  background: linear-gradient(135deg, rgba(0, 0, 50, 0.9), rgba(0, 50, 100, 0.7));
-  border: 2px solid #ffd700;
-  border-radius: 10px;
-  padding: 3rem;
-  margin-bottom: 3rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  position: sticky;
-  top: 9.5rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  z-index: 1;
+  padding: 3rem; /* Articles layout */
+  margin-bottom: 3rem; /* Articles layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  position: sticky; /* Articles layout */
+  top: 9.5rem; /* Articles layout */
+  max-width: 800px; /* Articles layout */
+  margin-left: auto; /* Articles layout */
+  margin-right: auto; /* Articles layout */
+  z-index: 1; /* Articles layout */
+}
+
+.tableOfContents:hover {
+  transform: translateY(-5px); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2); /* Privacy UI */
 }
 
 .tocTitle {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-  color: #ffd700;
+  font-size: 2.5rem; /* Articles layout */
+  margin-bottom: 2rem; /* Articles layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  text-align: center; /* Articles layout */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.tocTitle:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .tocList {
-  list-style: none;
-  padding: 0;
-  text-align: left;
+  list-style: none; /* Articles layout */
+  padding: 0; /* Articles layout */
+  text-align: left; /* Articles layout */
 }
 
 .tocLink {
-  color: #66ccff;
-  text-decoration: none;
-  font-size: 1.75rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  text-decoration: none; /* Articles layout */
+  font-size: 1.75rem; /* Articles layout */
+  display: block; /* Articles layout */
+  margin-bottom: 1rem; /* Articles layout */
+  padding: 1rem 1.5rem; /* Articles layout */
+  border-radius: 4px; /* Privacy UI */
+  color: #00ccff; /* Privacy UI */
+  background: rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease; /* Privacy UI */
+  max-width: 600px; /* Articles layout */
+  margin-left: auto; /* Articles layout */
+  margin-right: auto; /* Articles layout */
 }
 
 .tocLink:hover {
-  color: #ffd700;
-  background: rgba(255, 215, 0, 0.1);
-  transform: translateY(-2px);
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  color: #ffd700; /* Privacy UI */
+  background: rgba(255, 215, 0, 0.2); /* Privacy UI */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  transform: translateY(-2px); /* Privacy UI */
 }
 
 /* Article section */
 .articleSection {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 3rem;
-  margin-bottom: 3rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  z-index: 1;
+  padding: 3rem; /* Articles layout */
+  margin-bottom: 3rem; /* Articles layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  max-width: 800px; /* Articles layout */
+  margin-left: auto; /* Articles layout */
+  margin-right: auto; /* Articles layout */
+  z-index: 1; /* Articles layout */
 }
 
 .articleSection:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2); /* Privacy UI */
 }
 
 .articleSectionSubtitle {
-  font-size: 2.25rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: left;
-  color: #ffd700;
+  font-size: 2.25rem; /* Articles layout */
+  margin-bottom: 1.5rem; /* Articles layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  text-align: left; /* Articles layout */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.articleSectionSubtitle:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .articleSubsectionTitle {
-  font-size: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(90deg, #ffd700, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: left;
-  color: #ffd700;
+  font-size: 2rem; /* Articles layout */
+  margin-top: 2rem; /* Articles layout */
+  margin-bottom: 1.5rem; /* Articles layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  text-align: left; /* Articles layout */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.articleSubsectionTitle:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .articleImage {
-  width: 100%;
-  max-width: 800px;
-  height: auto;
-  display: block;
-  margin: 1.5rem auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%; /* Articles layout */
+  max-width: 800px; /* Articles layout */
+  height: auto; /* Articles layout */
+  display: block; /* Articles layout */
+  margin: 1.5rem auto; /* Articles layout */
+  border-radius: 8px; /* Articles layout */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Articles layout (kept as is) */
 }
 
 .articleImageCaption {
-  text-align: center;
-  font-style: italic;
-  color: #b0b0b0;
-  margin-top: -0.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+  text-align: center; /* Articles layout */
+  font-style: italic; /* Articles layout */
+  color: #00ccff; /* Privacy UI */
+  margin-top: -0.5rem; /* Articles layout */
+  margin-bottom: 1.5rem; /* Articles layout */
+  font-size: 1rem; /* Articles layout */
 }
 
 /* Share Buttons */
 .shareButtons {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: center;
-  max-width: 600px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 2rem; /* Articles layout */
+  padding-top: 1.5rem; /* Articles layout */
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Articles layout (kept as is) */
+  text-align: center; /* Articles layout */
+  max-width: 600px; /* Articles layout */
+  width: 100%; /* Articles layout */
+  margin-left: auto; /* Articles layout */
+  margin-right: auto; /* Articles layout */
 }
 
 .shareButtons h4 {
-  font-size: 1.5rem;
-  color: #ffd700;
-  margin-bottom: 1rem;
+  font-size: 1.5rem; /* Articles layout */
+  color: #e0e0e0; /* Privacy UI */
+  margin-bottom: 1rem; /* Articles layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.shareButtons h4:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .shareButton {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  margin: 0 0.75rem;
-  border-radius: 5px;
-  text-decoration: none;
-  color: #fff;
-  font-weight: bold;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: inline-block; /* Articles layout */
+  padding: 0.75rem 1.5rem; /* Articles layout */
+  margin: 0 0.75rem; /* Articles layout */
+  border-radius: 4px; /* Privacy UI */
+  text-decoration: none; /* Articles layout */
+  color: #fff; /* Articles layout (kept as is) */
+  font-weight: bold; /* Articles layout */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Articles layout (kept as is) */
 }
 
 .shareButton.twitter {
-  background: #1da1f2;
+  background: rgba(0, 204, 255, 0.1); /* Privacy UI tweak */
 }
 
 .shareButton.linkedin {
-  background: #0077b5;
+  background: rgba(0, 204, 255, 0.1); /* Privacy UI tweak */
 }
 
 .shareButton:hover {
-  transform: scale(1.05);
-  opacity:-0.9;
+  transform: scale(1.05); /* Articles layout */
+  opacity: 0.9; /* Articles layout */
+  background: rgba(255, 215, 0, 0.2); /* Privacy UI */
 }
 
 /* Related Articles */
 .relatedArticles {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: left;
-  max-width: 600px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 2rem; /* Articles layout */
+  padding-top: 1.5rem; /* Articles layout */
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Articles layout (kept as is) */
+  text-align: left; /* Articles layout */
+  max-width: 600px; /* Articles layout */
+  width: 100%; /* Articles layout */
+  margin-left: auto; /* Articles layout */
+  margin-right: auto; /* Articles layout */
 }
 
 .relatedArticlesTitle {
-  font-size: 1.75rem;
-  color: #ffd700;
-  margin-bottom: 1rem;
+  font-size: 1.75rem; /* Articles layout */
+  color: #e0e0e0; /* Privacy UI */
+  margin-bottom: 1rem; /* Articles layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.relatedArticlesTitle:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .relatedArticlesList {
-  list-style: none;
-  padding: 0;
-  text-align: left;
-  max-width: 600px;
-  margin: 0 auto;
+  list-style: none; /* Articles layout */
+  padding: 0; /* Articles layout */
+  text-align: left; /* Articles layout */
+  max-width: 600px; /* Articles layout */
+  margin: 0 auto; /* Articles layout */
 }
 
 .relatedArticlesList li a {
-  color: #66ccff;
-  text-decoration: none;
-  font-size: 1.125rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
-  display: inline-block;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
+  color: #00ccff; /* Privacy UI */
+  text-decoration: none; /* Articles layout */
+  font-size: 1.125rem; /* Articles layout */
+  padding: 0.5rem 1rem; /* Articles layout */
+  background: rgba(0, 204, 255, 0.1); /* Privacy UI */
+  border-radius: 4px; /* Privacy UI */
+  display: inline-block; /* Articles layout */
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease; /* Privacy UI */
 }
 
 .relatedArticlesList li a:hover {
-  color: #ffd700;
-  background: rgba(255, 215, 0, 0.1);
-  transform: translateY(-2px);
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  color: #ffd700; /* Privacy UI */
+  background: rgba(255, 215, 0, 0.2); /* Privacy UI */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  transform: translateY(-2px); /* Privacy UI */
 }
 
 /* Back to Top Link */
 .backToTop {
-  position: fixed;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #b3e5fc, #4fc3f7);
-  color: #2e2e4a;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  z-index: 1000;
-  text-decoration: none;
+  position: fixed; /* Articles layout */
+  right: 1rem; /* Articles layout */
+  top: 50%; /* Articles layout */
+  transform: translateY(-50%); /* Articles layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  color: #e0e0e0; /* Privacy UI */
+  border: none; /* Articles layout */
+  padding: 12px 18px; /* Articles layout */
+  border-radius: 12px; /* Privacy UI */
+  font-size: 1rem; /* Articles layout */
+  font-weight: 700; /* Articles layout */
+  cursor: pointer; /* Articles layout */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  z-index: 1000; /* Articles layout */
+  text-decoration: none; /* Articles layout */
 }
 
 .backToTop:hover {
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  transform: translateY(-50%) scale(1.05); /* Articles layout + Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3); /* Privacy UI */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .pageLayout {
-    padding: 1rem;
+    padding: 1rem; /* Articles layout */
   }
 
   .mainContainer {
-    padding: 1rem 0.5rem;
-    max-width: 100%;
+    padding: 1rem 0.5rem; /* Articles layout */
+    max-width: 100%; /* Articles layout */
   }
 
   .articleSectionTitle {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
+    font-size: 2.2rem; /* Articles layout */
+    margin-bottom: 2rem; /* Articles layout */
   }
 
   .tableOfContents {
-    position: static;
-    max-width: 100%;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    position: static; /* Articles layout */
+    max-width: 100%; /* Articles layout */
+    padding: 1rem; /* Articles layout */
+    margin-bottom: 1.5rem; /* Articles layout */
   }
 
   .tocTitle {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.8rem; /* Articles layout */
+    margin-bottom: 1.5rem; /* Articles layout */
   }
 
   .tocLink {
-    font-size: 1.4rem;
-    padding: 0.8rem 1rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.4rem; /* Articles layout */
+    padding: 0.8rem 1rem; /* Articles layout */
+    margin-bottom: 0.8rem; /* Articles layout */
   }
 
   .articleSection {
-    max-width: 100%;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    max-width: 100%; /* Articles layout */
+    padding: 1rem; /* Articles layout */
+    margin-bottom: 1.5rem; /* Articles layout */
   }
 
   .articleSectionSubtitle {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+    font-size: 1.6rem; /* Articles layout */
+    margin-bottom: 1rem; /* Articles layout */
   }
 
   .articleSubsectionTitle {
-    font-size: 1.4rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.4rem; /* Articles layout */
+    margin-top: 1.5rem; /* Articles layout */
+    margin-bottom: 1rem; /* Articles layout */
   }
 
   .articleImage {
-    max-width: 100%;
+    max-width: 100%; /* Articles layout */
   }
 
   .articleImageCaption {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* Articles layout */
   }
 
   .shareButtons {
-    max-width: 100%;
+    max-width: 100%; /* Articles layout */
   }
 
   .shareButtons h4 {
-    font-size: 1.3rem;
+    font-size: 1.3rem; /* Articles layout */
   }
 
   .shareButton {
-    display: block;
-    margin: 0.5rem auto;
-    width: 100%;
-    max-width: 250px;
-    padding: 0.6rem 1.2rem;
+    display: block; /* Articles layout */
+    margin: 0.5rem auto; /* Articles layout */
+    width: 100%; /* Articles layout */
+    max-width: 250px; /* Articles layout */
+    padding: 0.6rem 1.2rem; /* Articles layout */
   }
 
   .relatedArticles {
-    max-width: 100%;
+    max-width: 100%; /* Articles layout */
   }
 
   .relatedArticlesTitle {
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* Articles layout */
   }
 
   .relatedArticlesList li a {
-    font-size: 1rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 1rem; /* Articles layout */
+    padding: 0.4rem 0.8rem; /* Articles layout */
   }
 
   .backToTop {
-    padding: 10px 14px;
-    font-size: 0.9rem;
-    right: 10px;
+    padding: 10px 14px; /* Articles layout */
+    font-size: 0.9rem; /* Articles layout */
+    right: 10px; /* Articles layout */
   }
 }
 
 @media (max-width: 480px) {
   .pageLayout {
-    padding: 0.5rem;
+    padding: 0.5rem; /* Articles layout */
   }
 
   .mainContainer {
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem 0.25rem; /* Articles layout */
   }
 
   .articleSectionTitle {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.8rem; /* Articles layout */
+    margin-bottom: 1.5rem; /* Articles layout */
   }
 
   .tableOfContents {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem; /* Articles layout */
+    margin-bottom: 1rem; /* Articles layout */
   }
 
   .tocTitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem; /* Articles layout */
+    margin-bottom: 1rem; /* Articles layout */
   }
 
   .tocLink {
-    font-size: 1.2rem;
-    padding: 0.6rem 0.8rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.2rem; /* Articles layout */
+    padding: 0.6rem 0.8rem; /* Articles layout */
+    margin-bottom: 0.6rem; /* Articles layout */
   }
 
   .articleSection {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem; /* Articles layout */
+    margin-bottom: 1rem; /* Articles layout */
   }
 
   .articleSectionSubtitle {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.4rem; /* Articles layout */
+    margin-bottom: 0.8rem; /* Articles layout */
   }
 
   .articleSubsectionTitle {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.2rem; /* Articles layout */
+    margin-top: 1rem; /* Articles layout */
+    margin-bottom: 0.8rem; /* Articles layout */
   }
 
   .articleImageCaption {
-    font-size: 0.85rem;
+    font-size: 0.85rem; /* Articles layout */
   }
 
   .shareButtons h4 {
-    font-size: 1.2rem;
+    font-size: 1.2rem; /* Articles layout */
   }
 
   .shareButton {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    max-width: 220px;
+    font-size: 0.9rem; /* Articles layout */
+    padding: 0.5rem 1rem; /* Articles layout */
+    max-width: 220px; /* Articles layout */
   }
 
   .relatedArticlesTitle {
-    font-size: 1.2rem;
+    font-size: 1.2rem; /* Articles layout */
   }
 
   .relatedArticlesList li a {
-    font-size: 0.9rem;
-    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem; /* Articles layout */
+    padding: 0.3rem 0.6rem; /* Articles layout */
   }
 
   .backToTop {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    right: 8px;
-    border-radius: 25px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    padding: 8px 12px; /* Articles layout */
+    font-size: 0.85rem; /* Articles layout */
+    right: 8px; /* Articles layout */
+    border-radius: 25px; /* Articles layout */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Articles layout (adjusted for Privacy UI) */
   }
 }

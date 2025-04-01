@@ -5,7 +5,6 @@ import styles from "./navbar.module.css";
 export default function Navbar({ toggleSidebar, isSidebarOpen }) {
   return (
     <nav className={styles.navbar}>
-      <h1 className={styles.title}>Welcome to CryptoGlobal</h1>
       <button
         className={styles.sidebarToggle}
         onClick={toggleSidebar}
@@ -14,11 +13,6 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
         {isSidebarOpen ? "✖" : "☰"}
       </button>
       <ul className={styles.navList}>
-        <li>
-          <Link href="/history" className={styles.navLink}>
-            History
-          </Link>
-        </li>
         <li>
           <Link href="/faq" className={styles.navLink}>
             🧠 FAQ

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://cryptoglobalive.com/chart</loc><lastmod>2025-03-30T20:03:49.976Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/crypto-bot</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/history</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/home</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/faq</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/news</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/privacy-policy</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://cryptoglobalive.com/about</loc><lastmod>2025-03-30T20:03:49.977Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/chat</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/chart</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/auth</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/history</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/home</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/crypto-bot</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/about</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com</loc><lastmod>2025-04-01T18:30:47.176Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/faq</loc><lastmod>2025-04-01T18:30:47.177Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/news</loc><lastmod>2025-04-01T18:30:47.177Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://cryptoglobalive.com/privacy-policy</loc><lastmod>2025-04-01T18:30:47.177Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

@@ -1,91 +1,94 @@
 .container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #e0e0e0;
-  font-family: 'Arial', sans-serif;
-  position: relative;
-  overflow-x: hidden;
+  min-height: 100vh; /* Home layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)); /* Privacy UI */
+  color: #e0e0e0; /* Home layout (fits Privacy) */
+  font-family: 'Arial', sans-serif; /* Home layout */
+  position: relative; /* Home layout */
+  overflow-x: hidden; /* Home layout */
 }
 
 .hero {
-  position: relative;
-  height: 70vh; /* Adjust height for desktop */
-  background-image: url('/images/hero-image.webp'); /* Path to your WebP image */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-  z-index: 1;
-  padding-top: clamp(8rem, 12vh, 10rem); /* Increased to account for PriceTicker + Navbar */
+  position: relative; /* Home layout */
+  height: 70vh; /* Home layout */
+  background-image: url('/images/hero-image.webp'); /* Home layout */
+  background-size: cover; /* Home layout */
+  background-position: center; /* Home layout */
+  background-repeat: no-repeat; /* Home layout */
+  display: flex; /* Home layout */
+  align-items: center; /* Home layout */
+  justify-content: center; /* Home layout */
+  text-align: center; /* Home layout */
+  overflow: hidden; /* Home layout */
+  z-index: 1; /* Home layout */
+  padding-top: clamp(8rem, 12vh, 10rem); /* Home layout */
 }
 
 .hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(26, 26, 46, 0.7), rgba(22, 33, 62, 0.7));
-  z-index: 0;
+  content: ''; /* Home layout */
+  position: absolute; /* Home layout */
+  top: 0; /* Home layout */
+  left: 0; /* Home layout */
+  width: 100%; /* Home layout */
+  height: 100%; /* Home layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  z-index: 0; /* Home layout */
 }
 
 .heroContent {
-  position: relative;
-  z-index: 1;
-  padding: 20px;
+  position: relative; /* Home layout */
+  z-index: 1; /* Home layout */
+  padding: 20px; /* Home layout */
 }
 
 .heroTitle {
-  font-size: 3.5rem;
-  font-weight: 800;
-  background: linear-gradient(90deg, #ffd700, #00ccff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 20px rgba(0, 204, 255, 0.5);
-  animation: titleGlow 2s infinite alternate;
-  margin-bottom: 1rem;
+  font-size: 3.5rem; /* Home layout */
+  font-weight: 800; /* Home layout */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  transition: transform 0.3s ease; /* Privacy UI */
+  margin-bottom: 1rem; /* Home layout */
 }
 
-@keyframes titleGlow {
-  0% { text-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 20px rgba(0, 204, 255, 0.5); }
-  100% { text-shadow: 0 0 18px rgba(255, 215, 0, 1), 0 0 30px rgba(0, 204, 255, 0.7); }
+.heroTitle:hover {
+  transform: scale(1.05); /* Privacy UI */
 }
 
 .heroSubtitle {
-  font-size: 1.5rem;
-  color: #b0b0b0;
-  margin-bottom: 2rem;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  font-size: 1.5rem; /* Home layout */
+  color: #e0e0e0; /* Privacy UI */
+  margin-bottom: 2rem; /* Home layout */
 }
 
 .heroButton {
-  display: inline-block;
-  padding: 12px 24px;
-  background: linear-gradient(90deg, #ffd700, #00ccff);
-  color: #1a1a2e;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block; /* Home layout */
+  padding: 12px 24px; /* Home layout */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Enhanced UI: Gradient background */
+  color: #1a1a1a; /* Enhanced UI: Darker text for contrast */
+  text-decoration: none; /* Home layout */
+  font-weight: bold; /* Home layout */
+  font-size: 1.2rem; /* Home layout */
+  border-radius: 4px; /* Privacy UI */
+  border: 2px solid rgba(255, 215, 0, 0.5); /* Enhanced UI: Subtle border */
+  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3); /* Enhanced UI: Glow effect */
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
 }
 
 .heroButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+  color: #1a1a1a; /* Enhanced UI: Keep text color for contrast */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  background: linear-gradient(90deg, #00ccff, #ffd700); /* Enhanced UI: Reverse gradient on hover */
+  transform: translateY(-2px); /* Privacy UI */
+  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5); /* Enhanced UI: Stronger glow on hover */
 }
 
 .contentContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  padding-top: 80px; /* Increased padding to push content down on desktop */
+  max-width: 1200px; /* Home layout */
+  margin: 0 auto; /* Home layout */
+  padding: 40px 20px; /* Home layout */
+  padding-top: 80px; /* Home layout */
 }
 
 .cryptoSection,
@@ -93,12 +96,21 @@
 .cryptoBotSection,
 .newsSection,
 .articleSection {
-  margin-bottom: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+  margin-bottom: 40px; /* Home layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  padding: 20px; /* Home layout */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+}
+
+.cryptoSection:hover,
+.airdropSection:hover,
+.cryptoBotSection:hover,
+.newsSection:hover,
+.articleSection:hover {
+  transform: translateY(-5px); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2); /* Privacy UI */
 }
 
 .cryptoSection h2,
@@ -106,93 +118,121 @@
 .cryptoBotSection h2,
 .newsSection h2,
 .articleSection h1 {
-  font-size: 2rem;
-  color: #ffd700;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 2rem; /* Home layout */
+  color: #e0e0e0; /* Privacy UI */
+  margin-bottom: 1rem; /* Home layout */
+  display: flex; /* Home layout */
+  align-items: center; /* Home layout */
+  gap: 10px; /* Home layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.cryptoSection h2:hover,
+.airdropSection h2:hover,
+.cryptoBotSection h2:hover,
+.newsSection h2:hover,
+.articleSection h1:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .sectionIcon {
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* Home layout */
 }
 
 .priceList p {
-  font-size: 1.2rem;
-  margin: 10px 0;
-  color: #00d4ff;
+  font-size: 1.4rem; /* Increased from 1.2rem */
+  margin: 10px 0; /* Home layout */
+  color: #00ccff; /* Privacy UI */
 }
 
 .xLink {
-  color: #00d4ff;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  color: #00ccff; /* Privacy UI */
+  text-decoration: none; /* Home layout */
+  font-weight: bold; /* Home layout */
+  padding: 4px 8px; /* Enhanced UI: Added padding for better click area */
+  background: rgba(0, 204, 255, 0.1); /* Enhanced UI: Subtle background */
+  border-radius: 4px; /* Enhanced UI: Rounded corners */
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
 }
 
 .xLink:hover {
-  color: #ffd700;
-  text-decoration: underline;
+  color: #ffd700; /* Privacy UI */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  background: rgba(255, 215, 0, 0.2); /* Enhanced UI: Highlight background */
+  transform: translateY(-2px); /* Privacy UI */
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); /* Enhanced UI: Glow effect */
 }
 
 .readMoreButton {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 16px;
-  background: linear-gradient(90deg, #ffd700, #00ccff);
-  color: #1a1a2e;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block; /* Home layout */
+  margin-top: 10px; /* Home layout */
+  padding: 8px 16px; /* Home layout */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Enhanced UI: Gradient background */
+  color: #1a1a1a; /* Enhanced UI: Darker text for contrast */
+  text-decoration: none; /* Home layout */
+  font-weight: bold; /* Home layout */
+  border-radius: 4px; /* Privacy UI */
+  border: 2px solid rgba(255, 215, 0, 0.5); /* Enhanced UI: Subtle border */
+  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3); /* Enhanced UI: Glow effect */
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
 }
 
 .readMoreButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+  color: #1a1a1a; /* Enhanced UI: Keep text color for contrast */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  background: linear-gradient(90deg, #00ccff, #ffd700); /* Enhanced UI: Reverse gradient on hover */
+  transform: translateY(-2px); /* Privacy UI */
+  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5); /* Enhanced UI: Stronger glow on hover */
 }
 
 .articleSection h2 {
-  font-size: 1.8rem;
-  color: #00d4ff;
-  margin-bottom: 1rem;
+  font-size: 1.8rem; /* Home layout */
+  color: #e0e0e0; /* Privacy UI */
+  margin-bottom: 1rem; /* Home layout */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.articleSection h2:hover {
+  color: #ffd700; /* Privacy UI */
 }
 
 .articleSection p {
-  font-size: 1.1rem;
-  color: #b0b0b0;
-  line-height: 1.6;
+  font-size: 1.3rem; /* Increased from 1.1rem */
+  color: #e0e0e0; /* Privacy UI */
+  line-height: 1.6; /* Home layout */
 }
 
 @media (max-width: 768px) {
   .hero {
-    height: 60vh; /* Shorter hero section for mobile */
-    padding-top: clamp(7rem, 10vh, 9rem); /* Adjusted for PriceTicker + Navbar */
-    align-items: flex-start; /* Align content to the top */
+    height: 60vh; /* Home layout */
+    padding-top: clamp(7rem, 10vh, 9rem); /* Home layout */
+    align-items: flex-start; /* Home layout */
   }
 
   .heroContent {
-    margin-top: 3rem; /* Adjusted to position content better */
+    margin-top: -2rem; /* Adjusted: Push content up even more on mobile */
+    padding: 10px; /* Reduced padding to fit content better */
   }
 
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: 2.5rem; /* Home layout */
   }
 
   .heroSubtitle {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem; /* Reduced to fit content better */
+    font-size: 1.2rem; /* Home layout */
+    margin-bottom: 1.5rem; /* Home layout */
   }
 
   .heroButton {
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 10px 20px; /* Home layout */
+    font-size: 1rem; /* Home layout */
   }
 
   .contentContainer {
-    padding: 30px 15px;
-    padding-top: 40px; /* Reduced padding on mobile */
+    padding: 30px 15px; /* Home layout */
+    padding-top: 40px; /* Home layout */
   }
 
   .cryptoSection h2,
@@ -200,47 +240,51 @@
   .cryptoBotSection h2,
   .newsSection h2,
   .articleSection h1 {
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* Home layout */
   }
 
   .articleSection h2 {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Home layout */
   }
 
-  .priceList p,
+  .priceList p {
+    font-size: 1.2rem; /* Increased from 1rem */
+  }
+
   .articleSection p {
-    font-size: 1rem;
+    font-size: 1.1rem; /* Increased from 1rem */
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    height: 50vh; /* Even shorter for smaller screens */
-    padding-top: clamp(6rem, 9vh, 8rem); /* Adjusted for smaller screens */
-    align-items: flex-start; /* Align content to the top */
+    height: 50vh; /* Home layout */
+    padding-top: clamp(6rem, 9vh, 8rem); /* Home layout */
+    align-items: flex-start; /* Home layout */
   }
 
   .heroContent {
-    margin-top: 2.5rem; /* Fine-tuned for smaller screens */
+    margin-top: -3rem; /* Adjusted: Push content up even more on smaller screens */
+    padding: 8px; /* Further reduced padding for smaller screens */
   }
 
   .heroTitle {
-    font-size: 2rem;
+    font-size: 2rem; /* Home layout */
   }
 
   .heroSubtitle {
-    font-size: 1rem;
-    margin-bottom: 1rem; /* Reduced to fit content better */
+    font-size: 1rem; /* Home layout */
+    margin-bottom: 1rem; /* Home layout */
   }
 
   .heroButton {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 8px 16px; /* Home layout */
+    font-size: 0.9rem; /* Home layout */
   }
 
   .contentContainer {
-    padding: 20px 10px;
-    padding-top: 30px; /* Further reduced padding on smaller screens */
+    padding: 20px 10px; /* Home layout */
+    padding-top: 30px; /* Home layout */
   }
 
   .cryptoSection,
@@ -248,7 +292,7 @@
   .cryptoBotSection,
   .newsSection,
   .articleSection {
-    padding: 15px;
+    padding: 15px; /* Home layout */
   }
 
   .cryptoSection h2,
@@ -256,20 +300,23 @@
   .cryptoBotSection h2,
   .newsSection h2,
   .articleSection h1 {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Home layout */
   }
 
   .articleSection h2 {
-    font-size: 1.3rem;
+    font-size: 1.3rem; /* Home layout */
   }
 
-  .priceList p,
+  .priceList p {
+    font-size: 1rem; /* Increased from 0.9rem */
+  }
+
   .articleSection p {
-    font-size: 0.9rem;
+    font-size: 1rem; /* Increased from 0.9rem */
   }
 
   .readMoreButton {
-    padding: 6px 12px;
-    font-size: 0.9rem;
+    padding: 6px 12px; /* Home layout */
+    font-size: 0.9rem; /* Home layout */
   }
 }

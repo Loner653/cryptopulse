@@ -1,5 +1,5 @@
 import Link from "next/link";
-import "../global.css";
+import "./about.css"; // Changed from ./about.module.css to ./about.css
 
 export const metadata = {
   title: "About CryptoGlobal",

@@ -153,6 +153,10 @@
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 10px rgba(0, 204, 255, 0.2);
 }
 
 .articlesTitle {
@@ -161,12 +165,26 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  text-align: center;
 }
 
 .articleItem {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: rgba(0, 204, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(0, 204, 255, 0.2);
+  overflow: hidden; /* Ensure content doesn’t overflow the container */
+}
+
+.articleItem:hover {
+  transform: translateY(-3px);
+  background: rgba(0, 204, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
+  border-color: rgba(255, 215, 0, 0.4);
 }
 
 .articleItem a {
@@ -179,6 +197,13 @@
   color: #00ccff;
   margin-bottom: 0.5rem;
   transition: all 0.3s ease;
+  overflow-wrap: break-word; /* Break long words */
+  word-break: break-word; /* Ensure long words break */
+  display: -webkit-box; /* For multi-line ellipsis */
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical; /* Vertical orientation for ellipsis */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow */
 }
 
 .articleItem h4:hover {
@@ -190,6 +215,9 @@
   font-size: 0.875rem;
   color: #e0e0e0;
   line-height: 1.4;
+  margin: 0;
+  overflow-wrap: break-word; /* Break long words in descriptions too */
+  word-break: break-word; /* Ensure long words break */
 }
 
 @media (max-width: 768px) {
@@ -231,12 +259,17 @@
     font-size: 1.25rem;
   }
 
+  .articleItem {
+    margin-bottom: 1.25rem;
+    padding: 0.5rem;
+  }
+
   .articleItem h4 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .articleItem p {
-    font-size: 1rem; /* Increased for better readability */
+    font-size: 1rem;
     line-height: 1.5;
   }
 }
@@ -268,12 +301,17 @@
     font-size: 1.2rem;
   }
 
+  .articleItem {
+    margin-bottom: 1rem;
+    padding: 0.4rem;
+  }
+
   .articleItem h4 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .articleItem p {
-    font-size: 0.95rem; /* Further increased for mobile */
+    font-size: 0.95rem;
     line-height: 1.5;
   }
 }

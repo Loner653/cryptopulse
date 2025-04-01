@@ -1,284 +1,281 @@
 /* FAQ Container with sleek enhancements */
 .faqContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #e0e0e0;
-  line-height: 1.6;
-  padding-top: clamp(7rem, 8vh, 9rem);
-  min-height: 100vh;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  max-width: 1200px; /* FAQ layout */
+  margin: 0 auto; /* FAQ layout */
+  padding: 2.5rem 1.5rem; /* FAQ layout */
+  font-family: 'Arial', sans-serif; /* FAQ layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)); /* Privacy UI */
+  color: #e0e0e0; /* FAQ layout (fits Privacy) */
+  line-height: 1.6; /* FAQ layout */
+  padding-top: clamp(7rem, 8vh, 9rem); /* FAQ layout */
+  min-height: 100vh; /* FAQ layout */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Privacy UI */
+  position: relative; /* FAQ layout */
+  overflow: hidden; /* FAQ layout */
+  transition: box-shadow 0.3s ease; /* FAQ layout */
 }
 
 .faqContainer:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4); /* FAQ layout (kept as is) */
 }
 
 .faqContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(255, 215, 0, 0.1) 100%);
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: 0;
+  content: ''; /* FAQ layout */
+  position: absolute; /* FAQ layout */
+  top: 0; /* FAQ layout */
+  left: 0; /* FAQ layout */
+  width: 100%; /* FAQ layout */
+  height: 100%; /* FAQ layout */
+  background: radial-gradient(circle, rgba(0, 204, 255, 0.05), rgba(255, 215, 0, 0.03)); /* Privacy UI tweak */
+  opacity: 0.3; /* FAQ layout */
+  pointer-events: none; /* FAQ layout */
+  z-index: 0; /* FAQ layout */
 }
 
 /* FAQ Title */
 .faqTitle {
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  background: linear-gradient(90deg, #00d4ff, #00f0ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: #00d4ff;
-  text-shadow: 0 0 6px rgba(0, 212, 255, 0.7);
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  transition: transform 0.2s ease, text-shadow 0.3s ease;
-  z-index: 1;
+  font-size: 3rem; /* FAQ layout */
+  text-align: center; /* FAQ layout */
+  margin-bottom: 2.5rem; /* FAQ layout */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  transition: transform 0.3s ease; /* Privacy UI */
+  padding: 8px 16px; /* FAQ layout */
+  border-radius: 8px; /* FAQ layout */
+  z-index: 1; /* FAQ layout */
 }
 
 .faqTitle:hover {
-  transform: scale(1.02);
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.9);
+  transform: scale(1.05); /* Privacy UI */
 }
 
 /* FAQ Intro */
 .faqIntro {
-  font-size: 1.125rem;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  color: #e0e0e0;
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
-  z-index: 1;
-  font-weight: 400;
-  transition: background 0.3s ease;
+  font-size: 1.125rem; /* FAQ layout */
+  text-align: center; /* FAQ layout */
+  margin-bottom: 2.5rem; /* FAQ layout */
+  color: #e0e0e0; /* Privacy UI */
+  padding: 6px 12px; /* FAQ layout */
+  background: rgba(255, 255, 255, 0.05); /* Privacy UI */
+  border-radius: 6px; /* FAQ layout */
+  z-index: 1; /* FAQ layout */
+  font-weight: 400; /* FAQ layout */
+  transition: background 0.3s ease; /* FAQ layout */
 }
 
 .faqIntro:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1); /* Privacy UI tweak */
 }
 
 /* FAQ List */
 .faqList {
-  border-top: 1px solid rgba(0, 212, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* FAQ layout (adjusted for Privacy) */
 }
 
 /* FAQ Item */
 .faqItem {
-  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* FAQ layout (adjusted for Privacy) */
 }
 
 /* FAQ Question */
 .faqQuestion {
-  width: 100%;
-  text-align: left;
-  padding: 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  color: #00d4ff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  width: 100%; /* FAQ layout */
+  text-align: left; /* FAQ layout */
+  padding: 1rem; /* FAQ layout */
+  font-size: 1.5rem; /* FAQ layout */
+  font-weight: 600; /* FAQ layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  border: none; /* FAQ layout */
+  cursor: pointer; /* FAQ layout */
+  display: flex; /* FAQ layout */
+  justify-content: space-between; /* FAQ layout */
+  align-items: center; /* FAQ layout */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  color: #00ccff; /* Privacy UI */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Privacy UI */
+  z-index: 1; /* FAQ layout */
 }
 
 .faqQuestion:hover {
-  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3); /* Privacy UI */
 }
 
 /* Arrow */
 .arrow {
-  font-size: 1.25rem;
-  transition: transform 0.3s ease, color 0.3s ease;
-  color: #00f0ff;
+  font-size: 1.25rem; /* FAQ layout */
+  transition: transform 0.3s ease, color 0.3s ease; /* FAQ layout */
+  color: #00ccff; /* Privacy UI */
 }
 
 .faqQuestion[aria-expanded="true"] .arrow {
-  transform: rotate(180deg);
-  color: #ffd700;
+  transform: rotate(180deg); /* FAQ layout */
+  color: #ffd700; /* Privacy UI */
 }
 
 /* FAQ Answer */
 .faqAnswer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
-  padding: 0 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 0 0 8px 8px;
-  z-index: 1;
+  max-height: 0; /* FAQ layout */
+  overflow: hidden; /* FAQ layout */
+  transition: max-height 0.3s ease, padding 0.3s ease; /* FAQ layout */
+  padding: 0 1rem; /* FAQ layout */
+  background: rgba(255, 255, 255, 0.05); /* Privacy UI */
+  border-radius: 0 0 12px 12px; /* Privacy UI */
+  z-index: 1; /* FAQ layout */
 }
 
 .faqAnswer.open {
-  max-height: 500px;
-  padding: 1rem;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 500px; /* FAQ layout */
+  padding: 1rem; /* FAQ layout */
+  box-shadow: inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
 }
 
 /* FAQ Answer Text */
 .faqAnswer p {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.6;
-  color: #e0e0e0;
-  font-weight: 300;
-  padding: 4px 0;
+  margin: 0; /* FAQ layout */
+  font-size: 1.125rem; /* FAQ layout */
+  line-height: 1.6; /* FAQ layout */
+  color: #e0e0e0; /* Privacy UI */
+  font-weight: 300; /* FAQ layout */
+  padding: 4px 0; /* FAQ layout */
 }
 
 /* Add More Topics Note */
 .addMoreNote {
-  margin-top: 2.5rem;
-  text-align: center;
-  font-size: 1.125rem;
-  color: #e0e0e0;
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
-  z-index: 1;
-  transition: background 0.3s ease;
+  margin-top: 2.5rem; /* FAQ layout */
+  text-align: center; /* FAQ layout */
+  font-size: 1.125rem; /* FAQ layout */
+  color: #e0e0e0; /* Privacy UI */
+  padding: 6px 12px; /* FAQ layout */
+  background: rgba(255, 255, 255, 0.05); /* Privacy UI */
+  border-radius: 6px; /* FAQ layout */
+  z-index: 1; /* FAQ layout */
+  transition: background 0.3s ease; /* FAQ layout */
 }
 
 .addMoreNote:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1); /* Privacy UI tweak */
 }
 
 /* Links */
 .contactLink,
 .twitterLink {
-  color: #00d4ff;
-  text-decoration: none;
-  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+  color: #00ccff; /* Privacy UI */
+  text-decoration: none; /* FAQ layout */
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease; /* Privacy UI */
 }
 
 .contactLink:hover,
 .twitterLink:hover {
-  color: #ffd700;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  transform: translateX(2px);
+  color: #ffd700; /* Privacy UI */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  transform: translateY(-2px); /* Privacy UI */
 }
 
 /* Back to Top Button */
 .backToTop {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background: linear-gradient(90deg, #00d4ff, #00f0ff);
-  color: #1a1a2e;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.125rem;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 212, 255, 0.3);
-  transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
-  opacity: 0.8;
-  z-index: 2;
+  position: fixed; /* FAQ layout */
+  bottom: 2rem; /* FAQ layout */
+  right: 2rem; /* FAQ layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  color: #e0e0e0; /* Privacy UI */
+  padding: 0.75rem 1.5rem; /* FAQ layout */
+  border: none; /* FAQ layout */
+  border-radius: 12px; /* Privacy UI */
+  cursor: pointer; /* FAQ layout */
+  font-size: 1.125rem; /* FAQ layout */
+  font-weight: 600; /* FAQ layout */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  opacity: 0.8; /* FAQ layout */
+  z-index: 2; /* FAQ layout */
 }
 
 .backToTop:hover {
-  background: linear-gradient(90deg, #00b7eb, #00d4ff);
-  transform: scale(1.05);
-  opacity: 1;
-  box-shadow: 0 6px 14px rgba(0, 212, 255, 0.5);
+  transform: scale(1.05); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3); /* Privacy UI */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .faqContainer {
-    padding: 1.5rem 1rem;
-    padding-top: 7.5rem;
+    padding: 1.5rem 1rem; /* FAQ layout */
+    padding-top: 7.5rem; /* FAQ layout */
   }
 
   .faqTitle {
-    font-size: 2.5rem;
-    padding: 6px 12px;
+    font-size: 2.5rem; /* FAQ layout */
+    padding: 6px 12px; /* FAQ layout */
   }
 
   .faqIntro {
-    font-size: 1rem;
-    padding: 4px 10px;
+    font-size: 1rem; /* FAQ layout */
+    padding: 4px 10px; /* FAQ layout */
   }
 
   .faqQuestion {
-    font-size: 1.4rem; /* Increased for better readability */
-    padding: 0.75rem;
-    border-radius: 6px;
+    font-size: 1.4rem; /* FAQ layout */
+    padding: 0.75rem; /* FAQ layout */
+    border-radius: 6px; /* FAQ layout */
   }
 
   .faqAnswer p {
-    font-size: 1.1rem; /* Increased for better readability */
-    padding: 3px 0;
+    font-size: 1.2rem; /* FAQ layout */
+    padding: 3px 0; /* FAQ layout */
+    line-height: 1.6; /* FAQ layout */
   }
 
   .addMoreNote {
-    font-size: 1rem;
-    padding: 4px 10px;
+    font-size: 1rem; /* FAQ layout */
+    padding: 4px 10px; /* FAQ layout */
   }
 
   .backToTop {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
+    bottom: 1.5rem; /* FAQ layout */
+    right: 1.5rem; /* FAQ layout */
+    padding: 0.5rem 1rem; /* FAQ layout */
+    font-size: 1rem; /* FAQ layout */
+    border-radius: 5px; /* FAQ layout */
   }
 }
 
 @media (max-width: 480px) {
   .faqContainer {
-    padding: 1rem 0.5rem; /* Reduced to use full width */
-    padding-top: 7rem;
+    padding: 1rem 0.5rem; /* FAQ layout */
+    padding-top: 7rem; /* FAQ layout */
   }
 
   .faqTitle {
-    font-size: 2rem;
-    padding: 4px 10px;
+    font-size: 2rem; /* FAQ layout */
+    padding: 4px 10px; /* FAQ layout */
   }
 
   .faqQuestion {
-    font-size: 1.25rem; /* Increased for better readability */
-    padding: 0.75rem;
-    border-radius: 5px;
+    font-size: 1.25rem; /* FAQ layout */
+    padding: 0.75rem; /* FAQ layout */
+    border-radius: 5px; /* FAQ layout */
   }
 
   .faqAnswer p {
-    font-size: 1rem; /* Increased for better readability */
-    padding: 2px 0;
+    font-size: 1.1rem; /* FAQ layout */
+    padding: 2px 0; /* FAQ layout */
+    line-height: 1.6; /* FAQ layout */
   }
 
   .addMoreNote {
-    font-size: 0.95rem;
+    font-size: 0.95rem; /* FAQ layout */
   }
 
   .backToTop {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    border-radius: 4px;
-    right: 1rem;
-    bottom: 1rem;
+    padding: 0.5rem 0.75rem; /* FAQ layout */
+    font-size: 0.875rem; /* FAQ layout */
+    border-radius: 4px; /* FAQ layout */
+    right: 1rem; /* FAQ layout */
+    bottom: 1rem; /* FAQ layout */
   }
 }

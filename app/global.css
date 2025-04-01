@@ -77,60 +77,80 @@ body {
   min-height: calc(100vh - var(--price-ticker-height));
 }
 
+/* Footer UI added below */
 .footer {
-  padding: 1.5rem;
+  width: 100%;
+  padding: 2rem 1.5rem;
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   border-top: 1px solid rgba(255, 215, 0, 0.2);
   color: #e0e0e0;
   text-align: center;
+  margin-top: auto; /* Push to bottom */
 }
 
 .footer-links {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  justify-content: center; /* Center links horizontally */
+  gap: 2rem; /* Better spacing */
+  flex-wrap: wrap; /* Allow wrapping */
 }
 
 .footer-link {
   color: #00ccff;
   text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .footer-link:hover {
   color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
   text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
   }
-
+  
   .price-ticker {
     font-size: 1rem;
     padding: 0.5rem 1rem;
   }
-
+  
   .price-ticker span {
     margin: 0 0.75rem;
   }
-
+  
   .main-container {
     margin-left: 0;
     margin-top: var(--price-ticker-height);
     min-height: calc(100vh - var(--price-ticker-height));
   }
-
+  
   .dashboard-content {
     padding: 1.5rem 1rem;
     min-height: calc(100vh - var(--price-ticker-height));
   }
-
+  
+  /* Footer responsive adjustments */
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+  
   .footer-links {
-    flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+    flex-direction: column; /* Stack vertically on mobile */
+  }
+  
+  .footer-link {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
   }
 }
+

@@ -1,176 +1,181 @@
+/* Container for the entire page */
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px 60px;
-  background: linear-gradient(135deg, #3a3a5c 0%, #4a4a7c 100%);
-  color: #f2f2f7;
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  padding-top: 6.5rem;
-  min-height: 100vh;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  opacity: 0.88;
+  max-width: 1000px; /* History layout */
+  margin: 0 auto; /* History layout */
+  padding: 40px 20px 60px; /* History layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)); /* Privacy UI */
+  color: #e0e0e0; /* History layout (kept as is, fits Privacy) */
+  font-family: 'Arial', sans-serif; /* History layout */
+  line-height: 1.6; /* History layout */
+  padding-top: 6.5rem; /* History layout */
+  min-height: 100vh; /* History layout */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Privacy UI */
+  transition: box-shadow 0.3s ease; /* History layout */
+  position: relative; /* History layout */
+  overflow: hidden; /* History layout */
+  z-index: 1; /* History layout */
 }
 
 .container:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-}
-
-.container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, rgba(255, 215, 0, 0.04) 100%);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* History layout (kept as is) */
 }
 
 @media (min-width: 769px) {
   .container {
-    padding-top: 8rem;
-    padding-bottom: 70px;
+    padding-top: 8rem; /* History layout */
+    padding-bottom: 70px; /* History layout */
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    padding-top: 7.5rem;
-    padding: 25px 18px 50px;
-    border-radius: 10px;
+    padding-top: 7.5rem; /* History layout */
+    padding: 25px 18px 50px; /* History layout */
+    border-radius: 10px; /* History layout */
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding-top: 7.5rem;
-    padding: 20px 12px 45px;
-    border-radius: 8px;
+    padding-top: 7.5rem; /* History layout */
+    padding: 20px 12px 45px; /* History layout */
+    border-radius: 8px; /* History layout */
   }
 }
 
+/* Page title */
 .pageTitle {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 40px;
-  background: linear-gradient(90deg, #40c4ff, #0288d1); /* Blue gradient */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Slightly stronger shadow for visibility */
-  letter-spacing: 0.5px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  transition: transform 0.2s ease, background 0.3s ease;
-  position: relative;
-  z-index: 1;
+  font-size: 2.5rem; /* History layout */
+  text-align: center; /* History layout */
+  margin-bottom: 40px; /* History layout */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); /* Privacy UI */
+  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
+  -webkit-background-clip: text; /* Privacy UI */
+  background-clip: text; /* Privacy UI */
+  color: transparent; /* Privacy UI */
+  transition: transform 0.3s ease; /* Privacy UI */
 }
 
 .pageTitle:hover {
-  transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.05); /* Privacy UI */
 }
 
+/* Section styling */
 .section {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 35px;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 1;
-  opacity: 0.82;
-}
-
-.section::before {
-  content: none;
+  padding: 35px; /* History layout */
+  margin-bottom: 40px; /* History layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  border-radius: 12px; /* Privacy UI */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  text-align: left; /* Privacy layout (matches History intent) */
 }
 
 .section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px); /* Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2); /* Privacy UI */
 }
 
-.section > * {
-  position: relative;
-  z-index: 1;
-}
-
+/* Section title */
 .sectionTitle {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #40c4ff, #0288d1); /* Blue gradient */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 0.4px;
-  padding: 6px 14px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  transition: transform 0.2s ease, background 0.3s ease, text-shadow 0.3s ease;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Stronger shadow for visibility */
-  font-weight: 800;
-  display: inline-block;
-  z-index: 2;
+  font-size: 1.8rem; /* History layout */
+  margin-bottom: 20px; /* History layout */
+  color: #e0e0e0; /* Privacy UI */
+  border-bottom: 2px solid #00ccff; /* Privacy UI */
+  display: inline-block; /* Privacy UI */
+  padding-bottom: 0.25rem; /* Privacy UI */
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
+  transition: color 0.3s ease; /* Privacy UI */
 }
 
 .sectionTitle:hover {
-  transform: scale(1.01);
-  background: rgba(255, 255, 255, 0.14);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  color: #ffd700; /* Privacy UI */
 }
 
-.section p {
-  color: #f7f7fc;
-  font-size: 1rem;
-  line-height: 1.8;
-  text-shadow: none;
+.section ul {
+  list-style: none; /* Privacy layout */
+  padding-left: 1rem; /* Privacy layout */
+  text-align: left; /* Privacy layout */
 }
 
+.section li {
+  position: relative; /* Privacy layout */
+  margin-bottom: 1rem; /* Privacy layout */
+  padding-left: 1.5rem; /* Privacy layout */
+  transition: color 0.3s ease; /* Privacy UI */
+}
+
+.section li:hover {
+  color: #ffd700; /* Privacy UI */
+}
+
+.section li:before {
+  content: "▹"; /* Privacy UI */
+  color: #00ccff; /* Privacy UI */
+  position: absolute; /* Privacy layout */
+  left: 0; /* Privacy layout */
+  font-size: 1.25rem; /* Privacy layout */
+  transition: transform 0.3s ease; /* Privacy UI */
+}
+
+.section li:hover:before {
+  transform: scale(1.2); /* Privacy UI */
+}
+
+/* Links */
+.xLink {
+  color: #00ccff; /* Privacy UI */
+  text-decoration: none; /* Privacy layout */
+  padding: 0.2rem 0.5rem; /* Privacy layout */
+  border-radius: 4px; /* Privacy UI */
+  background: rgba(0, 204, 255, 0.1); /* Privacy UI */
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease; /* Privacy UI */
+}
+
+.xLink:hover {
+  color: #ffd700; /* Privacy UI */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
+  background: rgba(255, 215, 0, 0.2); /* Privacy UI */
+  transform: translateY(-2px); /* Privacy UI */
+}
+
+/* Back to Top button */
 .backToTop {
-  position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #b3e5fc, #4fc3f7); /* Lighter blue gradient */
-  color: #2e2e4a;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  z-index: 1000;
+  position: fixed; /* History layout */
+  top: 50%; /* History layout */
+  right: 20px; /* History layout */
+  transform: translateY(-50%); /* History layout */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
+  color: #e0e0e0; /* Privacy UI (adjusted for contrast) */
+  border: none; /* History layout */
+  padding: 12px 18px; /* History layout */
+  border-radius: 12px; /* Privacy UI */
+  font-size: 1rem; /* History layout */
+  font-weight: 700; /* History layout */
+  cursor: pointer; /* History layout */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Privacy UI */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  z-index: 1000; /* History layout */
 }
 
 .backToTop:hover {
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  transform: translateY(-50%) scale(1.05); /* History layout + Privacy UI */
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3); /* Privacy UI */
 }
 
 @media (max-width: 768px) {
   .backToTop {
-    padding: 10px 14px;
-    font-size: 0.9rem;
-    right: 15px;
+    padding: 10px 14px; /* History layout */
+    font-size: 0.9rem; /* History layout */
+    right: 15px; /* History layout */
   }
 }
 
 @media (max-width: 480px) {
   .backToTop {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    right: 10px;
+    padding: 8px 12px; /* History layout */
+    font-size: 0.8rem; /* History layout */
+    right: 10px; /* History layout */
   }
 }
