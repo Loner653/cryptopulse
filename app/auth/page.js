@@ -8,11 +8,14 @@ import styles from "./auth.module.css";
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmCode, setConfirmCode] = useState("");
   const [isSignup, setIsSignup] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); // Toggle for signup/login password
+  const [showNewPassword, setShowNewPassword] = useState(false); // Toggle for new password
   const router = useRouter();
 
   // Handle Signup
@@ -26,7 +29,7 @@ export default function AuthPage() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth`, // Redirect back after link confirmation
+          emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
       if (error) {
@@ -37,7 +40,7 @@ export default function AuthPage() {
         setSuccessMessage(
           "Signup successful! Check your email (including spam/junk) for a confirmation link or code."
         );
-        setConfirmCode(""); // Reset code field
+        setConfirmCode("");
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
@@ -92,7 +95,7 @@ export default function AuthPage() {
         setSuccessMessage(
           "Password reset email sent! Check your email (including spam/junk) for a link or code."
         );
-        setConfirmCode(""); // Reset code field
+        setConfirmCode("");
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
@@ -115,12 +118,10 @@ export default function AuthPage() {
       if (error) {
         console.error("Code confirmation error:", error);
         setError(error.message);
+      } else if (isReset) {
+        setSuccessMessage("Password reset confirmed! Please set a new password below.");
       } else {
-        setSuccessMessage(
-          isReset
-            ? "Password reset confirmed! Please log in with your new password."
-            : "Signup confirmed! Please log in."
-        );
+        setSuccessMessage("Signup confirmed! Please log in.");
         setIsSignup(false);
         setIsReset(false);
         setEmail("");
@@ -130,6 +131,31 @@ export default function AuthPage() {
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Code confirmation error:", err);
+    }
+  };
+
+  // Handle Password Update
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        console.error("Password update error:", error);
+        setError(error.message);
+      } else {
+        setSuccessMessage("Password updated successfully! Please log in.");
+        setIsReset(false);
+        setEmail("");
+        setPassword("");
+        setConfirmCode("");
+        setNewPassword("");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      console.error("Password update error:", err);
     }
   };
 
@@ -143,7 +169,7 @@ export default function AuthPage() {
           After signing up, confirm your email with a link or code from your inbox (check spam/junk too).
         </p>
       )}
-      {isReset && !confirmCode && (
+      {isReset && !confirmCode && !successMessage?.includes("set a new password") && (
         <p className={styles.infoMessage}>
           Enter your email to receive a reset link or code (check spam/junk).
         </p>
@@ -154,7 +180,7 @@ export default function AuthPage() {
       {error && <p className={styles.error}>{error}</p>}
 
       {/* Main Form: Login, Signup, or Reset Request */}
-      {!confirmCode && (
+      {!confirmCode && !successMessage?.includes("set a new password") && (
         <form
           onSubmit={
             isReset ? handleResetRequest : isSignup ? handleSignup : handleLogin
@@ -170,14 +196,23 @@ export default function AuthPage() {
             required
           />
           {!isReset && (
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className={styles.input}
-              required
-            />
+            <div className={styles.passwordContainer}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className={styles.input}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className={styles.eyeButton}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
           )}
           <button type="submit" className={styles.authButton}>
             {isReset ? "Send Reset Email" : isSignup ? "Sign Up" : "Log In"}
@@ -186,7 +221,7 @@ export default function AuthPage() {
       )}
 
       {/* Code Confirmation Form */}
-      {(isSignup || isReset) && successMessage?.includes("code") && (
+      {(isSignup || isReset) && successMessage?.includes("code") && !successMessage.includes("set a new password") && (
         <form onSubmit={handleCodeConfirm} className={styles.authForm}>
           <input
             type="text"
@@ -198,6 +233,32 @@ export default function AuthPage() {
           />
           <button type="submit" className={styles.authButton}>
             Confirm Code
+          </button>
+        </form>
+      )}
+
+      {/* Password Update Form */}
+      {isReset && successMessage?.includes("set a new password") && (
+        <form onSubmit={handlePasswordUpdate} className={styles.authForm}>
+          <div className={styles.passwordContainer}>
+            <input
+              type={showNewPassword ? "text" : "password"}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+              className={styles.input}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className={styles.eyeButton}
+            >
+              {showNewPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
+          <button type="submit" className={styles.authButton}>
+            Update Password
           </button>
         </form>
       )}
@@ -236,7 +297,7 @@ export default function AuthPage() {
             )}
           </>
         )}
-        {(isReset || isSignup) && confirmCode && (
+        {(isReset || isSignup) && (confirmCode || successMessage?.includes("set a new password")) && (
           <button
             type="button"
             onClick={() => {

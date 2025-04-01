@@ -17,14 +17,13 @@ export default function ChatPage() {
   const router = useRouter();
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const channel = useRef(null);
 
-  // Auto-scroll to the latest message
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     setShowScrollButton(false);
   };
 
-  // Check if user is authenticated and fetch their profile
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
@@ -48,7 +47,6 @@ export default function ChatPage() {
 
     fetchUser();
 
-    // Listen for auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN") {
@@ -64,7 +62,6 @@ export default function ChatPage() {
     };
   }, [router]);
 
-  // Fetch user profiles
   useEffect(() => {
     const fetchUserProfiles = async () => {
       const userIds = [...new Set(messages.map((msg) => msg.user_id))];
@@ -91,7 +88,6 @@ export default function ChatPage() {
     fetchUserProfiles();
   }, [messages]);
 
-  // Fetch initial messages
   useEffect(() => {
     if (!user) return;
 
@@ -113,13 +109,12 @@ export default function ChatPage() {
     fetchMessages();
   }, [user, chatRoomId]);
 
-  // Subscribe to real-time changes (INSERT and BROADCAST for DELETE)
   useEffect(() => {
     if (!user) return;
 
     console.log("Setting up real-time subscription for chat_room_id:", chatRoomId);
 
-    const channel = supabase
+    channel.current = supabase
       .channel(`chat:${chatRoomId}`)
       .on(
         "postgres_changes",
@@ -160,11 +155,10 @@ export default function ChatPage() {
 
     return () => {
       console.log("Unsubscribing from channel");
-      supabase.removeChannel(channel);
+      supabase.removeChannel(channel.current);
     };
   }, [user, chatRoomId]);
 
-  // Auto-scroll logic
   useEffect(() => {
     const messagesContainer = messagesContainerRef.current;
     if (!messagesContainer) return;
@@ -178,7 +172,6 @@ export default function ChatPage() {
     }
   }, [messages]);
 
-  // Show/hide scroll button
   useEffect(() => {
     const messagesContainer = messagesContainerRef.current;
     if (!messagesContainer) return;
@@ -194,7 +187,6 @@ export default function ChatPage() {
     return () => messagesContainer.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Bad word filter
   const badWords = ["badword1", "badword2", "badword3"];
   const filterBadWords = (text) => {
     let filteredText = text;
@@ -205,7 +197,6 @@ export default function ChatPage() {
     return filteredText;
   };
 
-  // Send a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
@@ -227,7 +218,6 @@ export default function ChatPage() {
     }
   };
 
-  // Delete a message
   const handleDeleteMessage = async (messageId) => {
     const { error } = await supabase
       .from("messages")
@@ -246,17 +236,20 @@ export default function ChatPage() {
     );
     console.log(`Message ${messageId} deleted locally`);
 
-    await supabase
+    const { error: broadcastError } = await supabase
       .channel(`chat:${chatRoomId}`)
       .send({
         type: "broadcast",
         event: "message_deleted",
         payload: { messageId },
       });
-    console.log(`Broadcasted deletion of message ${messageId}`);
+    if (broadcastError) {
+      console.error("Broadcast error:", broadcastError);
+    } else {
+      console.log(`Broadcasted deletion of message ${messageId}`);
+    }
   };
 
-  // Handle username submission
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
     if (!username.trim()) return;
@@ -273,7 +266,6 @@ export default function ChatPage() {
     }
   };
 
-  // Logout
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/auth");
