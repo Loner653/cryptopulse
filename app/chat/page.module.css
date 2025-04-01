@@ -121,7 +121,7 @@
 /* Messages */
 .messages {
   flex: 1; /* Take remaining space */
-  max-height: calc(100vh - 450px); /* Adjusted for message form at bottom: 110px */
+  max-height: calc(100vh - var(--price-ticker-height) - var(--footer-height) - 340px); /* Adjusted for price ticker, footer, message form (70px), and other padding */
   overflow-y: auto;
   padding: 10px 0;
   scrollbar-width: thin;
@@ -239,7 +239,7 @@
 /* Scroll Button */
 .scrollButton {
   position: absolute;
-  bottom: 130px; /* Adjusted to be above the message form */
+  bottom: calc(var(--footer-height) + 70px); /* Position above the message form */
   right: 30px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   color: #1a1a2e;
@@ -270,11 +270,11 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   position: fixed;
-  bottom: 110px; /* Pushed up to avoid navbar conflict */
-  left: 20px; /* Centered with padding */
-  right: 20px; /* Centered with padding */
-  max-width: 800px; /* Match chat container width */
-  margin: 0 auto; /* Center the form */
+  bottom: var(--footer-height); /* Position just above the footer */
+  left: 20px;
+  right: 20px;
+  max-width: 800px;
+  margin: 0 auto;
   z-index: 2;
 }
 
@@ -353,7 +353,7 @@
   }
 
   .messages {
-    max-height: calc(100vh - 420px); /* Adjusted for message form at bottom: 110px */
+    max-height: calc(100vh - var(--price-ticker-height) - var(--footer-height) - 310px); /* Adjusted for price ticker, footer, message form, and padding */
   }
 
   .messageContainer {
@@ -361,7 +361,7 @@
   }
 
   .scrollButton {
-    bottom: 130px; /* Keep above message form */
+    bottom: calc(var(--footer-height) + 70px); /* Position above the message form */
     right: 20px;
     width: 35px;
     height: 35px;
@@ -372,8 +372,8 @@
     padding: 8px;
     left: 15px;
     right: 15px;
-    bottom: 110px; /* Consistent with desktop */
-    max-width: 740px; /* Adjusted for padding */
+    bottom: var(--footer-height); /* Position just above the footer */
+    max-width: 740px;
   }
 }
 
@@ -407,7 +407,7 @@
   }
 
   .messages {
-    max-height: calc(100vh - 400px); /* Adjusted for message form at bottom: 110px */
+    max-height: calc(100vh - var(--price-ticker-height) - var(--footer-height) - 290px); /* Adjusted for price ticker, footer, message form, and padding */
   }
 
   .messageContainer {
@@ -424,7 +424,7 @@
   }
 
   .scrollButton {
-    bottom: 130px; /* Keep above message form */
+    bottom: calc(var(--footer-height) + 70px); /* Position above the message form */
     right: 15px;
     width: 30px;
     height: 30px;
@@ -435,7 +435,7 @@
     padding: 5px;
     left: 10px;
     right: 10px;
-    bottom: 110px; /* Consistent with desktop */
+    bottom: var(--footer-height); /* Position just above the footer */
     max-width: none; /* Full width on mobile */
   }
 }

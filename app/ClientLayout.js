@@ -12,8 +12,30 @@ export default function ClientLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const mainContainerRef = useRef(null);
+  const footerRef = useRef(null); // Add a ref for the footer
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  // Calculate footer height dynamically and set it as a CSS variable
+  useEffect(() => {
+    const updateFooterHeight = () => {
+      if (footerRef.current) {
+        const footerHeight = footerRef.current.offsetHeight;
+        document.documentElement.style.setProperty('--footer-height', `${footerHeight}px`);
+      }
+    };
+
+    // Initial calculation
+    updateFooterHeight();
+
+    // Recalculate on window resize
+    window.addEventListener('resize', updateFooterHeight);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', updateFooterHeight);
+    };
+  }, []);
 
   useEffect(() => {
     const mainContainer = mainContainerRef.current;
@@ -71,7 +93,7 @@ export default function ClientLayout({ children }) {
           <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
         </header>
         <main className="dashboard-content">{children}</main>
-        <footer className="footer">
+        <footer className="footer" ref={footerRef}>
           <p>© 2025 CryptoGlobal</p>
           <div className="footer-links">
             <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
