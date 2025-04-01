@@ -12,7 +12,7 @@ export default function ChatPage() {
   const [username, setUsername] = useState("");
   const [showUsernamePrompt, setShowUsernamePrompt] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const [userProfiles, setUserProfiles] = useState({}); // Store user_id to username mapping
+  const [userProfiles, setUserProfiles] = useState({});
   const chatRoomId = "general";
   const router = useRouter();
   const messagesEndRef = useRef(null);
@@ -27,20 +27,19 @@ export default function ChatPage() {
   // Check if user is authenticated and fetch their profile
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
         router.push("/auth");
       } else {
         setUser(user);
-        // Fetch user profile
-        const { data: profile, error } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("username")
           .eq("id", user.id)
           .single();
 
-        if (error || !profile) {
-          setShowUsernamePrompt(true); // Prompt for username if not set
+        if (profileError || !profile) {
+          setShowUsernamePrompt(true);
         } else {
           setUsername(profile.username);
         }
@@ -48,9 +47,24 @@ export default function ChatPage() {
     };
 
     fetchUser();
+
+    // Listen for auth state changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN") {
+          fetchUser();
+        } else if (event === "SIGNED_OUT") {
+          router.push("/auth");
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, [router]);
 
-  // Fetch user profiles for all user_ids in messages
+  // Fetch user profiles
   useEffect(() => {
     const fetchUserProfiles = async () => {
       const userIds = [...new Set(messages.map((msg) => msg.user_id))];
@@ -70,13 +84,6 @@ export default function ChatPage() {
         acc[profile.id] = profile.username;
         return acc;
       }, {});
-
-      // Debug: Log any user_ids that don't have a username
-      userIds.forEach((userId) => {
-        if (!profiles[userId]) {
-          console.warn(`No username found for user_id: ${userId}`);
-        }
-      });
 
       setUserProfiles(profiles);
     };
@@ -106,14 +113,14 @@ export default function ChatPage() {
     fetchMessages();
   }, [user, chatRoomId]);
 
-  // Subscribe to new messages
+  // Subscribe to real-time changes (INSERT and BROADCAST for DELETE)
   useEffect(() => {
     if (!user) return;
 
     console.log("Setting up real-time subscription for chat_room_id:", chatRoomId);
 
     const channel = supabase
-      .channel("messages-channel")
+      .channel(`chat:${chatRoomId}`)
       .on(
         "postgres_changes",
         {
@@ -123,7 +130,7 @@ export default function ChatPage() {
           filter: `chat_room_id=eq.${chatRoomId}`,
         },
         (payload) => {
-          console.log("New message received:", payload);
+          console.log("INSERT payload:", payload);
           setMessages((prevMessages) => {
             if (prevMessages.some((msg) => msg.id === payload.new.id)) {
               return prevMessages;
@@ -132,17 +139,32 @@ export default function ChatPage() {
           });
         }
       )
+      .on(
+        "broadcast",
+        { event: "message_deleted" },
+        (payload) => {
+          console.log("Broadcast DELETE payload:", payload);
+          setMessages((prevMessages) =>
+            prevMessages.filter((msg) => msg.id !== payload.messageId)
+          );
+        }
+      )
       .subscribe((status) => {
         console.log("Subscription status:", status);
+        if (status === "SUBSCRIBED") {
+          console.log("Successfully subscribed to real-time updates");
+        } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
+          console.error("Subscription failed or closed:", status);
+        }
       });
 
     return () => {
-      console.log("Unsubscribing from real-time channel");
-      channel.unsubscribe();
+      console.log("Unsubscribing from channel");
+      supabase.removeChannel(channel);
     };
   }, [user, chatRoomId]);
 
-  // Auto-scroll when messages update, unless user has scrolled up
+  // Auto-scroll logic
   useEffect(() => {
     const messagesContainer = messagesContainerRef.current;
     if (!messagesContainer) return;
@@ -156,7 +178,7 @@ export default function ChatPage() {
     }
   }, [messages]);
 
-  // Handle scroll to show/hide scroll-to-bottom button
+  // Show/hide scroll button
   useEffect(() => {
     const messagesContainer = messagesContainerRef.current;
     if (!messagesContainer) return;
@@ -183,7 +205,7 @@ export default function ChatPage() {
     return filteredText;
   };
 
-  // Send a message with bad word filtering
+  // Send a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
@@ -196,16 +218,42 @@ export default function ChatPage() {
       text: filteredMessage,
     };
 
-    const { error } = await supabase
-      .from("messages")
-      .insert(messageData);
+    const { error } = await supabase.from("messages").insert(messageData);
 
     if (error) {
       console.error("Error sending message:", error);
     } else {
-      console.log("Message sent:", messageData);
       setNewMessage("");
     }
+  };
+
+  // Delete a message
+  const handleDeleteMessage = async (messageId) => {
+    const { error } = await supabase
+      .from("messages")
+      .delete()
+      .eq("id", messageId)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error deleting message:", error);
+      alert("Failed to delete message. You can only delete your own messages.");
+      return;
+    }
+
+    setMessages((prevMessages) =>
+      prevMessages.filter((msg) => msg.id !== messageId)
+    );
+    console.log(`Message ${messageId} deleted locally`);
+
+    await supabase
+      .channel(`chat:${chatRoomId}`)
+      .send({
+        type: "broadcast",
+        event: "message_deleted",
+        payload: { messageId },
+      });
+    console.log(`Broadcasted deletion of message ${messageId}`);
   };
 
   // Handle username submission
@@ -262,7 +310,9 @@ export default function ChatPage() {
             <div
               key={message.id}
               className={`${styles.messageContainer} ${
-                message.user_id === user.id ? styles.messageSent : styles.messageReceived
+                message.user_id === user.id
+                  ? styles.messageSent
+                  : styles.messageReceived
               } ${styles.messageFadeIn}`}
             >
               <div className={styles.message}>
@@ -275,6 +325,14 @@ export default function ChatPage() {
                 <span className={styles.timestamp}>
                   {new Date(message.created_at).toLocaleTimeString()}
                 </span>
+                {message.user_id === user.id && (
+                  <button
+                    onClick={() => handleDeleteMessage(message.id)}
+                    className={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           ))}
