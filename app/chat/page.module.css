@@ -1,3 +1,4 @@
+/* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -6,10 +7,11 @@
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  padding-top: clamp(7rem, 8vh, 9rem);
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden; /* Prevent the entire page from scrolling */
+  display: flex;
+  flex-direction: column;
 }
 
 .container::before {
@@ -25,6 +27,7 @@
   z-index: 0;
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: center;
@@ -33,6 +36,7 @@
   z-index: 1;
 }
 
+/* Page Title */
 .pageTitle {
   font-size: 2.5rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -48,6 +52,7 @@
   100% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(0, 204, 255, 0.5); }
 }
 
+/* Sticky Logout Button */
 .stickyLogoutButton {
   position: fixed;
   top: 50%;
@@ -70,6 +75,7 @@
   transform: translateY(-50%) scale(1.05);
 }
 
+/* Welcome Section */
 .welcomeSection {
   max-width: 800px;
   margin: 0 auto 30px;
@@ -80,9 +86,9 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
   z-index: 1;
-  margin-top: 20px; /* Added padding to avoid navbar overlap */
 }
 
+/* Welcome Title */
 .welcomeTitle {
   font-size: 1.8rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -94,21 +100,28 @@
   margin-bottom: 10px;
 }
 
+/* Welcome Message */
 .welcomeMessage {
   color: #b0b0b0;
   font-size: 1rem;
   line-height: 1.5;
 }
 
+/* Chat Container */
 .chatContainer {
   max-width: 800px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  flex: 1; /* Take remaining space */
+  display: flex;
+  flex-direction: column;
 }
 
+/* Messages */
 .messages {
-  max-height: 400px;
+  flex: 1; /* Take remaining space */
+  max-height: calc(100vh - 350px); /* Adjust based on header, welcome section, and message form heights */
   overflow-y: auto;
   padding: 10px 0;
   scrollbar-width: thin;
@@ -129,24 +142,28 @@
   border-radius: 8px;
 }
 
+/* Message Container */
 .messageContainer {
   margin-bottom: 15px;
-  max-width: 70%;
+  max-width: 50%; /* Narrower to fit vertically */
   display: flex;
 }
 
+/* Message Sent */
 .messageSent {
   margin-left: auto;
   justify-content: flex-end;
 }
 
+/* Message Received */
 .messageReceived {
   margin-right: auto;
   justify-content: flex-start;
 }
 
+/* Message */
 .message {
-  padding: 10px 15px;
+  padding: 15px 10px; /* More vertical padding, less horizontal */
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -154,24 +171,33 @@
   backdrop-filter: blur(5px);
   position: relative;
   transition: transform 0.3s ease;
+  min-height: 60px; /* Ensure a taller, more vertical shape */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+/* Message Sent Styling */
 .messageSent .message {
   background: linear-gradient(90deg, #ffd700, #ffaa00);
   color: #1a1a2e;
   border-color: rgba(255, 215, 0, 0.3);
 }
 
+/* Message Received Styling */
 .messageReceived .message {
-  background: linear-gradient(90deg, #00d4ff, #00aaff);
-  color: #e0e0e0;
+  background: #4a90e2; /* Solid softer blue for better readability */
+  color: #ffffff; /* White text for contrast */
   border-color: rgba(0, 212, 255, 0.3);
+  backdrop-filter: none; /* Remove blur effect */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .message:hover {
   transform: translateY(-2px);
 }
 
+/* Message Fade-In Animation */
 .messageFadeIn {
   animation: fadeIn 0.3s ease-in;
 }
@@ -187,6 +213,7 @@
   }
 }
 
+/* User */
 .user {
   font-weight: bold;
   font-size: 0.9rem;
@@ -195,11 +222,13 @@
   color: #fff;
 }
 
+/* Message Paragraph */
 .message p {
   margin: 0;
   font-size: 1rem;
 }
 
+/* Timestamp */
 .timestamp {
   font-size: 0.8rem;
   color: #b0b0b0;
@@ -207,6 +236,7 @@
   margin-top: 5px;
 }
 
+/* Scroll Button */
 .scrollButton {
   position: absolute;
   bottom: 80px;
@@ -222,7 +252,7 @@
   justify-content: center;
   font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -231,6 +261,7 @@
   transform: scale(1.1);
 }
 
+/* Message Form (Text Bar) */
 .messageForm {
   display: flex;
   gap: 10px;
@@ -238,11 +269,14 @@
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  position: sticky;
+  position: fixed;
   bottom: 10px;
-  z-index: 1;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 
+/* Message Input */
 .messageInput {
   flex: 1;
   padding: 12px;
@@ -257,7 +291,7 @@
 .messageInput:focus {
   outline: none;
   border-color: #00d4ff;
-  box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
 }
 
 .messageInput::placeholder {
@@ -270,6 +304,7 @@
   opacity: 0;
 }
 
+/* Send Button */
 .sendButton {
   padding: 12px 24px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -286,10 +321,10 @@
   transform: scale(1.05);
 }
 
+/* Responsive Design for Tablets and Smaller */
 @media (max-width: 768px) {
   .container {
     padding: 15px 10px;
-    padding-top: 7.5rem;
   }
 
   .pageTitle {
@@ -304,7 +339,7 @@
 
   .welcomeSection {
     padding: 15px;
-    margin: 20px 10px 20px;
+    margin: 0 10px 20px;
   }
 
   .welcomeTitle {
@@ -316,11 +351,11 @@
   }
 
   .messages {
-    max-height: 300px;
+    max-height: calc(100vh - 320px); /* Adjust for smaller screens */
   }
 
   .messageContainer {
-    max-width: 85%;
+    max-width: 60%; /* Slightly wider on tablets */
   }
 
   .scrollButton {
@@ -333,13 +368,16 @@
 
   .messageForm {
     padding: 8px;
+    left: 10px;
+    right: 10px;
+    bottom: 8px;
   }
 }
 
+/* Responsive Design for Mobile */
 @media (max-width: 480px) {
   .container {
     padding: 10px 5px;
-    padding-top: 7rem;
   }
 
   .pageTitle {
@@ -352,12 +390,25 @@
     font-size: 0.7rem;
   }
 
+  .welcomeSection {
+    padding: 10px;
+    margin: 0 5px 20px;
+  }
+
   .welcomeTitle {
     font-size: 1.3rem;
   }
 
   .welcomeMessage {
     font-size: 0.85rem;
+  }
+
+  .messages {
+    max-height: calc(100vh - 300px); /* Adjust for mobile */
+  }
+
+  .messageContainer {
+    max-width: 70%; /* Wider on mobile for readability */
   }
 
   .messageInput {
@@ -375,5 +426,12 @@
     width: 30px;
     height: 30px;
     font-size: 0.9rem;
+  }
+
+  .messageForm {
+    padding: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
   }
 }

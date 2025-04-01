@@ -75,7 +75,13 @@ export default function ChatPage() {
         },
         (payload) => {
           console.log('New message received:', payload);
-          setMessages((prevMessages) => [...prevMessages, payload.new]);
+          setMessages((prevMessages) => {
+            // Avoid duplicates
+            if (prevMessages.some((msg) => msg.id === payload.new.id)) {
+              return prevMessages;
+            }
+            return [...prevMessages, payload.new];
+          });
         }
       )
       .subscribe((status) => {
