@@ -21,12 +21,17 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
         </li>
         <li>
           <Link href="/faq" className={styles.navLink}>
-          🧠 FAQ
+            🧠 FAQ
           </Link>
         </li>
         <li>
           <Link href="/news" className={styles.navLink}>
             <span className={styles.navIcon}>💬</span> News
+          </Link>
+        </li>
+        <li>
+          <Link href="/chat" className={styles.navLink}>
+            <span className={styles.navIcon}>💬</span> Chat
           </Link>
         </li>
       </ul>

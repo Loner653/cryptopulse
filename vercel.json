@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cleanup-messages?token=my-secret-123",
+      "schedule": "0 0 * * *" 
+    }
+  ]
+}

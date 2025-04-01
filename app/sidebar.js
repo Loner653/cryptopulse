@@ -30,6 +30,7 @@ export default function Sidebar({ isOpen, articles, ref }) {
         <ul className={styles.navList}>
           <li><Link href="/">🏠 Home</Link></li>
           <li><Link href="/articles">📚 Articles</Link></li>
+          <li><Link href="/chat">📩 Chat</Link></li>
           <li><Link href="/history">📜 History</Link></li>
           <li><Link href="/faq"> 🧠 FAQ</Link></li>
           <li><Link href="/news">🚪 News</Link></li>
