@@ -1,4 +1,3 @@
-/* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -11,7 +10,6 @@
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  height: 100%; /* Ensure container takes full height */
 }
 
 .container::before {
@@ -27,7 +25,6 @@
   z-index: 0;
 }
 
-/* Header */
 .header {
   display: flex;
   justify-content: center;
@@ -36,7 +33,6 @@
   z-index: 1;
 }
 
-/* Page Title */
 .pageTitle {
   font-size: 2.5rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -48,15 +44,10 @@
 }
 
 @keyframes glow {
-  0% {
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(0, 204, 255, 0.3);
-  }
-  100% {
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(0, 204, 255, 0.5);
-  }
+  0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(0, 204, 255, 0.3); }
+  100% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(0, 204, 255, 0.5); }
 }
 
-/* Sticky Logout Button */
 .stickyLogoutButton {
   position: fixed;
   top: 50%;
@@ -79,7 +70,6 @@
   transform: translateY(-50%) scale(1.05);
 }
 
-/* Welcome Section */
 .welcomeSection {
   max-width: 800px;
   margin: 0 auto 30px;
@@ -93,7 +83,6 @@
   margin-top: 20px; /* Added padding to avoid navbar overlap */
 }
 
-/* Welcome Title */
 .welcomeTitle {
   font-size: 1.8rem;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -105,14 +94,12 @@
   margin-bottom: 10px;
 }
 
-/* Welcome Message */
 .welcomeMessage {
   color: #b0b0b0;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-/* Chat Container */
 .chatContainer {
   max-width: 800px;
   margin: 0 auto;
@@ -120,9 +107,8 @@
   z-index: 1;
 }
 
-/* Messages */
 .messages {
-  max-height: calc(100% - 390px); /* Adjusted to account for new form position */
+  max-height: 400px;
   overflow-y: auto;
   padding: 10px 0;
   scrollbar-width: thin;
@@ -143,57 +129,49 @@
   border-radius: 8px;
 }
 
-/* Message Container */
 .messageContainer {
   margin-bottom: 15px;
   max-width: 70%;
   display: flex;
 }
 
-/* Message Sent */
 .messageSent {
   margin-left: auto;
   justify-content: flex-end;
 }
 
-/* Message Received */
 .messageReceived {
   margin-right: auto;
   justify-content: flex-start;
 }
 
-/* Message */
 .message {
   padding: 10px 15px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
   position: relative;
   transition: transform 0.3s ease;
 }
 
-/* Message Sent Styling */
 .messageSent .message {
   background: linear-gradient(90deg, #ffd700, #ffaa00);
   color: #1a1a2e;
   border-color: rgba(255, 215, 0, 0.3);
 }
 
-/* Message Received Styling */
 .messageReceived .message {
-  background: #4a90e2; /* Solid softer blue for better readability */
-  color: #ffffff; /* White text for contrast */
+  background: linear-gradient(90deg, #00d4ff, #00aaff);
+  color: #e0e0e0;
   border-color: rgba(0, 212, 255, 0.3);
-  backdrop-filter: none; /* Remove blur effect */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .message:hover {
   transform: translateY(-2px);
 }
 
-/* Message Fade-In Animation */
 .messageFadeIn {
   animation: fadeIn 0.3s ease-in;
 }
@@ -209,7 +187,6 @@
   }
 }
 
-/* User */
 .user {
   font-weight: bold;
   font-size: 0.9rem;
@@ -218,13 +195,11 @@
   color: #fff;
 }
 
-/* Message Paragraph */
 .message p {
   margin: 0;
   font-size: 1rem;
 }
 
-/* Timestamp */
 .timestamp {
   font-size: 0.8rem;
   color: #b0b0b0;
@@ -232,10 +207,9 @@
   margin-top: 5px;
 }
 
-/* Scroll Button */
 .scrollButton {
   position: absolute;
-  bottom: 120px; /* Adjusted to maintain position relative to the text bar */
+  bottom: 80px;
   right: 30px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
   color: #1a1a2e;
@@ -257,7 +231,6 @@
   transform: scale(1.1);
 }
 
-/* Message Form (Text Bar) */
 .messageForm {
   display: flex;
   gap: 10px;
@@ -265,14 +238,11 @@
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  position: fixed;
-  bottom: 40px; /* Pushed up more */
-  left: 0;
-  right: 0;
+  position: sticky;
+  bottom: 10px;
   z-index: 1;
 }
 
-/* Message Input */
 .messageInput {
   flex: 1;
   padding: 12px;
@@ -300,12 +270,6 @@
   opacity: 0;
 }
 
-.messageInput:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Send Button */
 .sendButton {
   padding: 12px 24px;
   background: linear-gradient(90deg, #ffd700, #00ffff);
@@ -317,17 +281,11 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.sendButton:hover:not(:disabled) {
+.sendButton:hover {
   opacity: 0.9;
   transform: scale(1.05);
 }
 
-.sendButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Responsive Design for Tablets and Smaller */
 @media (max-width: 768px) {
   .container {
     padding: 15px 10px;
@@ -358,7 +316,7 @@
   }
 
   .messages {
-    max-height: calc(100% - 370px); /* Adjusted for new form position */
+    max-height: 300px;
   }
 
   .messageContainer {
@@ -366,7 +324,7 @@
   }
 
   .scrollButton {
-    bottom: 110px; /* Adjusted for smaller screens */
+    bottom: 70px;
     right: 20px;
     width: 35px;
     height: 35px;
@@ -375,13 +333,9 @@
 
   .messageForm {
     padding: 8px;
-    left: 10px;
-    right: 10px;
-    bottom: 30px; /* Pushed up more */
   }
 }
 
-/* Responsive Design for Mobile */
 @media (max-width: 480px) {
   .container {
     padding: 10px 5px;
@@ -406,10 +360,6 @@
     font-size: 0.85rem;
   }
 
-  .messages {
-    max-height: calc(100% - 450px); /* Adjusted for new form position */
-  }
-
   .messageInput {
     font-size: 0.9rem;
   }
@@ -420,28 +370,10 @@
   }
 
   .scrollButton {
-    bottom: 190px; /* Adjusted for new form position */
+    bottom: 60px;
     right: 15px;
     width: 30px;
     height: 30px;
     font-size: 0.9rem;
-  }
-
-  .messageForm {
-    padding: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 110px; /* Pushed up to twice the box height (~50px * 2 + a bit more) */
-  }
-}
-
-/* Handle keyboard on mobile */
-@media (max-height: 500px) {
-  .container {
-    padding-bottom: 0; /* Remove extra padding since JavaScript handles height */
-  }
-
-  .messages {
-    max-height: calc(100% - 450px); /* Adjust for additional padding */
   }
 }
