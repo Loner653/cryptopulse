@@ -1,0 +1,197 @@
+/* quiz.module.css */
+
+/* Container for the entire page */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1));
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding-top: 6.5rem;
+  min-height: 100vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 769px) {
+  .container {
+    padding-top: 8rem;
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-top: 7.5rem;
+    padding: 25px 18px 50px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-top: 7.5rem;
+    padding: 20px 12px 45px;
+    border-radius: 8px;
+  }
+}
+
+/* Page title */
+.pageTitle {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(90deg, #ffd700, #00ccff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: transform 0.3s ease;
+}
+
+.pageTitle:hover {
+  transform: scale(1.05);
+}
+
+/* Section styling */
+.section {
+  padding: 35px;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05));
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2);
+}
+
+/* Section title */
+.sectionTitle {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+  border-bottom: 2px solid #00ccff;
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.sectionTitle:hover {
+  color: #ffd700;
+}
+
+/* Section list styling */
+.section ul {
+  list-style: none;
+  padding-left: 1rem;
+  text-align: left;
+}
+
+.section li {
+  position: relative;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.section li:hover {
+  color: #ffd700;
+}
+
+.section li:before {
+  content: "▹";
+  color: #00ccff;
+  position: absolute;
+  left: 0;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.section li:hover:before {
+  transform: scale(1.2);
+}
+
+/* Links and buttons */
+.xLink {
+  color: #00ccff;
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(0, 204, 255, 0.1);
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.xLink:hover {
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: rgba(255, 215, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Correct and incorrect styles */
+.correct {
+  background: #00ff00;
+  color: #1a1a1a;
+  border-color: #00cc00;
+}
+
+.incorrect {
+  background: #ff0000;
+  color: #1a1a1a;
+  border-color: #cc0000;
+}
+
+/* Back to Top button */
+.backToTop {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05));
+  color: #e0e0e0;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+}
+
+.backToTop:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .backToTop {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .backToTop {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    right: 10px;
+  }
+}
