@@ -5,7 +5,7 @@ export const metadata = {
   title: "CryptoGlobal",
   description: "Your hub for crypto updates, news, and real-time tracking",
   icons: {
-    icon: "/favicon.png" // Changed to PNG
+    icon: "/favicon.png"
   },
 };
 

@@ -102,7 +102,7 @@ export default function Dashboard() {
           <p>
             Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis.
           </p>
-          <Link href="/articles#origin-of-bitcoin" className={styles.readMoreButton}>
+          <Link href="/articles/bitcoin-origins" className={styles.readMoreButton}>
             Read More →
           </Link>
         </section>

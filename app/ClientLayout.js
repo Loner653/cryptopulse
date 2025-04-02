@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation"; // Import usePathname
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
@@ -13,7 +13,7 @@ export default function ClientLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const mainContainerRef = useRef(null);
-  const pathname = usePathname(); // Get the current route
+  const pathname = usePathname();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -45,26 +45,25 @@ export default function ClientLayout({ children }) {
     {
       title: "The Origin of Bitcoin: A Revolutionary Digital Currency",
       excerpt: "Explore the history of Bitcoin, from Satoshi Nakamoto’s vision to its rise as digital gold.",
-      link: "/articles#origin-of-bitcoin",
+      link: "/articles/bitcoin-origins"
     },
     {
       title: "Bridging the Gap: How Real World Assets (RWA) Are Transforming Crypto",
       excerpt: "Learn how RWAs are revolutionizing finance by tokenizing real-world assets on the blockchain.",
-      link: "/articles#real-world-assets",
+      link: "/articles/real-world-assets"
     },
     {
       title: "Healthcare Meets Blockchain: Revolutionizing Data Privacy",
       excerpt: "Discover how blockchain is transforming healthcare with secure data and interoperability.",
-      link: "/articles#healthcare-blockchain",
+      link: "/articles/healthcare-blockchain"
     },
     {
       title: "Cryptocurrency as a Global Currency",
       excerpt: "Explore how cryptocurrency can revolutionize global transactions with its decentralized nature.",
-      link: "/articles#cryptocurrency-global-currency",
+      link: "/articles/global-currency"
     },
   ];
 
-  // Conditionally render the footer (exclude on /chat)
   const showFooter = pathname !== "/chat";
 
   return (
