@@ -213,7 +213,11 @@ export default function CryptoChart() {
                   </div>
                 </td>
                 <td>${formatPrice(coin.current_price)}</td>
-                <td style={{ color: coin.price_change_percentage_24h >= 0 ? "green" : "red" }}>
+                <td
+                  style={{
+                    color: coin.price_change_percentage_24h >= 0 ? "#00ff00" : "#ff0000"
+                  }}
+                >
                   {coin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%
                 </td>
               </tr>

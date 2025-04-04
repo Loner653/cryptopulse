@@ -28,6 +28,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
 
         <div className={styles.navCenter}>
           <ul className={styles.navList}>
+            {/* Always visible links (phone and laptop) */}
             <li>
               <Link href="/faq" className={styles.navLink}>
                 🧠 FAQ
@@ -43,6 +44,27 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
                 <span className={styles.navIcon}>💬</span> Chat
               </Link>
             </li>
+            {/* Laptop-only links */}
+            <li className={styles.laptopOnly}>
+              <Link href="/" className={styles.navLink}>
+                🏠 Home
+              </Link>
+            </li>
+            <li className={styles.laptopOnly}>
+              <Link href="/articles" className={styles.navLink}>
+                📚 Articles
+              </Link>
+            </li>
+            <li className={styles.laptopOnly}>
+              <Link href="/history" className={styles.navLink}>
+                📜 History
+              </Link>
+            </li>
+            <li className={styles.laptopOnly}>
+              <Link href="/quiz" className={styles.navLink}>
+                ❓ Quiz
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -55,7 +77,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
         </button>
       </div>
 
-      {/* Menu Box Row (Sidebar Toggle on Mobile) */}
+      {/* Menu Box Row (Sidebar Toggle + Extra Links for Mobile) */}
       <div className={styles.menuBox}>
         <button
           className={styles.sidebarToggle}
@@ -64,6 +86,31 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
         >
           {isSidebarOpen ? "✖" : "☰"}
         </button>
+
+        <div className={styles.menuLinks}>
+          <ul className={styles.extraNavList}>
+            <li>
+              <Link href="/articles" className={styles.extraNavLink}>
+                📚 Articles
+              </Link>
+            </li>
+            <li>
+              <Link href="/quiz" className={styles.extraNavLink}>
+                ❓ Quiz
+              </Link>
+            </li>
+            <li>
+              <Link href="/history" className={styles.extraNavLink}>
+                📜 History
+              </Link>
+            </li>
+            <li>
+              <Link href="/portfolio" className={styles.extraNavLink}>
+                💼 Portfolio
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

@@ -1,11 +1,12 @@
-import ClientLayout from "./ClientLayout";
+// app/layout.js
 import "./global.css";
+import ClientWrapper from "./ClientWrapper"; // Import the new file
 
 export const metadata = {
   title: "CryptoGlobal",
   description: "Your hub for crypto updates, news, and real-time tracking",
   icons: {
-    icon: "/favicon.png"
+    icon: "/favicon.png",
   },
 };
 
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        <ClientWrapper>
+          {children} {/* ClientLayout will be inside ClientWrapper */}
+        </ClientWrapper>
       </body>
     </html>
   );
