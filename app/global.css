@@ -1,3 +1,5 @@
+/* global.css */
+
 /* Reset default styles */
 * {
   margin: 0;
@@ -7,22 +9,32 @@
 
 :root {
   --price-ticker-height: 7.5rem; /* Price ticker height on mobile */
+  --fixed-width: 100vw; /* Default fallback, updated by JS */
+  --fixed-height: 100vh; /* Default fallback, updated by JS */
 }
 
-body {
+html, body {
+  margin: 0;
+  padding: 0;
+  width: var(--fixed-width);
+  height: var(--fixed-height);
+  overflow: hidden;
   font-family: 'Arial', sans-serif;
   background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
   color: #e0e0e0;
   font-size: 1.125rem;
   line-height: 1.6;
-  margin: 0;
-  min-height: 100vh;
 }
 
 .dashboard-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  width: var(--fixed-width);
+  height: var(--fixed-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 .price-ticker {
@@ -52,9 +64,10 @@ body {
 
 .main-container {
   flex: 1;
-  margin-top: var(--price-ticker-height); /* Space for the fixed price ticker */
+  margin-top: var(--price-ticker-height);
   overflow-y: auto;
-  min-height: calc(100vh - var(--price-ticker-height));
+  width: 100%;
+  height: calc(var(--fixed-height) - var(--price-ticker-height));
 }
 
 @media (min-width: 769px) {
@@ -62,7 +75,7 @@ body {
     margin-left: 280px;
     width: calc(100% - 280px);
     margin-top: 6.25rem;
-    min-height: calc(100vh - 6.25rem);
+    height: calc(var(--fixed-height) - 6.25rem);
   }
 }
 
@@ -74,7 +87,9 @@ body {
 
 .dashboard-content {
   padding: 2.5rem 1.5rem;
-  min-height: calc(100vh - var(--price-ticker-height));
+  width: 100%;
+  height: calc(var(--fixed-height) - var(--price-ticker-height));
+  overflow-y: auto;
 }
 
 /* Footer UI added below */
@@ -130,12 +145,12 @@ body {
   .main-container {
     margin-left: 0;
     margin-top: var(--price-ticker-height);
-    min-height: calc(100vh - var(--price-ticker-height));
+    height: calc(var(--fixed-height) - var(--price-ticker-height));
   }
   
   .dashboard-content {
     padding: 1.5rem 1rem;
-    min-height: calc(100vh - var(--price-ticker-height));
+    height: calc(var(--fixed-height) - var(--price-ticker-height));
   }
   
   /* Footer responsive adjustments */
@@ -153,4 +168,3 @@ body {
     padding: 0.4rem 0.8rem;
   }
 }
-

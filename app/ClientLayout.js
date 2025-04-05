@@ -6,7 +6,6 @@ import Link from "next/link";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 import PriceTicker from "./price ticker/PriceTicker";
-import { Analytics } from "@vercel/analytics/react";
 import "./global.css";
 
 export default function ClientLayout({ children }) {
@@ -16,6 +15,24 @@ export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  useEffect(() => {
+    const setFixedDimensions = () => {
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      document.documentElement.style.setProperty('--fixed-height', `${vh}px`);
+      document.documentElement.style.setProperty('--fixed-width', `${vw}px`);
+    };
+
+    setFixedDimensions();
+    window.addEventListener('resize', setFixedDimensions);
+    window.addEventListener('orientationchange', setFixedDimensions);
+
+    return () => {
+      window.removeEventListener('resize', setFixedDimensions);
+      window.removeEventListener('orientationchange', setFixedDimensions);
+    };
+  }, []);
 
   useEffect(() => {
     const mainContainer = mainContainerRef.current;

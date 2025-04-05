@@ -1,6 +1,5 @@
-// app/layout.js
 import "./global.css";
-import ClientWrapper from "./ClientWrapper"; // Import the new file
+import ClientWrapper from "./ClientWrapper";
 
 export const metadata = {
   title: "CryptoGlobal",
@@ -14,6 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
         <link rel="manifest" href="/manifest.json" />
         <script
           async
@@ -22,9 +25,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <ClientWrapper>
-          {children} {/* ClientLayout will be inside ClientWrapper */}
-        </ClientWrapper>
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );

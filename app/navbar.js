@@ -2,9 +2,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
+import { useState, useEffect } from "react";
 
 export default function Navbar({ toggleSidebar, isSidebarOpen }) {
   const router = useRouter();
+  const [pressTimer, setPressTimer] = useState(null);
 
   const handleBack = () => {
     router.back();
@@ -14,9 +16,34 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
     router.forward();
   };
 
+  const startPress = () => {
+    const timer = setTimeout(() => {
+      router.push("/admin");
+    }, 5000); // 5 seconds long-press for admin
+    setPressTimer(timer);
+  };
+
+  const endPress = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+  };
+
+  const handleClick = () => {
+    if (!pressTimer) {
+      toggleSidebar(); // Immediate toggle on click if no long-press is active
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (pressTimer) clearTimeout(pressTimer);
+    };
+  }, [pressTimer]);
+
   return (
     <nav className={styles.navbar}>
-      {/* Main Navbar Row (Back, Nav Links, Forward) */}
       <div className={styles.navMain}>
         <button
           className={styles.navButton}
@@ -28,7 +55,6 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
 
         <div className={styles.navCenter}>
           <ul className={styles.navList}>
-            {/* Always visible links (phone and laptop) */}
             <li>
               <Link href="/faq" className={styles.navLink}>
                 🧠 FAQ
@@ -36,7 +62,7 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
             </li>
             <li>
               <Link href="/news" className={styles.navLink}>
-                <span className={styles.navIcon}>💬</span> News
+                <span className={styles.navIcon}></span> News
               </Link>
             </li>
             <li>
@@ -44,7 +70,6 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
                 <span className={styles.navIcon}>💬</span> Chat
               </Link>
             </li>
-            {/* Laptop-only links */}
             <li className={styles.laptopOnly}>
               <Link href="/" className={styles.navLink}>
                 🏠 Home
@@ -77,12 +102,16 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
         </button>
       </div>
 
-      {/* Menu Box Row (Sidebar Toggle + Extra Links for Mobile) */}
       <div className={styles.menuBox}>
         <button
           className={styles.sidebarToggle}
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
+          onClick={handleClick} // Single click for toggle
+          onTouchStart={startPress} // Start long-press for admin
+          onTouchEnd={endPress}
+          onMouseDown={startPress} // Start long-press for admin
+          onMouseUp={endPress}
+          onMouseLeave={endPress}
+          aria-label="Toggle sidebar (click) or access admin (hold 5s)"
         >
           {isSidebarOpen ? "✖" : "☰"}
         </button>
@@ -105,8 +134,8 @@ export default function Navbar({ toggleSidebar, isSidebarOpen }) {
               </Link>
             </li>
             <li>
-              <Link href="/portfolio" className={styles.extraNavLink}>
-                💼 Portfolio
+              <Link href="/glossary" className={styles.extraNavLink}>
+                📖 Glossary
               </Link>
             </li>
           </ul>

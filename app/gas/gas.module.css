@@ -1,0 +1,175 @@
+/* Container with neon glow for Gas Tracker */
+.container {
+  max-width: 800px; /* Narrower for focus */
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 20, 40, 0.85));
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding-top: 8rem;
+  min-height: 100vh;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 204, 255, 0.7), 0 0 80px rgba(255, 215, 0, 0.4);
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  animation: pulseGlow 3.5s infinite ease-in-out;
+}
+
+.container:hover {
+  box-shadow: 0 0 60px rgba(0, 204, 255, 0.9), 0 0 120px rgba(255, 215, 0, 0.6);
+  transform: scale(1.01);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 40px rgba(0, 204, 255, 0.7), 0 0 80px rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 70px rgba(0, 204, 255, 1), 0 0 140px rgba(255, 215, 0, 0.7); }
+}
+
+@media (max-width: 768px) {
+  .container { padding-top: 7.5rem; padding: 25px 18px 50px; border-radius: 10px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding-top: 7rem; padding: 20px 12px 45px; border-radius: 8px; }
+}
+
+/* Page title with vibrant gradient */
+.pageTitle {
+  font-size: 2.8rem;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 40px rgba(0, 204, 255, 0.7);
+  background: linear-gradient(90deg, #ffd700, #00ccff, #ff00ff, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: transform 0.3s ease;
+  animation: shimmer 2.5s infinite linear;
+  background-size: 300% 100%;
+}
+
+.pageTitle:hover {
+  transform: scale(1.12);
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* Section for gas prices */
+.section {
+  padding: 35px;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.15), rgba(255, 0, 255, 0.15));
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 204, 255, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* Centered for gas data */
+  border: 2px solid #00ccff;
+}
+
+.section:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 0 50px rgba(0, 204, 255, 0.9), inset 0 0 30px rgba(255, 215, 0, 0.5);
+  border-color: #ffd700;
+}
+
+/* Section title */
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+  border-bottom: 4px solid #00ccff;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  text-shadow: 0 0 12px rgba(0, 204, 255, 0.8), 0 0 24px rgba(0, 204, 255, 0.5);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.sectionTitle:hover {
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
+/* Gas price list */
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section li {
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.section li:hover {
+  color: #ffd700;
+  transform: scale(1.05);
+}
+
+/* Highlight for labels */
+.highlight {
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 0 24px rgba(255, 215, 0, 0.6);
+  margin-right: 8px;
+}
+
+/* Feedback text */
+.feedback {
+  margin-top: 15px;
+  font-size: 1.3rem;
+  text-align: center;
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Back to Top button */
+.backToTop {
+  position: fixed;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.4), rgba(255, 0, 255, 0.3));
+  color: #e0e0e0;
+  border: 2px solid #00ccff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 204, 255, 0.6);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: float 1.8s infinite ease-in-out;
+}
+
+.backToTop:hover {
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.6), rgba(0, 204, 255, 0.5));
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(-50%); }
+  50% { transform: translateY(-65%); }
+}
+
+@media (max-width: 768px) {
+  .backToTop { padding: 10px 14px; font-size: 0.9rem; right: 15px; }
+}
+
+@media (max-width: 480px) {
+  .backToTop { padding: 8px 12px; font-size: 0.8rem; right: 10px; }
+}

@@ -1,15 +1,15 @@
-/* quiz.module.css */
+/* glossary.module.css */
 
 /* Container with enhanced neon glow and animation */
 .container {
-  max-width: 1000px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 40px 20px 60px;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 20, 40, 0.8));
   color: #e0e0e0;
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  padding-top: 8rem; /* Adjusted for sticky tabs */
+  padding-top: 8rem;
   min-height: 100vh;
   border-radius: 12px;
   box-shadow: 0 0 30px rgba(0, 204, 255, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
@@ -19,6 +19,7 @@
   z-index: 1;
   animation: pulseGlow 4s infinite ease-in-out;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .container:hover {
@@ -30,19 +31,17 @@
   50% { box-shadow: 0 0 50px rgba(0, 204, 255, 0.9), 0 0 100px rgba(255, 215, 0, 0.6); }
 }
 
-@media (min-width: 769px) {
-  .container { padding-top: 8rem; padding-bottom: 70px; }
-}
-
 @media (max-width: 768px) {
-  .container { padding-top: 7.5rem; padding: 25px 18px 50px; border-radius: 10px; }
+  .container { padding-top: 7.5rem; padding: 25px 18px 50px; border-radius: 10px; transform: none !important; }
+  .container:hover { transform: none !important; }
 }
 
 @media (max-width: 480px) {
-  .container { padding-top: 7rem; padding: 20px 12px 45px; border-radius: 8px; }
+  .container { padding-top: 7rem; padding: 20px 12px 45px; border-radius: 8px; transform: none !important; }
+  .container:hover { transform: none !important; }
 }
 
-/* Navigation Tabs Container */
+/* Navigation tabs for categories - Make sticky and add gradient background */
 .navTabs {
   display: flex;
   justify-content: center;
@@ -59,7 +58,6 @@
   white-space: nowrap;
 }
 
-/* Individual Tab */
 .tab {
   padding: 10px 20px;
   background: rgba(0, 204, 255, 0.2);
@@ -75,7 +73,9 @@
 
 /* Disable transform on mobile */
 @media (max-width: 768px) {
-  .tab { transform: none !important; }
+  .tab {
+    transform: none !important;
+  }
   .tab:hover {
     transform: none !important;
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(0, 204, 255, 0.3));
@@ -91,7 +91,6 @@
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
 
-/* Active Tab */
 .activeTab {
   background: linear-gradient(135deg, #00ccff, #ffd700);
   color: #1a1a1a;
@@ -127,8 +126,12 @@
 
 /* Disable transform on mobile */
 @media (max-width: 768px) {
-  .pageTitle { transform: none !important; }
-  .pageTitle:hover { transform: none !important; }
+  .pageTitle {
+    transform: none !important;
+  }
+  .pageTitle:hover {
+    transform: none !important;
+  }
 }
 
 .pageTitle:hover {
@@ -140,7 +143,31 @@
   100% { background-position: 200% 50%; }
 }
 
-/* Section with glowing borders and hover effects */
+/* Search input */
+.input {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  display: block;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  background: rgba(0, 204, 255, 0.1);
+  border: 2px solid #00ccff;
+  border-radius: 8px;
+  color: #e0e0e0;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  background: rgba(255, 215, 0, 0.1);
+}
+
+/* Section for glossary terms or term details */
 .section {
   padding: 35px;
   margin-bottom: 40px;
@@ -156,7 +183,9 @@
 
 /* Disable transform on mobile */
 @media (max-width: 768px) {
-  .section { transform: none !important; }
+  .section {
+    transform: none !important;
+  }
   .section:hover {
     transform: none !important;
     box-shadow: 0 0 40px rgba(0, 204, 255, 0.8), inset 0 0 25px rgba(255, 215, 0, 0.4);
@@ -187,7 +216,7 @@
   border-color: #ffd700;
 }
 
-/* Section list with animated markers */
+/* Glossary terms list (for glossary/page.js) with animated markers */
 .section ul {
   list-style: none;
   padding-left: 1rem;
@@ -198,7 +227,12 @@
   position: relative;
   margin-bottom: 1rem;
   padding-left: 1.5rem;
+  font-size: 1.3rem;
+  background: rgba(0, 204, 255, 0.1);
+  border-radius: 6px;
   transition: color 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .section li:hover {
@@ -226,11 +260,155 @@
   50% { opacity: 0.7; }
 }
 
-/* Links and buttons with bold neon effects */
-.xLink {
+/* Enhanced styling for glossary terms (for glossary/page.js) */
+.glossaryTerm {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+}
+
+.glossaryTerm::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background: linear-gradient(90deg, #00ccff, #ffd700);
+  box-shadow: 0 0 8px rgba(0, 204, 255, 0.8), 0 0 12px rgba(255, 215, 0, 0.6);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.glossaryTerm:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.glossaryTerm:hover {
+  color: #ffd700;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+}
+
+/* Definition text (for [term]/page.js) */
+.definition {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  text-align: left;
+  padding: 10px 15px;
+  background: rgba(0, 204, 255, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.definition:hover {
+  background: rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Related terms section (for [term]/page.js) */
+.relatedTerms {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.relatedTitle {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #00ccff;
+  display: inline-block;
+  padding-bottom: 0.2rem;
+  text-shadow: 0 0 8px rgba(0, 204, 255, 0.7);
+}
+
+.relatedTitle:hover {
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
+.relatedTerms ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.relatedTerms li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  font-size: 1.1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.relatedTerms li:hover {
+  color: #ffd700;
+  transform: translateX(5px);
+}
+
+.relatedTerms li:before {
+  content: "▹";
+  color: #00ccff;
+  position: absolute;
+  left: 0;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+  animation: flicker 1.5s infinite alternate;
+}
+
+.relatedTerms li:hover:before {
+  transform: scale(1.3);
+  color: #ffd700;
+}
+
+.relatedLink {
   color: #00ccff;
   text-decoration: none;
+  transition: color 0.3s ease;
+  text-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
+}
+
+.relatedLink:hover {
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+}
+
+/* Highlight for labels */
+.highlight {
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+  margin-right: 8px;
+}
+
+/* Feedback text */
+.feedback {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Back to Glossary link with enhanced neon effects */
+.xLink {
+  display: inline-block;
+  margin-top: 20px;
   padding: 0.4rem 1rem;
+  color: #00ccff;
+  text-decoration: none;
   border-radius: 6px;
   background: linear-gradient(135deg, rgba(0, 204, 255, 0.2), rgba(0, 0, 0, 0.2));
   border: 2px solid #00ccff;
@@ -241,7 +419,9 @@
 
 /* Disable transform on mobile */
 @media (max-width: 768px) {
-  .xLink { transform: none !important; }
+  .xLink {
+    transform: none !important;
+  }
   .xLink:hover {
     transform: none !important;
     color: #ffd700;
@@ -259,33 +439,11 @@
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
 
-.xLink:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Correct and incorrect with glowing feedback */
-.correct {
-  background: linear-gradient(135deg, #00ff00, #00cc00);
-  color: #1a1a1a;
-  border-color: #00ff00;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-  text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-}
-
-.incorrect {
-  background: linear-gradient(135deg, #ff0000, #cc0000);
-  color: #1a1a1a;
-  border-color: #cc0000;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-  text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-}
-
 /* Back to Top button with dynamic glow */
 .backToTop {
   position: fixed;
   top: 50%;
-  right: 20px;
+  right: 25px;
   transform: translateY(-50%);
   background: linear-gradient(135deg, rgba(0, 204, 255, 0.3), rgba(255, 0, 255, 0.2));
   color: #e0e0e0;
@@ -313,8 +471,6 @@
   }
   .backToTop:hover {
     transform: translateY(-50%) !important;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(0, 204, 255, 0.4));
   }
 }
 
@@ -339,71 +495,4 @@
 @keyframes float {
   0%, 100% { transform: translateY(-50%); }
   50% { transform: translateY(-60%); }
-}
-
-/* Additional eye-catching elements */
-.input {
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 2px solid #00ccff;
-  background: rgba(0, 204, 255, 0.1);
-  color: #e0e0e0;
-  font-family: 'Arial', sans-serif;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #ffd700;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-}
-
-.progressBar {
-  width: 100%;
-  height: 12px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 6px;
-  margin-bottom: 20px;
-  border: 1px solid #00ccff;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.progressFill {
-  height: 100%;
-  background: linear-gradient(90deg, #00ccff, #ffd700);
-  border-radius: 6px;
-  transition: width 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
-  animation: progressGlow 2s infinite alternate;
-}
-
-@keyframes progressGlow {
-  0% { box-shadow: 0 0 15px rgba(0, 204, 255, 0.7); }
-  100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
-}
-
-.highlight {
-  color: #ffd700;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-.feedback {
-  margin-top: 15px;
-  font-size: 1.2rem;
-  text-align: center;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
 }

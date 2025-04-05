@@ -36,7 +36,8 @@ export default function Sidebar({ isOpen, articles, ref }) {
           <li><Link href="/news">🚪 News</Link></li>
           <li><Link href="/chart">📈 Chart Page</Link></li>
           <li><Link href="/quiz">❓ Quiz</Link></li>
-          <li><Link href="/portfolio">💼 Portfolio</Link></li> {/* Added Portfolio link */}
+          <li><Link href="/gas">⛽ Gas Tracker</Link></li>
+          <li><Link href="/glossary">📖 Glossary</Link></li>
           <li>
             <button
               className={styles.chartBtn}

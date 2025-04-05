@@ -5,10 +5,9 @@ import styles from "./quiz.module.css";
 import { db, analytics } from "../lib/firebase";
 import { ref, get, set, onValue } from "firebase/database";
 
-// Glossary Terms (5 per difficulty level, 15 total)
+// 5 Sample Glossary Terms (from your glossary, expandable to 180+)
 const glossaryTerms = [
-  // Beginner (Basics category)
-  { term: "Airdrop", def: "Free token distribution to promote a project or reward users.", category: "Basics", related: ["ICO", "Token"] },
+    { term: "Airdrop", def: "Free token distribution to promote a project or reward users.", category: "Basics", related: ["ICO", "Token"] },
     { term: "Ape In", def: "Buying a large amount of crypto impulsively.", category: "Slang", related: ["FOMO", "YOLO"] },
     { term: "Atomicity", def: "Ensuring a transaction is fully completed or not at all.", category: "Tech", related: ["Consistency", "Smart Contract"] },
     { term: "Adoption Barrier", def: "Challenges like regulatory restrictions or technical complexity that hinder widespread cryptocurrency use.", category: "Geopolitical", related: ["Global Adoption", "User Onboarding"] },
@@ -299,137 +298,6 @@ const glossaryTerms = [
     { term: "Silk Road", def: "An infamous dark web marketplace using Bitcoin, shut down in 2013.", category: "Historical", related: ["Dark Web", "Bitcoin"] },
     { term: "Social Impact Token", def: "A token funding projects with positive social outcomes.", category: "Cultural", related: ["Crypto Charity", "Philanthropy"] },
     { term: "Social Media Token", def: "A token used on decentralized social media platforms.", category: "Emerging Trends", related: ["Decentralized Social", "Web3"] },
-    { term: "Liquidity Bootstrapping", def: "A token sale method to gradually build liquidity.", category: "DeFi", related: ["Initial Liquidity Offering", "Liquidity"] },
-    { term: "Liquidity Crunch", def: "A sudden drop in available liquidity, causing price volatility.", category: "Trading", related: ["Liquidity", "Volatility"] },
-    { term: "Liquidity Fragmentation", def: "The division of liquidity across multiple platforms.", category: "DeFi", related: ["Liquidity", "DEX Aggregator"] },
-    { term: "Liquidity Migration", def: "Moving liquidity from one protocol to another for better yields.", category: "DeFi", related: ["Liquidity Pool", "Yield Farming"] },
-    { term: "Liquidity Trap", def: "A situation where adding liquidity leads to losses due to market conditions.", category: "DeFi", related: ["Impermanent Loss", "Liquidity Pool"] },
-    { term: "Long Tail Asset", def: "A niche or less popular crypto with potential for growth.", category: "Trading", related: ["Micro Cap", "Speculation"] },
-    { term: "Loopring", def: "A Layer 2 protocol for scalable, low-cost DEX trading.", category: "Tech", related: ["Layer 2", "DEX"] },
-    { term: "Low Cap Gem", def: "Slang for a small market cap crypto with high growth potential.", category: "Slang", related: ["Micro Cap", "Speculation"] },
-    { term: "MakerDAO", def: "A DeFi protocol for creating the DAI stablecoin through CDPs.", category: "DeFi", related: ["DAI", "Collateralized Debt Position"] },
-    { term: "Market Impact", def: "The effect of a large trade on a crypto’s price.", category: "Trading", related: ["Liquidity", "Whale"] },
-    { term: "Market Maker Fee", def: "A fee paid to incentivize liquidity provision on an exchange.", category: "Trading", related: ["Market Maker", "Liquidity"] },
-    { term: "Market Microstructure", def: "The study of how trades and orders affect market prices.", category: "Trading", related: ["Order Book", "Liquidity"] },
-    { term: "Market Neutral", def: "A strategy aiming for profits regardless of market direction.", category: "Trading", related: ["Delta Neutral", "Hedge"] },
-    { term: "Market Timing", def: "Attempting to predict the best times to buy or sell crypto.", category: "Trading", related: ["Speculation", "TA"] },
-    { term: "Max Drawdown", def: "The largest peak-to-trough decline in a portfolio’s value.", category: "Trading", related: ["Risk Management", "Volatility"] },
-    { term: "MEV Extraction", def: "Profiting from reordering or including specific transactions.", category: "Tech", related: ["MEV", "Frontrun"] },
-    { term: "Micro-Lending", def: "Small-scale lending of crypto through DeFi platforms.", category: "DeFi", related: ["Lending Protocol", "DeFi"] },
-    { term: "Mining Contract", def: "An agreement to rent mining power for a set period.", category: "Tech", related: ["Cloud Mining", "Mining"] },
-    { term: "Minting Cap", def: "The maximum number of tokens that can be created.", category: "Tech", related: ["Max Supply", "Tokenomics"] },
-    { term: "Momentum Trading", def: "A strategy to buy or sell based on recent price trends.", category: "Trading", related: ["TA", "Trend"] },
-    { term: "Multi-Party Computation", def: "A cryptographic method for secure data sharing among parties.", category: "Tech", related: ["Privacy", "Security"] },
-    { term: "Network Effect", def: "The increased value of a crypto as more users join.", category: "Basics", related: ["Adoption", "User Base"] },
-    { term: "Network Fee", def: "A fee paid to process transactions on a blockchain.", category: "Tech", related: ["Transaction Fee", "Gas"] },
-    { term: "Network Partition", def: "A split in a blockchain network due to connectivity issues.", category: "Tech", related: ["CAP Theorem", "Consensus"] },
-    { term: "NFT Fractionalization", def: "Dividing an NFT into smaller, tradable shares.", category: "DeFi", related: ["Fractional Ownership", "NFT"] },
-    { term: "Node Sync", def: "The process of a node downloading and verifying the blockchain.", category: "Tech", related: ["Full Node", "Blockchain"] },
-    { term: "Non-Interactive Proof", def: "A cryptographic proof that doesn’t require interaction.", category: "Tech", related: ["Zero-Knowledge", "zk-SNARK"] },
-    { term: "Off-Chain Oracle", def: "An oracle that processes data outside the blockchain.", category: "Tech", related: ["Oracle", "Data Oracle"] },
-    { term: "On-Chain Analysis", def: "Studying blockchain data to understand market behavior.", category: "Tech", related: ["Heuristic Analysis", "Transparency"] },
-    { term: "On-Chain Liquidity", def: "Liquidity directly available on a blockchain protocol.", category: "DeFi", related: ["Liquidity Pool", "DEX"] },
-    { term: "Optimistic Oracle", def: "An oracle assuming data is correct unless disputed.", category: "Tech", related: ["Oracle", "Dispute Resolution"] },
-    { term: "Order Flow", def: "The stream of buy and sell orders in a market.", category: "Trading", related: ["Order Book", "Market Microstructure"] },
-    { term: "Orphan Block", def: "A block that is not part of the main blockchain.", category: "Tech", related: ["Uncle Block", "Mining"] },
-    { term: "Overleveraged", def: "Taking on too much debt in trading, risking liquidation.", category: "Trading", related: ["Leverage", "Liquidation"] },
-    { term: "P2P Exchange", def: "A platform for direct crypto trading between users.", category: "Trading", related: ["P2P", "DEX"] },
-    { term: "Parachain Auction", def: "A bidding process to secure a slot on a relay chain.", category: "Tech", related: ["Polkadot", "Parachain"] },
-    { term: "Passive Staking", def: "Earning rewards by holding tokens without active participation.", category: "DeFi", related: ["Staking", "Yield"] },
-    { term: "Peg Drift", def: "When a stablecoin’s value deviates from its intended peg.", category: "DeFi", related: ["Stablecoin", "Peg"] },
-    { term: "Permissionless", def: "A system where anyone can participate without approval.", category: "Tech", related: ["Decentralization", "Public Blockchain"] },
-    { term: "Perpetual Swap", def: "A derivative contract with no expiry, mimicking spot trading.", category: "Trading", related: ["Perpetual Futures", "Derivatives"] },
-    { term: "Polkadot", def: "A blockchain protocol enabling interoperability between chains.", category: "Tech", related: ["Parachain", "Relay Chain"] },
-    { term: "Portfolio Rebalancing", def: "Adjusting a crypto portfolio to maintain desired allocations.", category: "Trading", related: ["Diversification", "Risk Management"] },
-    { term: "Pre-Sale", def: "A token sale phase before the public offering.", category: "Basics", related: ["Private Sale", "ICO"] },
-    { term: "Price Floor", def: "The lowest price a crypto is expected to drop to.", category: "Trading", related: ["Support", "Valuation"] },
-    { term: "Price Oracle", def: "A service providing real-time price data to smart contracts.", category: "Tech", related: ["Oracle", "Data Oracle"] },
-    { term: "Private Key Leak", def: "The accidental exposure of a private key, leading to theft.", category: "Tech", related: ["Security", "Private Key"] },
-    { term: "Proof of Attendance", def: "A token or NFT proving participation in an event.", category: "Tech", related: ["NFT", "Event"] },
-    { term: "Proof of Capacity", def: "A consensus mechanism using storage space to validate blocks.", category: "Tech", related: ["Consensus", "Mining"] },
-    { term: "Proof of Reserves", def: "A method to verify an exchange holds sufficient funds.", category: "Regulation", related: ["Audit", "Transparency"] },
-    { term: "Proxy Contract", def: "A smart contract that delegates calls to another contract.", category: "Tech", related: ["Smart Contract", "Upgradeability"] },
-    { term: "Public Sale", def: "A token sale open to the general public.", category: "Basics", related: ["Pre-Sale", "ICO"] },
-    { term: "Put Option", def: "A contract giving the right to sell a crypto at a set price.", category: "Trading", related: ["Call Option", "Options"] },
-    { term: "Quadratic Voting", def: "A voting system where votes cost more as you add them.", category: "DeFi", related: ["Governance", "DAO"] },
-    { term: "Quantum Resistance", def: "A blockchain’s ability to withstand quantum computing attacks.", category: "Tech", related: ["Security", "Cryptography"] },
-    { term: "Randomness Oracle", def: "A service providing secure random numbers to smart contracts.", category: "Tech", related: ["Chainlink VRF", "Randomness"] },
-    { term: "Re-Entrancy Attack", def: "An exploit where a smart contract is repeatedly called before completing.", category: "Tech", related: ["Security", "Smart Contract"] },
-    { term: "Rehypothecation", def: "Using borrowed crypto assets as collateral for further loans.", category: "DeFi", related: ["Leverage", "Risk"] },
-    { term: "Relative Value", def: "Comparing a crypto’s value to another asset or benchmark.", category: "Trading", related: ["Valuation", "Market Cap"] },
-    { term: "Replay Attack", def: "Reusing a valid transaction to steal funds after a fork.", category: "Tech", related: ["Security", "Fork"] },
-    { term: "Reserve Ratio", def: "The ratio of reserves to circulating supply in a stablecoin.", category: "DeFi", related: ["Stablecoin", "Peg"] },
-    { term: "Reversal Pattern", def: "A chart pattern indicating a potential trend change.", category: "Trading", related: ["Head and Shoulders", "TA"] },
-    { term: "Reward Distribution", def: "The process of allocating staking or mining rewards.", category: "Tech", related: ["Block Reward", "Staking"] },
-    { term: "Ring Signature", def: "A cryptographic method for anonymous transactions.", category: "Tech", related: ["Monero", "Privacy"] },
-    { term: "Risk-Adjusted Return", def: "A measure of profit relative to the risk taken.", category: "Trading", related: ["ROI", "Risk Management"] },
-    { term: "Rollup Chain", def: "A secondary chain processing transactions for a main blockchain.", category: "Tech", related: ["Rollup", "Layer 2"] },
-    { term: "Safe Haven", def: "A crypto seen as a stable investment during market turmoil.", category: "Trading", related: ["Blue Chip", "Store of Value"] },
-    { term: "Sandwich Trading", def: "A strategy placing trades around a large order to profit.", category: "Trading", related: ["Frontrun", "MEV"] },
-    { term: "Satoshi Era", def: "The early days of Bitcoin when Satoshi Nakamoto was active.", category: "Slang", related: ["Satoshi Nakamoto", "Bitcoin"] },
-    { term: "Scalability Triad", def: "The balance of speed, cost, and security in blockchain design.", category: "Tech", related: ["Blockchain Trilemma", "Scalability"] },
-    { term: "Security Audit", def: "A thorough review of a blockchain or smart contract for vulnerabilities.", category: "Tech", related: ["Audit", "Security"] },
-    { term: "Self-Custody", def: "Managing your own private keys without third-party involvement.", category: "Tech", related: ["Non-Custodial", "Wallet"] },
-    { term: "Self-Sovereign Identity", def: "A user-controlled digital identity on a blockchain.", category: "Tech", related: ["Decentralized Identity", "Privacy"] },
-    { term: "Settlement Layer", def: "A blockchain layer focused on finalizing transactions.", category: "Tech", related: ["Execution Layer", "Layer 1"] },
-    { term: "Shamir’s Secret Sharing", def: "A method to split a private key into multiple parts.", category: "Tech", related: ["Security", "Private Key"] },
-    { term: "Shard Chain", def: "A subset of a blockchain handling specific transactions for scalability.", category: "Tech", related: ["Sharding", "Ethereum 2.0"] },
-    { term: "Sharpe Ratio", def: "A measure of risk-adjusted return in a crypto portfolio.", category: "Trading", related: ["Risk-Adjusted Return", "Volatility"] },
-    { term: "Shilling Attack", def: "Coordinated promotion of a crypto to manipulate its price.", category: "Slang", related: ["Shill", "Pump Scheme"] },
-    { term: "Sidechain Peg", def: "A mechanism locking assets on a main chain to use on a sidechain.", category: "Tech", related: ["Sidechain", "Cross-Chain"] },
-    { term: "Slashing", def: "Penalizing validators for misbehavior by reducing their staked tokens.", category: "Tech", related: ["Proof of Stake", "Validator"] },
-    { term: "Slippage Tolerance", def: "The maximum price change a trader is willing to accept in a swap.", category: "DeFi", related: ["Slippage", "DEX"] },
-    { term: "Smart Contract Oracle", def: "An oracle integrated into a smart contract for data input.", category: "Tech", related: ["Oracle", "Smart Contract"] },
-    { term: "Sniper Bot", def: "A bot designed to buy tokens immediately upon listing.", category: "Trading", related: ["Snipe", "Bot Trading"] },
-    { term: "Social Recovery", def: "A wallet recovery method using trusted contacts.", category: "Tech", related: ["Wallet Recovery", "Security"] },
-    { term: "Soft Staking", def: "Staking without locking tokens, allowing withdrawal anytime.", category: "DeFi", related: ["Staking", "Bonded Staking"] },
-    { term: "Sovereign Rollup", def: "A rollup with its own consensus mechanism.", category: "Tech", related: ["Rollup", "Layer 2"] },
-    { term: "Stable Swap", def: "A swap mechanism optimized for stablecoin trading.", category: "DeFi", related: ["Curve Finance", "Stablecoin"] },
-    { term: "Staking Derivative", def: "A token representing staked assets, tradable while staking.", category: "DeFi", related: ["Staking", "Liquidity"] },
-    { term: "State Channel Network", def: "A network of state channels for off-chain transactions.", category: "Tech", related: ["State Channel", "Layer 2"] },
-    { term: "State Rent", def: "A fee for storing data on a blockchain to manage bloat.", category: "Tech", related: ["State Bloat", "Storage"] },
-    { term: "Store of Value", def: "A crypto’s ability to retain value over time.", category: "Basics", related: ["Inflation Hedge", "Bitcoin"] },
-    { term: "Sybil Protection", def: "Measures to prevent fake identities in a decentralized system.", category: "Tech", related: ["Sybil Resistance", "Security"] },
-    { term: "Synthetic Token", def: "A token mimicking the value of another asset in DeFi.", category: "DeFi", related: ["Synthetic Asset", "DeFi"] },
-    { term: "Taker Fee", def: "A fee charged for taking liquidity from an exchange.", category: "Trading", related: ["Maker Fee", "Liquidity"] },
-    { term: "Tezos", def: "A self-upgrading blockchain with on-chain governance.", category: "Tech", related: ["Baking", "Proof of Stake"] },
-    { term: "Time Lock", def: "A mechanism delaying a transaction until a set time.", category: "Tech", related: ["Hash Lock", "Smart Contract"] },
-    { term: "Token Bonding", def: "A mechanism to lock tokens for rewards or access.", category: "DeFi", related: ["Staking", "Liquidity"] },
-    { term: "Token Curated Registry", def: "A decentralized list maintained through token voting.", category: "DeFi", related: ["Governance", "DAO"] },
-    { term: "Token Distribution Event", def: "An event where tokens are allocated to users.", category: "Basics", related: ["Airdrop", "Token Sale"] },
-    { term: "Token Migration", def: "Moving tokens from one blockchain to another.", category: "Tech", related: ["Token Swap", "Bridge"] },
-    { term: "Tokenized Asset", def: "A real-world asset represented as a token on a blockchain.", category: "Basics", related: ["Tokenization", "Security Token"] },
-    { term: "Total Locked Value", def: "The total value of assets locked in a DeFi protocol.", category: "DeFi", related: ["TVL", "Liquidity"] },
-    { term: "Transaction Batching", def: "Combining multiple transactions into a single one to save fees.", category: "Tech", related: ["Gas Optimization", "Scalability"] },
-    { term: "Transaction Relay", def: "The process of broadcasting transactions to the network.", category: "Tech", related: ["Mempool", "Node"] },
-    { term: "Trend Line", def: "A line on a chart showing the direction of price movement.", category: "Trading", related: ["TA", "Support"] },
-    { term: "Trust Score", def: "A metric assessing the reliability of a crypto exchange.", category: "Trading", related: ["Security", "Exchange"] },
-    { term: "Uniswap V3", def: "An upgraded version of Uniswap with concentrated liquidity.", category: "DeFi", related: ["Uniswap", "Concentrated Liquidity"] },
-    { term: "Unspent Output", def: "A transaction output that can be used as input for a new transaction.", category: "Tech", related: ["UTXO", "Bitcoin"] },
-    { term: "Upgradeability", def: "The ability to update a smart contract’s code after deployment.", category: "Tech", related: ["Proxy Contract", "Smart Contract"] },
-    { term: "Validator Election", def: "The process of selecting validators in a Proof of Stake system.", category: "Tech", related: ["Validator", "Proof of Stake"] },
-    { term: "Value Accrual", def: "The process by which a token gains value through usage.", category: "DeFi", related: ["Tokenomics", "Utility"] },
-    { term: "Vaporware Hype", def: "Promoting a crypto project that never materializes.", category: "Slang", related: ["Vaporware", "Hype"] },
-    { term: "Velocity of Money", def: "The rate at which a token is used in transactions.", category: "Tech", related: ["Token Velocity", "Tokenomics"] },
-    { term: "Volatility Smile", def: "A graph showing implied volatility across option strike prices.", category: "Trading", related: ["Options", "Volatility"] },
-    { term: "Volume Profile", def: "A chart showing trading volume at different price levels.", category: "Trading", related: ["Volume", "TA"] },
-    { term: "Wallet Drainer", def: "A scam contract that steals funds from a user’s wallet.", category: "Slang", related: ["Honeypot", "Scam"] },
-    { term: "Warm Wallet", def: "A wallet with limited online exposure for moderate security.", category: "Tech", related: ["Hot Wallet", "Cold Wallet"] },
-    { term: "Weighted Voting", def: "A governance system where votes are proportional to token holdings.", category: "DeFi", related: ["Governance", "DAO"] },
-    { term: "Whale Dump", def: "A large sell-off by a whale, causing a price drop.", category: "Slang", related: ["Whale", "Dumping"] },
-    { term: "Wrapped Asset", def: "A tokenized version of an asset for use on another blockchain.", category: "Tech", related: ["Wrapped Token", "Cross-Chain"] },
-    { term: "Yield Sensitivity", def: "How much a DeFi yield changes with market conditions.", category: "DeFi", related: ["Yield", "DeFi"] },
-    { term: "Zero-Sum Game", def: "A situation where one trader’s gain is another’s loss.", category: "Trading", related: ["Market", "Speculation"] },
-    { term: "zk-Rollup", def: "A Layer 2 solution using zero-knowledge proofs for scalability.", category: "Tech", related: ["Rollup", "Zero-Knowledge"] },
-    { term: "Address Reuse", def: "Using the same wallet address for multiple transactions, reducing privacy.", category: "Tech", related: ["Privacy", "Wallet Address"] },
-    { term: "Adoption Curve", def: "The rate at which a cryptocurrency gains widespread use.", category: "Basics", related: ["Mainstream", "User Base"] },
-    { term: "Algo Trading", def: "Using algorithms to automate trading strategies.", category: "Trading", related: ["Trading Bot", "Automation"] },
-    { term: "Alpha", def: "Early access or insider information on a crypto project.", category: "Slang", related: ["Beta", "Insider"] },
-    { term: "Anonymity Set", def: "The group of users a transaction could potentially belong to, enhancing privacy.", category: "Tech", related: ["Privacy", "Coin Mixer"] },
-    { term: "Anti-Sybil", def: "Mechanisms to prevent fake identities in a blockchain network.", category: "Tech", related: ["Sybil Resistance", "Security"] },
-    { term: "APY", def: "Annual Percentage Yield; the yearly return on an investment including compounding.", category: "DeFi", related: ["APR", "Yield"] }, 
-
-  // Intermediate (Tech category)
     { term: "Social Token", def: "A token tied to a creator or community for exclusive access.", category: "Cultural", related: ["Decentralized Creator", "NFT"] },
     { term: "Sustainability Token", def: "A token supporting environmental sustainability initiatives.", category: "Environmental", related: ["Carbon Credit Token", "Green Mining"] },
     { term: "Tokenized Real Estate", def: "Real estate assets represented as tokens on a blockchain.", category: "Emerging Trends", related: ["Tokenization", "Fractional Ownership"] },
@@ -880,9 +748,136 @@ const glossaryTerms = [
     { term: "L2 Scaling", def: "Layer 2 solutions to improve blockchain scalability.", category: "Tech", related: ["Layer 2", "Rollup"] },
     { term: "Lending Protocol", def: "A DeFi platform for lending and borrowing crypto assets.", category: "DeFi", related: ["Aave", "Compound"] },
     { term: "Leveraged Token", def: "A token that amplifies price movements using leverage.", category: "Trading", related: ["Leverage", "Derivatives"] },
-
-  // Advanced (Slang category as a placeholder for advanced)
-  { term: "APR", def: "Annual Percentage Rate; the yearly return on an investment without compounding.", category: "DeFi", related: ["APY", "Yield"] },
+    { term: "Liquidity Bootstrapping", def: "A token sale method to gradually build liquidity.", category: "DeFi", related: ["Initial Liquidity Offering", "Liquidity"] },
+    { term: "Liquidity Crunch", def: "A sudden drop in available liquidity, causing price volatility.", category: "Trading", related: ["Liquidity", "Volatility"] },
+    { term: "Liquidity Fragmentation", def: "The division of liquidity across multiple platforms.", category: "DeFi", related: ["Liquidity", "DEX Aggregator"] },
+    { term: "Liquidity Migration", def: "Moving liquidity from one protocol to another for better yields.", category: "DeFi", related: ["Liquidity Pool", "Yield Farming"] },
+    { term: "Liquidity Trap", def: "A situation where adding liquidity leads to losses due to market conditions.", category: "DeFi", related: ["Impermanent Loss", "Liquidity Pool"] },
+    { term: "Long Tail Asset", def: "A niche or less popular crypto with potential for growth.", category: "Trading", related: ["Micro Cap", "Speculation"] },
+    { term: "Loopring", def: "A Layer 2 protocol for scalable, low-cost DEX trading.", category: "Tech", related: ["Layer 2", "DEX"] },
+    { term: "Low Cap Gem", def: "Slang for a small market cap crypto with high growth potential.", category: "Slang", related: ["Micro Cap", "Speculation"] },
+    { term: "MakerDAO", def: "A DeFi protocol for creating the DAI stablecoin through CDPs.", category: "DeFi", related: ["DAI", "Collateralized Debt Position"] },
+    { term: "Market Impact", def: "The effect of a large trade on a crypto’s price.", category: "Trading", related: ["Liquidity", "Whale"] },
+    { term: "Market Maker Fee", def: "A fee paid to incentivize liquidity provision on an exchange.", category: "Trading", related: ["Market Maker", "Liquidity"] },
+    { term: "Market Microstructure", def: "The study of how trades and orders affect market prices.", category: "Trading", related: ["Order Book", "Liquidity"] },
+    { term: "Market Neutral", def: "A strategy aiming for profits regardless of market direction.", category: "Trading", related: ["Delta Neutral", "Hedge"] },
+    { term: "Market Timing", def: "Attempting to predict the best times to buy or sell crypto.", category: "Trading", related: ["Speculation", "TA"] },
+    { term: "Max Drawdown", def: "The largest peak-to-trough decline in a portfolio’s value.", category: "Trading", related: ["Risk Management", "Volatility"] },
+    { term: "MEV Extraction", def: "Profiting from reordering or including specific transactions.", category: "Tech", related: ["MEV", "Frontrun"] },
+    { term: "Micro-Lending", def: "Small-scale lending of crypto through DeFi platforms.", category: "DeFi", related: ["Lending Protocol", "DeFi"] },
+    { term: "Mining Contract", def: "An agreement to rent mining power for a set period.", category: "Tech", related: ["Cloud Mining", "Mining"] },
+    { term: "Minting Cap", def: "The maximum number of tokens that can be created.", category: "Tech", related: ["Max Supply", "Tokenomics"] },
+    { term: "Momentum Trading", def: "A strategy to buy or sell based on recent price trends.", category: "Trading", related: ["TA", "Trend"] },
+    { term: "Multi-Party Computation", def: "A cryptographic method for secure data sharing among parties.", category: "Tech", related: ["Privacy", "Security"] },
+    { term: "Network Effect", def: "The increased value of a crypto as more users join.", category: "Basics", related: ["Adoption", "User Base"] },
+    { term: "Network Fee", def: "A fee paid to process transactions on a blockchain.", category: "Tech", related: ["Transaction Fee", "Gas"] },
+    { term: "Network Partition", def: "A split in a blockchain network due to connectivity issues.", category: "Tech", related: ["CAP Theorem", "Consensus"] },
+    { term: "NFT Fractionalization", def: "Dividing an NFT into smaller, tradable shares.", category: "DeFi", related: ["Fractional Ownership", "NFT"] },
+    { term: "Node Sync", def: "The process of a node downloading and verifying the blockchain.", category: "Tech", related: ["Full Node", "Blockchain"] },
+    { term: "Non-Interactive Proof", def: "A cryptographic proof that doesn’t require interaction.", category: "Tech", related: ["Zero-Knowledge", "zk-SNARK"] },
+    { term: "Off-Chain Oracle", def: "An oracle that processes data outside the blockchain.", category: "Tech", related: ["Oracle", "Data Oracle"] },
+    { term: "On-Chain Analysis", def: "Studying blockchain data to understand market behavior.", category: "Tech", related: ["Heuristic Analysis", "Transparency"] },
+    { term: "On-Chain Liquidity", def: "Liquidity directly available on a blockchain protocol.", category: "DeFi", related: ["Liquidity Pool", "DEX"] },
+    { term: "Optimistic Oracle", def: "An oracle assuming data is correct unless disputed.", category: "Tech", related: ["Oracle", "Dispute Resolution"] },
+    { term: "Order Flow", def: "The stream of buy and sell orders in a market.", category: "Trading", related: ["Order Book", "Market Microstructure"] },
+    { term: "Orphan Block", def: "A block that is not part of the main blockchain.", category: "Tech", related: ["Uncle Block", "Mining"] },
+    { term: "Overleveraged", def: "Taking on too much debt in trading, risking liquidation.", category: "Trading", related: ["Leverage", "Liquidation"] },
+    { term: "P2P Exchange", def: "A platform for direct crypto trading between users.", category: "Trading", related: ["P2P", "DEX"] },
+    { term: "Parachain Auction", def: "A bidding process to secure a slot on a relay chain.", category: "Tech", related: ["Polkadot", "Parachain"] },
+    { term: "Passive Staking", def: "Earning rewards by holding tokens without active participation.", category: "DeFi", related: ["Staking", "Yield"] },
+    { term: "Peg Drift", def: "When a stablecoin’s value deviates from its intended peg.", category: "DeFi", related: ["Stablecoin", "Peg"] },
+    { term: "Permissionless", def: "A system where anyone can participate without approval.", category: "Tech", related: ["Decentralization", "Public Blockchain"] },
+    { term: "Perpetual Swap", def: "A derivative contract with no expiry, mimicking spot trading.", category: "Trading", related: ["Perpetual Futures", "Derivatives"] },
+    { term: "Polkadot", def: "A blockchain protocol enabling interoperability between chains.", category: "Tech", related: ["Parachain", "Relay Chain"] },
+    { term: "Portfolio Rebalancing", def: "Adjusting a crypto portfolio to maintain desired allocations.", category: "Trading", related: ["Diversification", "Risk Management"] },
+    { term: "Pre-Sale", def: "A token sale phase before the public offering.", category: "Basics", related: ["Private Sale", "ICO"] },
+    { term: "Price Floor", def: "The lowest price a crypto is expected to drop to.", category: "Trading", related: ["Support", "Valuation"] },
+    { term: "Price Oracle", def: "A service providing real-time price data to smart contracts.", category: "Tech", related: ["Oracle", "Data Oracle"] },
+    { term: "Private Key Leak", def: "The accidental exposure of a private key, leading to theft.", category: "Tech", related: ["Security", "Private Key"] },
+    { term: "Proof of Attendance", def: "A token or NFT proving participation in an event.", category: "Tech", related: ["NFT", "Event"] },
+    { term: "Proof of Capacity", def: "A consensus mechanism using storage space to validate blocks.", category: "Tech", related: ["Consensus", "Mining"] },
+    { term: "Proof of Reserves", def: "A method to verify an exchange holds sufficient funds.", category: "Regulation", related: ["Audit", "Transparency"] },
+    { term: "Proxy Contract", def: "A smart contract that delegates calls to another contract.", category: "Tech", related: ["Smart Contract", "Upgradeability"] },
+    { term: "Public Sale", def: "A token sale open to the general public.", category: "Basics", related: ["Pre-Sale", "ICO"] },
+    { term: "Put Option", def: "A contract giving the right to sell a crypto at a set price.", category: "Trading", related: ["Call Option", "Options"] },
+    { term: "Quadratic Voting", def: "A voting system where votes cost more as you add them.", category: "DeFi", related: ["Governance", "DAO"] },
+    { term: "Quantum Resistance", def: "A blockchain’s ability to withstand quantum computing attacks.", category: "Tech", related: ["Security", "Cryptography"] },
+    { term: "Randomness Oracle", def: "A service providing secure random numbers to smart contracts.", category: "Tech", related: ["Chainlink VRF", "Randomness"] },
+    { term: "Re-Entrancy Attack", def: "An exploit where a smart contract is repeatedly called before completing.", category: "Tech", related: ["Security", "Smart Contract"] },
+    { term: "Rehypothecation", def: "Using borrowed crypto assets as collateral for further loans.", category: "DeFi", related: ["Leverage", "Risk"] },
+    { term: "Relative Value", def: "Comparing a crypto’s value to another asset or benchmark.", category: "Trading", related: ["Valuation", "Market Cap"] },
+    { term: "Replay Attack", def: "Reusing a valid transaction to steal funds after a fork.", category: "Tech", related: ["Security", "Fork"] },
+    { term: "Reserve Ratio", def: "The ratio of reserves to circulating supply in a stablecoin.", category: "DeFi", related: ["Stablecoin", "Peg"] },
+    { term: "Reversal Pattern", def: "A chart pattern indicating a potential trend change.", category: "Trading", related: ["Head and Shoulders", "TA"] },
+    { term: "Reward Distribution", def: "The process of allocating staking or mining rewards.", category: "Tech", related: ["Block Reward", "Staking"] },
+    { term: "Ring Signature", def: "A cryptographic method for anonymous transactions.", category: "Tech", related: ["Monero", "Privacy"] },
+    { term: "Risk-Adjusted Return", def: "A measure of profit relative to the risk taken.", category: "Trading", related: ["ROI", "Risk Management"] },
+    { term: "Rollup Chain", def: "A secondary chain processing transactions for a main blockchain.", category: "Tech", related: ["Rollup", "Layer 2"] },
+    { term: "Safe Haven", def: "A crypto seen as a stable investment during market turmoil.", category: "Trading", related: ["Blue Chip", "Store of Value"] },
+    { term: "Sandwich Trading", def: "A strategy placing trades around a large order to profit.", category: "Trading", related: ["Frontrun", "MEV"] },
+    { term: "Satoshi Era", def: "The early days of Bitcoin when Satoshi Nakamoto was active.", category: "Slang", related: ["Satoshi Nakamoto", "Bitcoin"] },
+    { term: "Scalability Triad", def: "The balance of speed, cost, and security in blockchain design.", category: "Tech", related: ["Blockchain Trilemma", "Scalability"] },
+    { term: "Security Audit", def: "A thorough review of a blockchain or smart contract for vulnerabilities.", category: "Tech", related: ["Audit", "Security"] },
+    { term: "Self-Custody", def: "Managing your own private keys without third-party involvement.", category: "Tech", related: ["Non-Custodial", "Wallet"] },
+    { term: "Self-Sovereign Identity", def: "A user-controlled digital identity on a blockchain.", category: "Tech", related: ["Decentralized Identity", "Privacy"] },
+    { term: "Settlement Layer", def: "A blockchain layer focused on finalizing transactions.", category: "Tech", related: ["Execution Layer", "Layer 1"] },
+    { term: "Shamir’s Secret Sharing", def: "A method to split a private key into multiple parts.", category: "Tech", related: ["Security", "Private Key"] },
+    { term: "Shard Chain", def: "A subset of a blockchain handling specific transactions for scalability.", category: "Tech", related: ["Sharding", "Ethereum 2.0"] },
+    { term: "Sharpe Ratio", def: "A measure of risk-adjusted return in a crypto portfolio.", category: "Trading", related: ["Risk-Adjusted Return", "Volatility"] },
+    { term: "Shilling Attack", def: "Coordinated promotion of a crypto to manipulate its price.", category: "Slang", related: ["Shill", "Pump Scheme"] },
+    { term: "Sidechain Peg", def: "A mechanism locking assets on a main chain to use on a sidechain.", category: "Tech", related: ["Sidechain", "Cross-Chain"] },
+    { term: "Slashing", def: "Penalizing validators for misbehavior by reducing their staked tokens.", category: "Tech", related: ["Proof of Stake", "Validator"] },
+    { term: "Slippage Tolerance", def: "The maximum price change a trader is willing to accept in a swap.", category: "DeFi", related: ["Slippage", "DEX"] },
+    { term: "Smart Contract Oracle", def: "An oracle integrated into a smart contract for data input.", category: "Tech", related: ["Oracle", "Smart Contract"] },
+    { term: "Sniper Bot", def: "A bot designed to buy tokens immediately upon listing.", category: "Trading", related: ["Snipe", "Bot Trading"] },
+    { term: "Social Recovery", def: "A wallet recovery method using trusted contacts.", category: "Tech", related: ["Wallet Recovery", "Security"] },
+    { term: "Soft Staking", def: "Staking without locking tokens, allowing withdrawal anytime.", category: "DeFi", related: ["Staking", "Bonded Staking"] },
+    { term: "Sovereign Rollup", def: "A rollup with its own consensus mechanism.", category: "Tech", related: ["Rollup", "Layer 2"] },
+    { term: "Stable Swap", def: "A swap mechanism optimized for stablecoin trading.", category: "DeFi", related: ["Curve Finance", "Stablecoin"] },
+    { term: "Staking Derivative", def: "A token representing staked assets, tradable while staking.", category: "DeFi", related: ["Staking", "Liquidity"] },
+    { term: "State Channel Network", def: "A network of state channels for off-chain transactions.", category: "Tech", related: ["State Channel", "Layer 2"] },
+    { term: "State Rent", def: "A fee for storing data on a blockchain to manage bloat.", category: "Tech", related: ["State Bloat", "Storage"] },
+    { term: "Store of Value", def: "A crypto’s ability to retain value over time.", category: "Basics", related: ["Inflation Hedge", "Bitcoin"] },
+    { term: "Sybil Protection", def: "Measures to prevent fake identities in a decentralized system.", category: "Tech", related: ["Sybil Resistance", "Security"] },
+    { term: "Synthetic Token", def: "A token mimicking the value of another asset in DeFi.", category: "DeFi", related: ["Synthetic Asset", "DeFi"] },
+    { term: "Taker Fee", def: "A fee charged for taking liquidity from an exchange.", category: "Trading", related: ["Maker Fee", "Liquidity"] },
+    { term: "Tezos", def: "A self-upgrading blockchain with on-chain governance.", category: "Tech", related: ["Baking", "Proof of Stake"] },
+    { term: "Time Lock", def: "A mechanism delaying a transaction until a set time.", category: "Tech", related: ["Hash Lock", "Smart Contract"] },
+    { term: "Token Bonding", def: "A mechanism to lock tokens for rewards or access.", category: "DeFi", related: ["Staking", "Liquidity"] },
+    { term: "Token Curated Registry", def: "A decentralized list maintained through token voting.", category: "DeFi", related: ["Governance", "DAO"] },
+    { term: "Token Distribution Event", def: "An event where tokens are allocated to users.", category: "Basics", related: ["Airdrop", "Token Sale"] },
+    { term: "Token Migration", def: "Moving tokens from one blockchain to another.", category: "Tech", related: ["Token Swap", "Bridge"] },
+    { term: "Tokenized Asset", def: "A real-world asset represented as a token on a blockchain.", category: "Basics", related: ["Tokenization", "Security Token"] },
+    { term: "Total Locked Value", def: "The total value of assets locked in a DeFi protocol.", category: "DeFi", related: ["TVL", "Liquidity"] },
+    { term: "Transaction Batching", def: "Combining multiple transactions into a single one to save fees.", category: "Tech", related: ["Gas Optimization", "Scalability"] },
+    { term: "Transaction Relay", def: "The process of broadcasting transactions to the network.", category: "Tech", related: ["Mempool", "Node"] },
+    { term: "Trend Line", def: "A line on a chart showing the direction of price movement.", category: "Trading", related: ["TA", "Support"] },
+    { term: "Trust Score", def: "A metric assessing the reliability of a crypto exchange.", category: "Trading", related: ["Security", "Exchange"] },
+    { term: "Uniswap V3", def: "An upgraded version of Uniswap with concentrated liquidity.", category: "DeFi", related: ["Uniswap", "Concentrated Liquidity"] },
+    { term: "Unspent Output", def: "A transaction output that can be used as input for a new transaction.", category: "Tech", related: ["UTXO", "Bitcoin"] },
+    { term: "Upgradeability", def: "The ability to update a smart contract’s code after deployment.", category: "Tech", related: ["Proxy Contract", "Smart Contract"] },
+    { term: "Validator Election", def: "The process of selecting validators in a Proof of Stake system.", category: "Tech", related: ["Validator", "Proof of Stake"] },
+    { term: "Value Accrual", def: "The process by which a token gains value through usage.", category: "DeFi", related: ["Tokenomics", "Utility"] },
+    { term: "Vaporware Hype", def: "Promoting a crypto project that never materializes.", category: "Slang", related: ["Vaporware", "Hype"] },
+    { term: "Velocity of Money", def: "The rate at which a token is used in transactions.", category: "Tech", related: ["Token Velocity", "Tokenomics"] },
+    { term: "Volatility Smile", def: "A graph showing implied volatility across option strike prices.", category: "Trading", related: ["Options", "Volatility"] },
+    { term: "Volume Profile", def: "A chart showing trading volume at different price levels.", category: "Trading", related: ["Volume", "TA"] },
+    { term: "Wallet Drainer", def: "A scam contract that steals funds from a user’s wallet.", category: "Slang", related: ["Honeypot", "Scam"] },
+    { term: "Warm Wallet", def: "A wallet with limited online exposure for moderate security.", category: "Tech", related: ["Hot Wallet", "Cold Wallet"] },
+    { term: "Weighted Voting", def: "A governance system where votes are proportional to token holdings.", category: "DeFi", related: ["Governance", "DAO"] },
+    { term: "Whale Dump", def: "A large sell-off by a whale, causing a price drop.", category: "Slang", related: ["Whale", "Dumping"] },
+    { term: "Wrapped Asset", def: "A tokenized version of an asset for use on another blockchain.", category: "Tech", related: ["Wrapped Token", "Cross-Chain"] },
+    { term: "Yield Sensitivity", def: "How much a DeFi yield changes with market conditions.", category: "DeFi", related: ["Yield", "DeFi"] },
+    { term: "Zero-Sum Game", def: "A situation where one trader’s gain is another’s loss.", category: "Trading", related: ["Market", "Speculation"] },
+    { term: "zk-Rollup", def: "A Layer 2 solution using zero-knowledge proofs for scalability.", category: "Tech", related: ["Rollup", "Zero-Knowledge"] },
+    { term: "Address Reuse", def: "Using the same wallet address for multiple transactions, reducing privacy.", category: "Tech", related: ["Privacy", "Wallet Address"] },
+    { term: "Adoption Curve", def: "The rate at which a cryptocurrency gains widespread use.", category: "Basics", related: ["Mainstream", "User Base"] },
+    { term: "Algo Trading", def: "Using algorithms to automate trading strategies.", category: "Trading", related: ["Trading Bot", "Automation"] },
+    { term: "Alpha", def: "Early access or insider information on a crypto project.", category: "Slang", related: ["Beta", "Insider"] },
+    { term: "Anonymity Set", def: "The group of users a transaction could potentially belong to, enhancing privacy.", category: "Tech", related: ["Privacy", "Coin Mixer"] },
+    { term: "Anti-Sybil", def: "Mechanisms to prevent fake identities in a blockchain network.", category: "Tech", related: ["Sybil Resistance", "Security"] },
+    { term: "APY", def: "Annual Percentage Yield; the yearly return on an investment including compounding.", category: "DeFi", related: ["APR", "Yield"] },
+    { term: "APR", def: "Annual Percentage Rate; the yearly return on an investment without compounding.", category: "DeFi", related: ["APY", "Yield"] },
     { term: "Arbitrage Opportunity", def: "A chance to profit from price differences across markets.", category: "Trading", related: ["Arbitrage", "Spread"] },
     { term: "Asset-Backed Token", def: "A token representing ownership of a physical or digital asset.", category: "Basics", related: ["Security Token", "Tokenization"] },
     { term: "Attack Vector", def: "A method used to exploit vulnerabilities in a blockchain.", category: "Tech", related: ["Security", "Exploit"] },
@@ -1393,12 +1388,13 @@ const glossaryTerms = [
 const generateGlossaryQuestions = (terms) => {
   return terms.map((term) => {
     const correctAnswer = term.def;
-    // Generate wrong answers by picking definitions from other terms
-    const otherDefs = terms
-      .filter((t) => t.def !== correctAnswer)
-      .map((t) => t.def);
-    const wrongAnswers = shuffleArray([...otherDefs]).slice(0, 3);
-    const options = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+    // Static wrong options for simplicity (you can randomize from terms later)
+    const wrongAnswers = [
+      "A centralized trading platform",
+      "A type of hardware wallet",
+      "A blockchain consensus mechanism",
+    ].filter((ans) => ans !== correctAnswer);
+    const options = [correctAnswer, ...wrongAnswers.slice(0, 3)].sort(() => Math.random() - 0.5);
     return {
       question: `What does "${term.term}" mean?`,
       options,
@@ -1408,10 +1404,9 @@ const generateGlossaryQuestions = (terms) => {
   });
 };
 
-// Main Question Pool (5 per difficulty level, 15 total)
+// Your questionPool (19 shown, representing 500+)
 const questionPool = [
-  // Beginner
-  { question: "What is the name of the first cryptocurrency ever created?", options: ["Bitcoin", "Ethereum", "Litecoin", "Ripple"], correctAnswer: "Bitcoin", difficulty: "beginner" },
+    { question: "What is the name of the first cryptocurrency ever created?", options: ["Bitcoin", "Ethereum", "Litecoin", "Ripple"], correctAnswer: "Bitcoin", difficulty: "beginner" },
     { question: "Who is the pseudonymous creator of Bitcoin?", options: ["Satoshi Nakamoto", "Vitalik Buterin", "Charlie Lee", "Elon Musk"], correctAnswer: "Satoshi Nakamoto", difficulty: "beginner" },
     { question: "What does the term 'HODL' mean in the crypto community?", options: ["Hold On for Dear Life", "High Order Decentralized Ledger", "Hash Output Data Layer", "Hold Over Digital Liquidity"], correctAnswer: "Hold On for Dear Life", difficulty: "beginner" },
     { question: "What is the primary purpose of a cryptocurrency wallet?", options: ["To store private keys", "To mine new coins", "To trade on exchanges", "To create smart contracts"], correctAnswer: "To store private keys", difficulty: "beginner" },
@@ -2056,9 +2051,6 @@ const questionPool = [
     { question: "What is the name of WAX’s smart contract runtime?", options: ["EVM", "Substrate", "WASM", "Sealevel"], correctAnswer: "WASM", difficulty: "advanced" },
 ];
 
-// Utility function to shuffle arrays
-const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
-
 export default function CryptoQuiz() {
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentLevel, setCurrentLevel] = useState(1);
@@ -2071,12 +2063,13 @@ export default function CryptoQuiz() {
   const [dailyCompleted, setDailyCompleted] = useState(false);
   const [username, setUsername] = useState("");
   const [showUsernameModal, setShowUsernameModal] = useState(true);
-  const [difficulty, setDifficulty] = useState(null); // Initially null until user selects
-  const [showDifficultyModal, setShowDifficultyModal] = useState(true);
+  const [difficulty, setDifficulty] = useState("beginner");
   const [streak, setStreak] = useState(0);
   const [achievements, setAchievements] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [currentTab, setCurrentTab] = useState("quiz");
+
+  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
   const getLevelQuestions = (questions, diff) => {
     const filtered = questions.filter((q) => q.difficulty === diff);
@@ -2132,16 +2125,10 @@ export default function CryptoQuiz() {
     }
   };
 
-  const handleDifficultySelect = (selectedDifficulty) => {
-    setDifficulty(selectedDifficulty);
-    setShowDifficultyModal(false);
-    setLevelQuestions(getLevelQuestions(allQuestions, selectedDifficulty));
-  };
-
   const updateScore = async (newScore) => {
     const today = new Date().toDateString();
     await set(ref(db, `users/${username}`), { totalScore: newScore, lastUpdated: today });
-    await set(ref(db, `weeklyLeaderboard/${username}`), {
+    await set(ref(db, `dailyLeaderboard/${username}`), {
       username,
       score: newScore,
       timestamp: Date.now(),
@@ -2149,7 +2136,7 @@ export default function CryptoQuiz() {
   };
 
   const fetchLeaderboard = () => {
-    const leaderRef = ref(db, "weeklyLeaderboard");
+    const leaderRef = ref(db, "dailyLeaderboard");
     onValue(leaderRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -2171,6 +2158,7 @@ export default function CryptoQuiz() {
     const glossaryQuestions = generateGlossaryQuestions(glossaryTerms);
     const combinedQuestions = [...questionPool, ...glossaryQuestions];
     setAllQuestions(combinedQuestions);
+    setLevelQuestions(getLevelQuestions(combinedQuestions, difficulty));
     setCurrentLevel(completedLevels + 1);
     if (completedLevels >= 5) setDailyCompleted(true);
     fetchLeaderboard();
@@ -2188,15 +2176,14 @@ export default function CryptoQuiz() {
       !showResult &&
       !selectedAnswer &&
       currentTab === "quiz" &&
-      !dailyCompleted &&
-      difficulty
+      !dailyCompleted
     ) {
       const timer = setInterval(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearInterval(timer);
     } else if (timeLeft === 0) {
       handleAnswer(null);
     }
-  }, [timeLeft, selectedAnswer, showResult, currentTab, dailyCompleted, difficulty]);
+  }, [timeLeft, selectedAnswer, showResult, currentTab, dailyCompleted]);
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
@@ -2324,7 +2311,7 @@ export default function CryptoQuiz() {
 
   const progress = ((currentQuestion + 1) / levelQuestions.length) * 100;
 
-  // Username Modal
+  // Username modal
   if (showUsernameModal) {
     return (
       <div className={styles.container}>
@@ -2342,35 +2329,6 @@ export default function CryptoQuiz() {
             className={styles.xLink}
           >
             Submit
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Difficulty Selection Modal
-  if (showDifficultyModal) {
-    return (
-      <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Choose Your Difficulty</h1>
-        <div className={styles.section}>
-          <button
-            onClick={() => handleDifficultySelect("beginner")}
-            className={styles.xLink}
-          >
-            Beginner
-          </button>
-          <button
-            onClick={() => handleDifficultySelect("intermediate")}
-            className={styles.xLink}
-          >
-            Intermediate
-          </button>
-          <button
-            onClick={() => handleDifficultySelect("advanced")}
-            className={styles.xLink}
-          >
-            Advanced
           </button>
         </div>
       </div>
@@ -2470,9 +2428,9 @@ export default function CryptoQuiz() {
       {/* Leaderboard Tab */}
       {currentTab === "leaderboard" && (
         <>
-          <h1 className={styles.pageTitle}>Weekly Leaderboard</h1>
+          <h1 className={styles.pageTitle}>Leaderboard</h1>
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Top Miners (Weekly)</h2>
+            <h2 className={styles.sectionTitle}>Top Miners</h2>
             <ul>
               {leaderboard.map((entry, i) => (
                 <li key={i} className={entry.username === username ? styles.highlight : ""}>
@@ -2491,7 +2449,7 @@ export default function CryptoQuiz() {
           <div className={styles.section}>
             <p>Miner: {username}</p>
             <p>Total BTC: {score}</p>
-            <p>Levels Completed Today: {checkDailyProgress()}</p>
+            <p>Levels Completed: {checkDailyProgress()}</p>
             <p>Achievements: {achievements.join(", ") || "None yet"}</p>
             {dailyCompleted && (
               <p className={styles.dailyLimitMessage}>
