@@ -1,5 +1,4 @@
- // C:\Users\hp\Desktop\cryptopulse\app\quiz\page.js
- "use client";
+  "use client";
 
 import { useState, useEffect, useCallback } from "react";
 import styles from "./quiz.module.css";
@@ -1391,23 +1390,41 @@ const glossaryTerms = [
     { term: "Web3", def: "Decentralized internet powered by blockchain.", category: "Tech", related: ["Metaverse", "DApp"] },
 ];
 
+   // Utility function to shuffle arrays
+const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
 // Auto-generate questions from glossary terms
 const generateGlossaryQuestions = (terms) => {
-  return terms.map((term) => {
-    const correctAnswer = term.def;
-    // Generate wrong answers by picking definitions from other terms
-    const otherDefs = terms
-      .filter((t) => t.def !== correctAnswer)
-      .map((t) => t.def);
-    const wrongAnswers = shuffleArray([...otherDefs]).slice(0, 3);
-    const options = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
-    return {
-      question: `What does "${term.term}" mean?`,
-      options,
-      correctAnswer,
-      difficulty: term.category === "Basics" ? "beginner" : term.category === "Tech" ? "intermediate" : "advanced",
-    };
-  });
+  try {
+    return terms.map((term) => {
+      if (!term.def || !term.term) {
+        console.error(`Invalid term: ${JSON.stringify(term)}`);
+        return null;
+      }
+      const correctAnswer = term.def;
+      // Generate wrong answers by picking definitions from other terms
+      const otherDefs = terms
+        .filter((t) => t.def !== correctAnswer && t.def)
+        .map((t) => t.def);
+      const wrongAnswers = shuffleArray([...otherDefs]).slice(0, 3);
+      const options = shuffleArray([correctAnswer, ...wrongAnswers]);
+      const difficulty =
+        term.category === "Basics" || term.category === "Education"
+          ? "beginner"
+          : term.category === "Tech" || term.category === "Trading" || term.category === "Historical"
+          ? "intermediate"
+          : "advanced";
+      return {
+        question: `What does "${term.term}" mean?`,
+        options,
+        correctAnswer,
+        difficulty,
+      };
+    }).filter((q) => q !== null);
+  } catch (error) {
+    console.error("Error generating glossary questions:", error);
+    return [];
+  }
 };
 
 // Main Question Pool (5 per difficulty level, 15 total)
@@ -2058,9 +2075,6 @@ const questionPool = [
     { question: "What is the name of WAX’s smart contract runtime?", options: ["EVM", "Substrate", "WASM", "Sealevel"], correctAnswer: "WASM", difficulty: "advanced" },
 ];
 
-  // Utility function to shuffle arrays
-const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
-
 export default function CryptoQuiz() {
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentLevel, setCurrentLevel] = useState(1);
@@ -2176,93 +2190,131 @@ export default function CryptoQuiz() {
     });
   };
 
-  useEffect(() => {
-    const savedUsername = localStorage.getItem("quizUsername");
-    if (savedUsername) {
-      setUsername(savedUsername);
-      setShowUsernameModal(false);
-    }
-    const completedLevels = checkDailyProgress();
-    const glossaryQuestions = generateGlossaryQuestions(glossaryTerms);
-    const combinedQuestions = [...questionPool, ...glossaryQuestions];
-    setAllQuestions(combinedQuestions);
-    setCurrentLevel(completedLevels + 1);
-    if (completedLevels >= 5) setDailyCompleted(true);
-    fetchLeaderboard();
+  const checkAchievements = useCallback(
+    (points) => {
+      let newAchievements = [...achievements];
+      if (score + points >= 10 && !achievements.includes("Satoshi’s Apprentice")) {
+        newAchievements.push("Satoshi’s Apprentice");
+      }
+      if (
+        currentQuestion === 4 &&
+        score + points ===
+          currentLevel * (difficulty === "beginner" ? 5 : difficulty === "intermediate" ? 7.5 : 10)
+      ) {
+        newAchievements.push("HODL Master");
+      }
+      if (timeLeft > 20 && !achievements.includes("Gas Saver")) {
+        newAchievements.push("Gas Saver");
+      }
+      setAchievements(newAchievements);
+      localStorage.setItem("quizAchievements", JSON.stringify(newAchievements));
 
-    if (analytics) {
-      import("firebase/analytics").then(({ logEvent }) => {
-        logEvent(analytics, "page_view", { page_title: "Crypto Quiz" });
-      });
+      if (newAchievements.length > achievements.length && analytics) {
+        import("firebase/analytics").then(({ logEvent }) => {
+          logEvent(analytics, "achievement_earned", {
+            achievement: newAchievements[newAchievements.length - 1],
+            username,
+          });
+        });
+      }
+    },
+    [achievements, score, currentQuestion, currentLevel, difficulty, timeLeft, analytics, username]
+  );
+
+  const handleAnswer = useCallback(
+    (answer) => {
+      setSelectedAnswer(answer);
+      const isCorrect = answer === levelQuestions[currentQuestion].correctAnswer;
+      const btcValue = difficulty === "beginner" ? 1 : difficulty === "intermediate" ? 1.5 : 2;
+      const multiplier = streak >= 2 ? (streak >= 3 ? 1.5 : 1.2) : 1;
+      const points = isCorrect ? btcValue * multiplier : 0;
+
+      if (isCorrect) {
+        setScore(score + points);
+        setStreak(streak + 1);
+        checkAchievements(points);
+      } else {
+        setStreak(0);
+      }
+
+      if (analytics) {
+        import("firebase/analytics").then(({ logEvent }) => {
+          logEvent(analytics, "answer_submitted", {
+            level: currentLevel,
+            question: currentQuestion + 1,
+            isCorrect,
+            pointsEarned: points,
+            username,
+          });
+        });
+      }
+
+      setTimeout(() => {
+        if (currentQuestion + 1 < levelQuestions.length) {
+          setCurrentQuestion(currentQuestion + 1);
+          setSelectedAnswer(null);
+          setTimeLeft(30);
+        } else {
+          setShowResult(true);
+          updateScore(score + points);
+          setCurrentTab("results");
+
+          if (analytics) {
+            import("firebase/analytics").then(({ logEvent }) => {
+              logEvent(analytics, "level_completed", {
+                level: currentLevel,
+                score: score + points,
+                username,
+              });
+            });
+          }
+        }
+      }, 1000);
+    },
+    [
+      currentLevel,
+      currentQuestion,
+      levelQuestions,
+      difficulty,
+      streak,
+      score,
+      username,
+      analytics,
+      checkAchievements,
+      updateScore,
+    ]
+  );
+
+  useEffect(() => {
+    try {
+      const savedUsername = localStorage.getItem("quizUsername");
+      if (savedUsername) {
+        setUsername(savedUsername);
+        setShowUsernameModal(false);
+      }
+      const completedLevels = checkDailyProgress();
+      const glossaryQuestions = generateGlossaryQuestions(glossaryTerms);
+      const validQuestions = [...questionPool, ...glossaryQuestions].filter(
+        (q) => q && q.question && q.correctAnswer && q.options && q.difficulty
+      );
+      if (validQuestions.length === 0) {
+        console.error("No valid questions generated");
+        return;
+      }
+      setAllQuestions(validQuestions);
+      setCurrentLevel(completedLevels + 1);
+      if (completedLevels >= 5) setDailyCompleted(true);
+      fetchLeaderboard();
+
+      if (analytics) {
+        import("firebase/analytics").then(({ logEvent }) => {
+          logEvent(analytics, "page_view", { page_title: "Crypto Quiz" });
+        });
+      }
+    } catch (error) {
+      console.error("Error initializing quiz:", error);
     }
   }, [analytics]);
-
-  const handleAnswer = useCallback((answer) => {
-    setSelectedAnswer(answer);
-    const isCorrect = answer === levelQuestions[currentQuestion].correctAnswer;
-    const btcValue = difficulty === "beginner" ? 1 : difficulty === "intermediate" ? 1.5 : 2;
-    const multiplier = streak >= 2 ? (streak >= 3 ? 1.5 : 1.2) : 1;
-    const points = isCorrect ? btcValue * multiplier : 0;
-
-    if (isCorrect) {
-      setScore(score + points);
-      setStreak(streak + 1);
-      checkAchievements(points);
-    } else {
-      setStreak(0);
-    }
-
-    if (analytics) {
-      import("firebase/analytics").then(({ logEvent }) => {
-        logEvent(analytics, "answer_submitted", {
-          level: currentLevel,
-          question: currentQuestion + 1,
-          isCorrect,
-          pointsEarned: points,
-          username,
-        });
-      });
-    }
-
-    setTimeout(() => {
-      if (currentQuestion + 1 < levelQuestions.length) {
-        setCurrentQuestion(currentQuestion + 1);
-        setSelectedAnswer(null);
-        setTimeLeft(30);
-      } else {
-        setShowResult(true);
-        updateScore(score + points);
-        setCurrentTab("results");
-
-        if (analytics) {
-          import("firebase/analytics").then(({ logEvent }) => {
-            logEvent(analytics, "level_completed", {
-              level: currentLevel,
-              score: score + points,
-              username,
-            });
-          });
-        }
-      }
-    }, 1000);
-  }, [
-    analytics,
-    currentQuestion,
-    levelQuestions,
-    difficulty,
-    streak,
-    score,
-    username,
-    setScore,
-    setStreak,
-    setSelectedAnswer,
-    setCurrentQuestion,
-    setTimeLeft,
-    setShowResult,
-    setCurrentTab,
-    checkAchievements,
-    updateScore,
-  ]);
 
   useEffect(() => {
     if (
@@ -2279,34 +2331,6 @@ export default function CryptoQuiz() {
       handleAnswer(null);
     }
   }, [timeLeft, selectedAnswer, showResult, currentTab, dailyCompleted, difficulty, handleAnswer]);
-
-  const checkAchievements = (points) => {
-    let newAchievements = [...achievements];
-    if (score + points >= 10 && !achievements.includes("Satoshi’s Apprentice")) {
-      newAchievements.push("Satoshi’s Apprentice");
-    }
-    if (
-      currentQuestion === 4 &&
-      score + points ===
-        currentLevel * (difficulty === "beginner" ? 5 : difficulty === "intermediate" ? 7.5 : 10)
-    ) {
-      newAchievements.push("HODL Master");
-    }
-    if (timeLeft > 20 && !achievements.includes("Gas Saver")) {
-      newAchievements.push("Gas Saver");
-    }
-    setAchievements(newAchievements);
-    localStorage.setItem("quizAchievements", JSON.stringify(newAchievements));
-
-    if (newAchievements.length > achievements.length && analytics) {
-      import("firebase/analytics").then(({ logEvent }) => {
-        logEvent(analytics, "achievement_earned", {
-          achievement: newAchievements[newAchievements.length - 1],
-          username,
-        });
-      });
-    }
-  };
 
   const handleNextLevel = () => {
     const completedLevels = checkDailyProgress() + 1;

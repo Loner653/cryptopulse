@@ -60,6 +60,12 @@ const nextConfig = {
           '@next/next/no-img-element': 'warn',
         },
       },
+      {
+        files: ['app/quiz/page.js'],
+        rules: {
+          'react-hooks/exhaustive-deps': 'warn',
+        },
+      },
     ],
   };
   

@@ -165,7 +165,7 @@ export default function CryptoChart() {
         }
       }
     },
-    [hasMore, isOnline, searchQuery]
+    [hasMore, isOnline, searchQuery, CACHE_DURATION]
   );
 
   const queueFetch = useCallback(
@@ -185,18 +185,7 @@ export default function CryptoChart() {
     console.log(`Scheduling prefetch for page ${page} in ${PREFETCH_DELAY / 1000}s...`);
     await wait(PREFETCH_DELAY);
     queueFetch(page, false);
-  }, [queueFetch, hasMore, page, isOnline, searchQuery]);
-
-  const debounce = (func, delay) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), delay);
-    };
-  };
-
-  const debouncedFetchCoins = useCallback(debounce(queueFetch, 1500), [queueFetch]);
-  const debouncedPrefetch = useCallback(debounce(prefetchNextPage, PREFETCH_DELAY), [prefetchNextPage]);
+  }, [queueFetch, hasMore, page, isOnline, searchQuery, PREFETCH_DELAY]);
 
   const handleSearch = useCallback(() => {
     console.log('Search query:', searchQuery);
@@ -262,9 +251,31 @@ export default function CryptoChart() {
       };
       backgroundFetch();
     }
-  }, [searchQuery, coins, isOnline, hasMore, page, fetchCoins]);
+  }, [searchQuery, coins, isOnline, hasMore, page, fetchCoins, CACHE_DURATION]);
 
-  const debouncedSearch = useCallback(debounce(handleSearch, 500), [handleSearch]);
+  const debouncedSearch = useCallback(
+    () => {
+      const timeout = setTimeout(() => handleSearch(), 500);
+      return () => clearTimeout(timeout);
+    },
+    [handleSearch]
+  );
+
+  const debouncedFetchCoins = useCallback(
+    () => {
+      const timeout = setTimeout(() => queueFetch(page, false), 1500);
+      return () => clearTimeout(timeout);
+    },
+    [queueFetch, page]
+  );
+
+  const debouncedPrefetch = useCallback(
+    () => {
+      const timeout = setTimeout(() => prefetchNextPage(), PREFETCH_DELAY);
+      return () => clearTimeout(timeout);
+    },
+    [prefetchNextPage, PREFETCH_DELAY]
+  );
 
   const handleScroll = useCallback(() => {
     if (typeof window !== 'undefined') {
@@ -304,9 +315,9 @@ export default function CryptoChart() {
 
   useEffect(() => {
     if (inView && !isFetching.current && hasMore && !searchQuery && isOnline) {
-      debouncedFetchCoins(page, false);
+      debouncedFetchCoins();
     }
-  }, [inView, debouncedFetchCoins, hasMore, searchQuery, isOnline, page]);
+  }, [inView, debouncedFetchCoins, hasMore, searchQuery, isOnline]);
 
   useEffect(() => {
     if (coins.length > 0 && hasMore && !searchQuery && isOnline) {
@@ -476,7 +487,7 @@ export default function CryptoChart() {
       </div>
       {hasMore && !searchQuery && isOnline && (
         <button
-          onClick={() => debouncedFetchCoins(page, false)}
+          onClick={() => debouncedFetchCoins()}
           className={styles.loadMore}
           disabled={loading}
         >
