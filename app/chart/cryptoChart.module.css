@@ -1,305 +1,446 @@
-/* 🔝 Back to Top Button */
+/* Import Inter font for modern typography, matching React Native's Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.chartContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #e8ecef, #f5f5f5); /* Light gray, inspired by #f0f0f0 */
+  border-radius: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  margin: 15px auto;
+  padding: 12px;
+  background: #000000;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  color: #ffffff;
+  background: #000000;
+  border: 1px solid #0077b6;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.searchInput:focus {
+  border-color: #00ccff;
+  box-shadow: 0 0 12px rgba(0, 119, 182, 0.3);
+}
+
+.coinCount {
+  text-align: center;
+  color: #ffffff;
+  font-size: 0.95rem;
+  margin: 15px auto;
+  padding: 8px;
+  background: #000000;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.error {
+  text-align: center;
+  color: #ff4444;
+  padding: 8px;
+  font-size: 1rem;
+  background: rgba(255, 68, 68, 0.1);
+  border-radius: 8px;
+  margin: 15px auto;
+}
+
+.cryptoList {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.headerRow {
+  display: flex;
+  background: #e0e0e0;
+  color: #333;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.headerCell {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.listContent {
+  max-height: 600px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #0077b6 rgba(255, 255, 255, 0.1);
+}
+
+.listContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.listContent::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.listContent::-webkit-scrollbar-thumb {
+  background: #0077b6;
+  border-radius: 6px;
+}
+
+.listContent::-webkit-scrollbar-thumb:hover {
+  background: #00ccff;
+}
+
+.listRow {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 119, 182, 0.2),
+    rgba(0, 204, 255, 0.2)
+  );
+  margin: 8px;
+  padding: 15px;
+  border-radius: 14px;
+  border: 2px solid rgba(0, 119, 182, 0.4);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.listRow:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.cell:nth-child(1) {
+  color: #0077b6;
+  width: 12%;
+}
+
+.cell:nth-child(2) {
+  color: #333;
+  width: 42%;
+}
+
+.cell:nth-child(3) {
+  background: linear-gradient(90deg, #0077b6, #00ccff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  justify-content: flex-start;
+  font-weight: 700;
+  width: 28%;
+}
+
+.cell:nth-child(4) {
+  justify-content: flex-end;
+  font-weight: 700;
+  width: 18%;
+  flex-direction: column; /* Stack percentage and arrow vertically */
+  align-items: flex-end;
+}
+
+.cell a {
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+}
+
+.cell sub {
+  font-size: 0.65em;
+  vertical-align: sub;
+  margin-left: 1px;
+}
+
+.coinInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.coinInfo > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coinImage {
+  transition: transform 0.2s;
+}
+
+.coinImage:hover {
+  transform: scale(1.15);
+}
+
+.marketCap {
+  font-size: 0.9rem;
+  color: #000000;
+  margin-top: 4px;
+}
+
+.changeArrow {
+  font-size: 0.9rem; /* Match .marketCap */
+  margin-top: 4px; /* Match .marketCap spacing */
+  line-height: 1;
+}
+
+.emptyRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  color: #666;
+  font-size: 1rem;
+  min-height: 120px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.spinner {
+  border: 4px solid #0077b6;
+  border-top: 4px solid #00ccff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadMore {
+  display: block;
+  margin: 16px auto;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  color: #ffffff;
+  background: linear-gradient(90deg, #0077b6, #00ccff);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.loadMore:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+}
+
+.loadMore:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
 .backToTop {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 20px 10px;
-    background: linear-gradient(90deg, #00b7eb, #00f7ff);
-    color: #1a1a2e;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: background 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1000;
-    opacity: 0;
-    box-shadow: 0 2px 8px rgba(0, 204, 255, 0.3);
-  }
-  
-  .backToTop.visible {
-    opacity: 1;
-  }
-  
-  .backToTop:hover {
-    background: linear-gradient(90deg, #00a1d6, #00e0ff);
-    transform: translateY(-50%) scale(1.05);
-    opacity: 1;
-    box-shadow: 0 4px 12px rgba(0, 204, 255, 0.5);
-  }
-  
-  /* 🔹 Main Container */
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(90deg, #0077b6, #00ccff);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.backToTop.visible {
+  opacity: 1;
+}
+
+.backToTop:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+}
+
+@media (max-width: 768px) {
   .chartContainer {
-    max-width: 900px;
-    margin: auto;
-    padding: 30px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    overflow-x: auto;
-    position: relative;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .chartContainer:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* 📌 Title */
-  .title {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 25px;
-    background: linear-gradient(90deg, #00b7eb, #00f7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 1px 1px 3px rgba(0, 204, 255, 0.3);
-  }
-  
-  /* 🔹 Search Container */
-  .searchContainer {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-  }
-  
-  .searchInput {
     padding: 12px;
-    font-size: 1rem;
-    border: 2px solid rgba(0, 204, 255, 0.3);
-    border-radius: 8px;
-    width: 100%;
-    max-width: 350px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #e0e0e0;
-    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   }
-  
-  .searchInput:focus {
-    outline: none;
-    border-color: #00f7ff;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+
+  .title {
+    font-size: 1.8rem;
   }
-  
-  /* 🔹 Coin Count */
+
+  .searchContainer {
+    padding: 8px;
+  }
+
+  .searchInput {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
   .coinCount {
-    text-align: center;
-    font-size: 1rem;
-    color: #b0b0b0;
-    margin-bottom: 20px;
-    font-weight: 500;
+    font-size: 0.9rem;
   }
-  
-  /* 🏦 Table Styling */
-  table.cryptoTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px !important;
-    background: transparent !important;
+
+  .headerRow {
+    font-size: 0.95rem;
+    padding: 10px 6px;
   }
-  
-  /* 🔹 Table Header */
-  table.cryptoTable th {
-    background: linear-gradient(90deg, #00b7eb, #00f7ff) !important;
-    color: #1a1a2e !important;
-    padding: 16px 14px !important;
-    text-align: left !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+
+  .headerCell {
+    padding: 0 8px;
   }
-  
-  /* 🔸 Table Rows */
-  table.cryptoTable tr {
-    transition: background 0.3s ease;
+
+  .listRow {
+    font-size: 0.85rem;
+    padding: 10px 6px;
+    margin: 6px;
   }
-  
-  table.cryptoTable tr:hover {
-    background: rgba(0, 204, 255, 0.1);
+
+  .cell {
+    padding: 0 8px;
+    font-size: 0.85rem;
   }
-  
-  table.cryptoTable td {
-    padding: 16px 14px !important;
-    text-align: left !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #e0e0e0 !important; /* Default color for most columns */
-  }
-  
-  /* 🔸 Specific Column Colors */
-  table.cryptoTable td:nth-child(1) { /* # column */
-    color: #00f7ff !important;
-    font-weight: 600;
-  }
-  
-  table.cryptoTable td:nth-child(2) { /* Coin column */
-    color: #e0e0e0 !important;
-  }
-  
-  table.cryptoTable td:nth-child(3) { /* Price column */
-    color: #00ccff !important;
-    font-weight: 500;
-  }
-  
-  /* 🔸 24h % column - Remove color override to allow inline red/green */
-  table.cryptoTable td:nth-child(4) {
-    font-weight: 600;
-    color: inherit !important; /* Allow inline styles to take effect */
-  }
-  
-  /* 📉 Coin Image */
+
   .coinImage {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 10px;
-    border: 1px solid rgba(0, 204, 255, 0.3);
-    transition: transform 0.3s ease;
+    width: 18px;
+    height: 18px;
   }
-  
-  .coinImage:hover {
-    transform: scale(1.1);
-  }
-  
-  /* 🔹 Coin Info (Symbol + Market Cap) */
-  .coinInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  /* 🔹 Market Cap */
+
   .marketCap {
-    font-size: 14px;
-    color: #b0b0b0 !important;
-    font-weight: 500;
+    font-size: 0.8rem;
+    margin-top: 3px;
   }
-  
-  /* 🔄 Loading Spinner */
-  .spinner {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    border: 4px solid rgba(0, 204, 255, 0.3);
-    border-top: 4px solid #00f7ff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+
+  .changeArrow {
+    font-size: 0.8rem;
+    margin-top: 3px;
   }
-  
-  .loading {
-    text-align: center;
-    padding: 20px;
-    color: #e0e0e0;
+
+  .loadMore {
+    padding: 8px 16px;
+    font-size: 1rem;
+  }
+
+  .backToTop {
+    width: 44px;
+    height: 44px;
     font-size: 1.1rem;
+    bottom: 12px;
+    right: 12px;
   }
-  
-  /* Responsive Adjustments for Mobile */
-  @media (max-width: 600px) {
-    .chartContainer {
-      padding: 15px;
-      border-radius: 10px;
-    }
-  
-    .title {
-      font-size: 24px;
-    }
-  
-    .searchInput {
-      padding: 10px;
-      font-size: 0.95rem;
-      max-width: 300px;
-    }
-  
-    .coinCount {
-      font-size: 0.9rem;
-    }
-  
-    table.cryptoTable {
-      font-size: 14px !important;
-    }
-  
-    table.cryptoTable th {
-      padding: 12px 10px !important;
-      font-size: 14px !important;
-    }
-  
-    table.cryptoTable td {
-      padding: 12px 10px !important;
-    }
-  
-    table.cryptoTable th:first-child,
-    table.cryptoTable td:first-child {
-      width: 10%;
-      padding-right: 4px !important;
-    }
-  
-    table.cryptoTable th:first-child {
-      color: #1a1a2e !important;
-    }
-  
-    table.cryptoTable td:first-child {
-      color: #00f7ff !important;
-    }
-  
-    table.cryptoTable th:nth-child(2),
-    table.cryptoTable td:nth-child(2) {
-      width: 35%;
-      padding-left: 4px !important;
-    }
-  
-    table.cryptoTable th:nth-child(2) {
-      color: #1a1a2e !important;
-    }
-  
-    table.cryptoTable td:nth-child(2) {
-      color: #e0e0e0 !important;
-    }
-  
-    table.cryptoTable th:nth-child(3),
-    table.cryptoTable td:nth-child(3) {
-      width: 35%;
-    }
-  
-    table.cryptoTable th:nth-child(3) {
-      color: #1a1a2e !important;
-    }
-  
-    table.cryptoTable td:nth-child(3) {
-      color: #00ccff !important;
-    }
-  
-    table.cryptoTable th:nth-child(4),
-    table.cryptoTable td:nth-child(4) {
-      width: 20%;
-    }
-  
-    table.cryptoTable th:nth-child(4) {
-      color: #1a1a2e !important;
-    }
-  
-    .coinImage {
-      width: 20px;
-      height: 20px;
-    }
-  
-    .marketCap {
-      font-size: 12px;
-      color: #b0b0b0 !important;
-    }
-  
-    .backToTop {
-      right: 10px;
-      padding: 15px 8px;
-      font-size: 0.8rem;
-    }
+}
+
+@media (max-width: 480px) {
+  .chartContainer {
+    padding: 8px;
   }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+
+  .title {
+    font-size: 1.5rem;
   }
+
+  .searchInput {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .coinCount {
+    font-size: 0.85rem;
+  }
+
+  .headerRow {
+    font-size: 0.9rem;
+    padding: 8px 4px;
+  }
+
+  .headerCell {
+    padding: 0 6px;
+  }
+
+  .listRow {
+    font-size: 0.8rem;
+    padding: 8px 4px;
+    margin: 4px;
+  }
+
+  .cell {
+    padding: 0 6px;
+    font-size: 0.8rem;
+  }
+
+  .coinImage {
+    width: 16px;
+    height: 16px;
+  }
+
+  .marketCap {
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }
+
+  .changeArrow {
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }
+
+  .loadMore {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .backToTop {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    bottom: 8px;
+    right: 8px;
+  }
+}

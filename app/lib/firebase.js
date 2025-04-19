@@ -1,6 +1,6 @@
-// lib/firebase.js
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database"; // For Realtime Database
+// C:\Users\hp\Desktop\cryptopulse\app\lib\firebase.js
+import { initializeApp } from 'firebase/app';
+import { getDatabase } from 'firebase/database';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -17,15 +17,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Export Realtime Database (works on server and client)
+// Export Realtime Database
 export const db = getDatabase(app);
-
-// Analytics initialization (client-side only)
-let analytics;
-if (typeof window !== "undefined") {
-  import("firebase/analytics").then(({ getAnalytics }) => {
-    analytics = getAnalytics(app);
-  });
-}
-
-export { analytics }; // Export analytics for client-side use

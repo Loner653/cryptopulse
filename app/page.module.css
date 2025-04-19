@@ -1,94 +1,94 @@
 .container {
-  min-height: 100vh; /* Home layout */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)); /* Privacy UI */
-  color: #e0e0e0; /* Home layout (fits Privacy) */
-  font-family: 'Arial', sans-serif; /* Home layout */
-  position: relative; /* Home layout */
-  overflow-x: hidden; /* Home layout */
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1));
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .hero {
-  position: relative; /* Home layout */
-  height: 70vh; /* Home layout */
-  background-image: url('/images/hero-image.webp'); /* Home layout */
-  background-size: cover; /* Home layout */
-  background-position: center; /* Home layout */
-  background-repeat: no-repeat; /* Home layout */
-  display: flex; /* Home layout */
-  align-items: center; /* Home layout */
-  justify-content: center; /* Home layout */
-  text-align: center; /* Home layout */
-  overflow: hidden; /* Home layout */
-  z-index: 1; /* Home layout */
-  padding-top: clamp(8rem, 12vh, 10rem); /* Home layout */
+  position: relative;
+  height: 70vh;
+  background-image: url('/images/hero-image.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  z-index: 1;
+  padding-top: clamp(8rem, 12vh, 10rem);
 }
 
 .hero::before {
-  content: ''; /* Home layout */
-  position: absolute; /* Home layout */
-  top: 0; /* Home layout */
-  left: 0; /* Home layout */
-  width: 100%; /* Home layout */
-  height: 100%; /* Home layout */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
-  z-index: 0; /* Home layout */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05));
+  z-index: 0;
 }
 
 .heroContent {
-  position: relative; /* Home layout */
-  z-index: 1; /* Home layout */
-  padding: 20px; /* Home layout */
+  position: relative;
+  z-index: 1;
+  padding: 20px;
 }
 
 .heroTitle {
-  font-size: 3.5rem; /* Home layout */
-  font-weight: 800; /* Home layout */
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); /* Privacy UI */
-  background: linear-gradient(90deg, #ffd700, #00ccff); /* Privacy UI */
-  -webkit-background-clip: text; /* Privacy UI */
-  background-clip: text; /* Privacy UI */
-  color: transparent; /* Privacy UI */
-  transition: transform 0.3s ease; /* Privacy UI */
-  margin-bottom: 1rem; /* Home layout */
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(90deg, #ffd700, #00ccff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: transform 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .heroTitle:hover {
-  transform: scale(1.05); /* Privacy UI */
+  transform: scale(1.05);
 }
 
 .heroSubtitle {
-  font-size: 1.5rem; /* Home layout */
-  color: #e0e0e0; /* Privacy UI */
-  margin-bottom: 2rem; /* Home layout */
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  margin-bottom: 2rem;
 }
 
 .heroButton {
-  display: inline-block; /* Home layout */
-  padding: 12px 24px; /* Home layout */
-  background: linear-gradient(90deg, #ffd700, #00ccff); /* Enhanced UI: Gradient background */
-  color: #1a1a1a; /* Enhanced UI: Darker text for contrast */
-  text-decoration: none; /* Home layout */
-  font-weight: bold; /* Home layout */
-  font-size: 1.2rem; /* Home layout */
-  border-radius: 4px; /* Privacy UI */
-  border: 2px solid rgba(255, 215, 0, 0.5); /* Enhanced UI: Subtle border */
-  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3); /* Enhanced UI: Glow effect */
-  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #ffd700, #00ccff);
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .heroButton:hover {
-  color: #1a1a1a; /* Enhanced UI: Keep text color for contrast */
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
-  background: linear-gradient(90deg, #00ccff, #ffd700); /* Enhanced UI: Reverse gradient on hover */
-  transform: translateY(-2px); /* Privacy UI */
-  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5); /* Enhanced UI: Stronger glow on hover */
+  color: #1a1a1a;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(90deg, #00ccff, #ffd700);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5);
 }
 
 .contentContainer {
-  max-width: 1200px; /* Home layout */
-  margin: 0 auto; /* Home layout */
-  padding: 40px 20px; /* Home layout */
-  padding-top: 80px; /* Home layout */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  padding-top: 80px;
 }
 
 .cryptoSection,
@@ -96,12 +96,12 @@
 .cryptoBotSection,
 .newsSection,
 .articleSection {
-  margin-bottom: 40px; /* Home layout */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05)); /* Privacy UI */
-  padding: 20px; /* Home layout */
-  border-radius: 12px; /* Privacy UI */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1); /* Privacy UI */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI */
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 204, 255, 0.05));
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 204, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cryptoSection:hover,
@@ -109,8 +109,8 @@
 .cryptoBotSection:hover,
 .newsSection:hover,
 .articleSection:hover {
-  transform: translateY(-5px); /* Privacy UI */
-  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2); /* Privacy UI */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3), inset 0 0 15px rgba(0, 204, 255, 0.2);
 }
 
 .cryptoSection h2,
@@ -118,14 +118,14 @@
 .cryptoBotSection h2,
 .newsSection h2,
 .articleSection h1 {
-  font-size: 2rem; /* Home layout */
-  color: #e0e0e0; /* Privacy UI */
-  margin-bottom: 1rem; /* Home layout */
-  display: flex; /* Home layout */
-  align-items: center; /* Home layout */
-  gap: 10px; /* Home layout */
-  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
-  transition: color 0.3s ease; /* Privacy UI */
+  font-size: 2rem;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+  transition: color 0.3s ease;
 }
 
 .cryptoSection h2:hover,
@@ -133,82 +133,105 @@
 .cryptoBotSection h2:hover,
 .newsSection h2:hover,
 .articleSection h1:hover {
-  color: #ffd700; /* Privacy UI */
+  color: #ffd700;
 }
 
 .sectionIcon {
-  font-size: 1.5rem; /* Home layout */
+  font-size: 1.5rem;
 }
 
-.priceList p {
-  font-size: 1.4rem; /* Increased from 1.2rem */
-  margin: 10px 0; /* Home layout */
-  color: #00ccff; /* Privacy UI */
+.priceList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priceLink {
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.1), rgba(255, 215, 0, 0.1));
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 0 8px rgba(0, 204, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.priceLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.4), inset 0 0 12px rgba(0, 204, 255, 0.3);
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.2), rgba(255, 215, 0, 0.2));
+}
+
+.priceLink p {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #00ccff;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.3);
 }
 
 .xLink {
-  color: #00ccff; /* Privacy UI */
-  text-decoration: none; /* Home layout */
-  font-weight: bold; /* Home layout */
-  padding: 4px 8px; /* Enhanced UI: Added padding for better click area */
-  background: rgba(0, 204, 255, 0.1); /* Enhanced UI: Subtle background */
-  border-radius: 4px; /* Enhanced UI: Rounded corners */
-  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
+  color: #00ccff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 8px;
+  background: rgba(0, 204, 255, 0.1);
+  border-radius: 4px;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .xLink:hover {
-  color: #ffd700; /* Privacy UI */
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
-  background: rgba(255, 215, 0, 0.2); /* Enhanced UI: Highlight background */
-  transform: translateY(-2px); /* Privacy UI */
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); /* Enhanced UI: Glow effect */
+  color: #ffd700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: rgba(255, 215, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
 }
 
 .readMoreButton {
-  display: inline-block; /* Home layout */
-  margin-top: 10px; /* Home layout */
-  padding: 8px 16px; /* Home layout */
-  background: linear-gradient(90deg, #ffd700, #00ccff); /* Enhanced UI: Gradient background */
-  color: #1a1a1a; /* Enhanced UI: Darker text for contrast */
-  text-decoration: none; /* Home layout */
-  font-weight: bold; /* Home layout */
-  border-radius: 4px; /* Privacy UI */
-  border: 2px solid rgba(255, 215, 0, 0.5); /* Enhanced UI: Subtle border */
-  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3); /* Enhanced UI: Glow effect */
-  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Privacy UI + Enhanced */
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: linear-gradient(90deg, #ffd700, #00ccff);
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
+  transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .readMoreButton:hover {
-  color: #1a1a1a; /* Enhanced UI: Keep text color for contrast */
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Privacy UI */
-  background: linear-gradient(90deg, #00ccff, #ffd700); /* Enhanced UI: Reverse gradient on hover */
-  transform: translateY(-2px); /* Privacy UI */
-  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5); /* Enhanced UI: Stronger glow on hover */
+  color: #1a1a1a;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(90deg, #00ccff, #ffd700);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 204, 255, 0.5);
 }
 
 .articleSection h2 {
-  font-size: 1.8rem; /* Home layout */
-  color: #e0e0e0; /* Privacy UI */
-  margin-bottom: 1rem; /* Home layout */
-  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5); /* Privacy UI */
-  transition: color 0.3s ease; /* Privacy UI */
+  font-size: 1.8rem;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+  transition: color 0.3s ease;
 }
 
 .articleSection h2:hover {
-  color: #ffd700; /* Privacy UI */
+  color: #ffd700;
 }
 
 .articleSection p {
-  font-size: 1.3rem; /* Base size for laptops, unchanged */
-  color: #e0e0e0; /* Privacy UI */
-  line-height: 1.6; /* Home layout */
+  font-size: 1.3rem;
+  color: #e0e0e0;
+  line-height: 1.6;
 }
 
-/* News Feed Styles (Integrated) */
+/* News Feed Styles */
 .newsSection .newsFeed {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Space between news items */
+  gap: 20px;
 }
 
 .newsSection .newsItem {
@@ -236,7 +259,7 @@
 }
 
 .newsSection .newsItem p {
-  font-size: 1.1rem; /* Base size */
+  font-size: 1.1rem;
   margin: 6px 0;
   color: #e0e0e0;
   line-height: 1.6;
@@ -252,33 +275,33 @@
 
 @media (max-width: 768px) {
   .hero {
-    height: 60vh; /* Home layout */
-    padding-top: clamp(7rem, 10vh, 9rem); /* Home layout */
-    align-items: flex-start; /* Home layout */
+    height: 60vh;
+    padding-top: clamp(7rem, 10vh, 9rem);
+    align-items: flex-start;
   }
 
   .heroContent {
-    margin-top: -2rem; /* Adjusted: Push content up even more on mobile */
-    padding: 10px; /* Reduced padding to fit content better */
+    margin-top: -2rem;
+    padding: 10px;
   }
 
   .heroTitle {
-    font-size: 2.5rem; /* Home layout */
+    font-size: 2.5rem;
   }
 
   .heroSubtitle {
-    font-size: 1.2rem; /* Home layout */
-    margin-bottom: 1.5rem; /* Home layout */
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
   }
 
   .heroButton {
-    padding: 10px 20px; /* Home layout */
-    font-size: 1rem; /* Home layout */
+    padding: 10px 20px;
+    font-size: 1rem;
   }
 
   .contentContainer {
-    padding: 30px 15px; /* Home layout */
-    padding-top: 40px; /* Home layout */
+    padding: 30px 15px;
+    padding-top: 40px;
   }
 
   .cryptoSection h2,
@@ -286,24 +309,23 @@
   .cryptoBotSection h2,
   .newsSection h2,
   .articleSection h1 {
-    font-size: 1.8rem; /* Standardized */
+    font-size: 1.8rem;
   }
 
   .articleSection h2 {
-    font-size: 1.8rem; /* Standardized */
+    font-size: 1.8rem;
   }
 
   .priceList p {
-    font-size: 1.2rem; /* Standardized content */
+    font-size: 1.2rem;
   }
 
   .articleSection p {
-    font-size: 1.3rem; /* Increased from 1.2rem to match newsItem p */
+    font-size: 1.3rem;
   }
 
-  /* News Feed Adjustments */
   .newsSection .newsFeed {
-    gap: 15px; /* Reduced gap */
+    gap: 15px;
   }
 
   .newsSection .newsItem {
@@ -311,13 +333,13 @@
   }
 
   .newsSection .newsItem h3 {
-    font-size: 1.8rem; /* Standardized to match h2 */
+    font-size: 1.8rem;
     margin-bottom: 6px;
     line-height: 1.3;
   }
 
   .newsSection .newsItem p {
-    font-size: 1.2rem; /* Standardized to match priceList p */
+    font-size: 1.2rem;
     margin: 4px 0;
     line-height: 1.4;
   }
@@ -326,37 +348,41 @@
     font-size: 0.85rem;
     margin-top: 3px;
   }
+
+  .priceLink {
+    padding: 10px 12px;
+  }
 }
 
 @media (max-width: 480px) {
   .hero {
-    height: 50vh; /* Home layout */
-    padding-top: clamp(6rem, 9vh, 8rem); /* Home layout */
-    align-items: flex-start; /* Home layout */
+    height: 50vh;
+    padding-top: clamp(6rem, 9vh, 8rem);
+    align-items: flex-start;
   }
 
   .heroContent {
-    margin-top: -3rem; /* Adjusted: Push content up even more on smaller screens */
-    padding: 8px; /* Further reduced padding for smaller screens */
+    margin-top: -3rem;
+    padding: 8px;
   }
 
   .heroTitle {
-    font-size: 2rem; /* Home layout */
+    font-size: 2rem;
   }
 
   .heroSubtitle {
-    font-size: 1rem; /* Home layout */
-    margin-bottom: 1rem; /* Home layout */
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
 
   .heroButton {
-    padding: 8px 16px; /* Home layout */
-    font-size: 0.9rem; /* Home layout */
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 
   .contentContainer {
-    padding: 20px 10px; /* Home layout */
-    padding-top: 30px; /* Home layout */
+    padding: 20px 10px;
+    padding-top: 30px;
   }
 
   .cryptoSection,
@@ -364,7 +390,7 @@
   .cryptoBotSection,
   .newsSection,
   .articleSection {
-    padding: 15px; /* Home layout */
+    padding: 15px;
   }
 
   .cryptoSection h2,
@@ -372,22 +398,21 @@
   .cryptoBotSection h2,
   .newsSection h2,
   .articleSection h1 {
-    font-size: 1.5rem; /* Standardized */
+    font-size: 1.5rem;
   }
 
   .articleSection h2 {
-    font-size: 1.5rem; /* Standardized */
+    font-size: 1.5rem;
   }
 
   .priceList p {
-    font-size: 1rem; /* Standardized content */
+    font-size: 1rem;
   }
 
   .articleSection p {
-    font-size: 1.1rem; /* Increased from 1rem to match newsItem p */
+    font-size: 1.1rem;
   }
 
-  /* News Feed Adjustments */
   .newsSection .newsFeed {
     gap: 10px;
   }
@@ -397,24 +422,28 @@
   }
 
   .newsSection .newsItem h3 {
-    font-size: 1.5rem; /* Standardized to match h2 */
+    font-size: 1.5rem;
     margin-bottom: 5px;
     line-height: 1.2;
   }
 
   .newsSection .newsItem p {
-    font-size: 1rem; /* Standardized to match priceList p */
+    font-size: 1rem;
     margin: 3px 0;
     line-height: 1.3;
   }
 
   .newsSection .newsDate {
-    font-size: 0.85rem; /* Adjusted to be smaller than content */
+    font-size: 0.85rem;
     margin-top: 2px;
   }
 
   .readMoreButton {
-    padding: 6px 12px; /* Home layout */
-    font-size: 0.9rem; /* Home layout */
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .priceLink {
+    padding: 8px 10px;
   }
 }

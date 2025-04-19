@@ -9,21 +9,43 @@ import styles from "./page.module.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+// Map symbols to coin IDs and names, matching PriceTicker
+const coinMap = {
+  BTC: { id: "bitcoin", name: "Bitcoin" },
+  ETH: { id: "ethereum", name: "Ethereum" },
+  BNB: { id: "binancecoin", name: "BNB" },
+  XRP: { id: "ripple", name: "XRP" },
+  XMR: { id: "monero", name: "Monero" },
+  SOL: { id: "solana", name: "Solana" },
+};
+
 export default function Dashboard() {
-  const [prices, setPrices] = useState({ bitcoin: 0, ethereum: 0, bnb: 0 });
+  const [prices, setPrices] = useState({
+    BTC: { price: 0, name: "Bitcoin", id: "bitcoin" },
+    ETH: { price: 0, name: "Ethereum", id: "ethereum" },
+    BNB: { price: 0, name: "BNB", id: "binancecoin" },
+    XRP: { price: 0, name: "XRP", id: "ripple" },
+    XMR: { price: 0, name: "Monero", id: "monero" },
+    SOL: { price: 0, name: "Solana", id: "solana" },
+  });
 
   useEffect(() => {
     async function fetchPrices() {
       try {
         const res = await fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd"
+          "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,BNB,XRP,XMR,SOL&tsyms=USD&api_key=YOUR_API_KEY"
         );
+        if (!res.ok) throw new Error("Failed to fetch prices");
         const data = await res.json();
         setPrices({
-          bitcoin: data.bitcoin.usd,
-          ethereum: data.ethereum.usd,
-          bnb: data.binancecoin.usd,
+          BTC: { price: data.RAW.BTC?.USD?.PRICE || 0, name: "Bitcoin", id: "bitcoin" },
+          ETH: { price: data.RAW.ETH?.USD?.PRICE || 0, name: "Ethereum", id: "ethereum" },
+          BNB: { price: data.RAW.BNB?.USD?.PRICE || 0, name: "BNB", id: "binancecoin" },
+          XRP: { price: data.RAW.XRP?.USD?.PRICE || 0, name: "XRP", id: "ripple" },
+          XMR: { price: data.RAW.XMR?.USD?.PRICE || 0, name: "Monero", id: "monero" },
+          SOL: { price: data.RAW.SOL?.USD?.PRICE || 0, name: "Solana", id: "solana" },
         });
+        console.log("Prices:", prices); // Debug
       } catch (error) {
         console.error("Error fetching crypto prices:", error);
       }
@@ -51,9 +73,17 @@ export default function Dashboard() {
             <span className={styles.sectionIcon}>📈</span> Real-Time Crypto Prices
           </h2>
           <div className={styles.priceList}>
-            <p>Bitcoin: ${prices.bitcoin.toLocaleString()}</p>
-            <p>Ethereum: ${prices.ethereum.toLocaleString()}</p>
-            <p>BNB: ${prices.bnb.toLocaleString()}</p>
+            {Object.keys(prices).map((symbol) => (
+              <Link
+                key={symbol}
+                href={`/coin/${prices[symbol].id}?name=${encodeURIComponent(prices[symbol].name)}&symbol=${symbol}`}
+                className={styles.priceLink}
+              >
+                <p>
+                  {symbol} ({prices[symbol].name}): ${prices[symbol].price.toLocaleString()}
+                </p>
+              </Link>
+            ))}
           </div>
         </section>
 
@@ -80,7 +110,8 @@ export default function Dashboard() {
             <span className={styles.sectionIcon}>🧠</span> Crypto Assistant
           </h2>
           <p>
-            Get personalized insights and guidance with our Crypto Assistant! Analyze market trends, receive trading recommendations, and make informed decisions to grow your crypto portfolio.
+            Get personalized insights and guidance with our Crypto Assistant! Analyze market trends,
+            receive trading recommendations, and make informed decisions to grow your crypto portfolio.
           </p>
           <Link href="/crypto-bot" className={styles.readMoreButton}>
             Explore Crypto Assistant →
@@ -100,7 +131,9 @@ export default function Dashboard() {
           </h1>
           <h2>The Origin of Bitcoin: A Revolutionary Digital Currency</h2>
           <p>
-            Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking innovation that has reshaped the financial industry since its inception. Launched in 2009, Bitcoin emerged in the wake of the 2008 global financial crisis.
+            Bitcoin (BTC) is the world’s first decentralized digital currency, a groundbreaking
+            innovation that has reshaped the financial industry since its inception. Launched in 2009,
+            Bitcoin emerged in the wake of the 2008 global financial crisis.
           </p>
           <Link href="/articles/bitcoin-origins" className={styles.readMoreButton}>
             Read More →

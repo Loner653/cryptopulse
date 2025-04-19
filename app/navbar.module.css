@@ -1,3 +1,4 @@
+/* C:\Users\hp\Desktop\cryptopulse\app\nav.module.css */
 .navbar {
   background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
   backdrop-filter: blur(12px);
@@ -38,7 +39,7 @@
 }
 
 .menuBox {
-  display: none; /* Hidden by default (desktop) */
+  display: none;
 }
 
 .navButton {
@@ -147,7 +148,6 @@
   font-size: 1.5rem;
 }
 
-/* Menu Links Styles */
 .menuLinks {
   display: flex;
   justify-content: center;
@@ -188,31 +188,29 @@
   border-color: rgba(255, 215, 0, 0.5);
 }
 
-/* Responsive adjustments for laptop screens */
 @media (max-width: 1200px) {
-  .laptopOnly:nth-child(6), /* History */
-  .laptopOnly:nth-child(7) /* Quiz */ {
+  .laptopOnly:nth-child(6),
+  .laptopOnly:nth-child(7) {
     display: none;
   }
 }
 
 @media (max-width: 1000px) {
-  .laptopOnly:nth-child(5) /* Articles */ {
+  .laptopOnly:nth-child(5) {
     display: none;
   }
 }
 
-/* Mobile behavior */
 @media (max-width: 768px) {
   .laptopOnly {
-    display: none; /* Hide all laptop-only links */
+    display: none;
   }
 
   .navbar {
     padding: 0.5rem 0.5rem;
     flex-direction: column;
     align-items: stretch;
-    top: 20px;
+    top: 60px; /* Adjusted to clear ticker (~44px) */
   }
 
   .navMain {
@@ -224,7 +222,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.3rem 0.5rem 0.3rem 0.2rem; /* Shift left by reducing left padding */
+    padding: 0.3rem 0.5rem 0.3rem 0.2rem;
     background: linear-gradient(135deg, rgba(40, 40, 40, 0.9), rgba(20, 20, 20, 0.95));
     border-top: 1px solid rgba(255, 215, 0, 0.6);
     border-bottom: 1px solid rgba(255, 215, 0, 0.6);
@@ -251,8 +249,8 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     white-space: nowrap;
-    justify-content: flex-start; /* Shift items left */
-    padding-left: 0.3rem; /* Add slight left padding for spacing */
+    justify-content: flex-start;
+    padding-left: 0.3rem;
   }
 
   .extraNavList::-webkit-scrollbar {
@@ -318,11 +316,11 @@
 @media (max-width: 480px) {
   .navbar {
     padding: 0.3rem 0.3rem;
-    top: 34px;
+    top: 54px; /* Adjusted to clear ticker */
   }
 
   .menuBox {
-    padding: 0.2rem 0.4rem 0.2rem 0.1rem; /* Shift left further */
+    padding: 0.2rem 0.4rem 0.2rem 0.1rem;
   }
 
   .navButton {
@@ -337,7 +335,7 @@
 
   .extraNavList {
     gap: 0.2rem;
-    padding-left: 0.2rem; /* Adjust for smaller screens */
+    padding-left: 0.2rem;
   }
 
   .extraNavLink {

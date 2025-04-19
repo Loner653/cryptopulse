@@ -1,9 +1,11 @@
-"use client";
+ // C:\Users\hp\Desktop\cryptopulse\app\quiz\page.js
+ "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./quiz.module.css";
-import { db, analytics } from "../lib/firebase";
+import { db } from "../lib/firebase";
 import { ref, get, set, onValue } from "firebase/database";
+
 
 // Glossary Terms (5 per difficulty level, 15 total)
 const glossaryTerms = [
@@ -2056,7 +2058,7 @@ const questionPool = [
     { question: "What is the name of WAX’s smart contract runtime?", options: ["EVM", "Substrate", "WASM", "Sealevel"], correctAnswer: "WASM", difficulty: "advanced" },
 ];
 
-// Utility function to shuffle arrays
+  // Utility function to shuffle arrays
 const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
 export default function CryptoQuiz() {
@@ -2071,12 +2073,25 @@ export default function CryptoQuiz() {
   const [dailyCompleted, setDailyCompleted] = useState(false);
   const [username, setUsername] = useState("");
   const [showUsernameModal, setShowUsernameModal] = useState(true);
-  const [difficulty, setDifficulty] = useState(null); // Initially null until user selects
+  const [difficulty, setDifficulty] = useState(null);
   const [showDifficultyModal, setShowDifficultyModal] = useState(true);
   const [streak, setStreak] = useState(0);
   const [achievements, setAchievements] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [currentTab, setCurrentTab] = useState("quiz");
+  const [analytics, setAnalytics] = useState(null);
+
+  // Initialize analytics client-side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("firebase/analytics").then(({ getAnalytics }) => {
+        import("firebase/app").then(({ getApp }) => {
+          const analyticsInstance = getAnalytics(getApp());
+          setAnalytics(analyticsInstance);
+        });
+      });
+    }
+  }, []);
 
   const getLevelQuestions = (questions, diff) => {
     const filtered = questions.filter((q) => q.difficulty === diff);
@@ -2180,25 +2195,9 @@ export default function CryptoQuiz() {
         logEvent(analytics, "page_view", { page_title: "Crypto Quiz" });
       });
     }
-  }, []);
+  }, [analytics]);
 
-  useEffect(() => {
-    if (
-      timeLeft > 0 &&
-      !showResult &&
-      !selectedAnswer &&
-      currentTab === "quiz" &&
-      !dailyCompleted &&
-      difficulty
-    ) {
-      const timer = setInterval(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearInterval(timer);
-    } else if (timeLeft === 0) {
-      handleAnswer(null);
-    }
-  }, [timeLeft, selectedAnswer, showResult, currentTab, dailyCompleted, difficulty]);
-
-  const handleAnswer = (answer) => {
+  const handleAnswer = useCallback((answer) => {
     setSelectedAnswer(answer);
     const isCorrect = answer === levelQuestions[currentQuestion].correctAnswer;
     const btcValue = difficulty === "beginner" ? 1 : difficulty === "intermediate" ? 1.5 : 2;
@@ -2246,7 +2245,40 @@ export default function CryptoQuiz() {
         }
       }
     }, 1000);
-  };
+  }, [
+    analytics,
+    currentQuestion,
+    levelQuestions,
+    difficulty,
+    streak,
+    score,
+    username,
+    setScore,
+    setStreak,
+    setSelectedAnswer,
+    setCurrentQuestion,
+    setTimeLeft,
+    setShowResult,
+    setCurrentTab,
+    checkAchievements,
+    updateScore,
+  ]);
+
+  useEffect(() => {
+    if (
+      timeLeft > 0 &&
+      !showResult &&
+      !selectedAnswer &&
+      currentTab === "quiz" &&
+      !dailyCompleted &&
+      difficulty
+    ) {
+      const timer = setInterval(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearInterval(timer);
+    } else if (timeLeft === 0) {
+      handleAnswer(null);
+    }
+  }, [timeLeft, selectedAnswer, showResult, currentTab, dailyCompleted, difficulty, handleAnswer]);
 
   const checkAchievements = (points) => {
     let newAchievements = [...achievements];

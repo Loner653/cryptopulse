@@ -1,12 +1,11 @@
 .ticker {
   background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
   color: #e0e0e0;
-  padding: 10px 20px;
+  padding: 10px 14px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  font-size: 1rem;
+  font-size: 1rem; /* Increased base font */
   font-family: 'Arial', sans-serif;
   position: fixed;
   top: 0;
@@ -15,58 +14,193 @@
   z-index: 1300;
   overflow: hidden;
   white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  min-height: 48px;
+}
+
+.tickerWrapper {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
 }
 
 .tickerContent {
   display: inline-flex;
-  animation: marquee 110s linear infinite; 
+  align-items: center;
+  animation: marquee 35s linear infinite; /* Slower animation */
+  will-change: transform;
+  gap: 8px; /* Increased gap */
+  min-height: 42px;
 }
 
 @keyframes marquee {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0);
   }
   100% {
     transform: translateX(-100%);
   }
 }
 
-.ticker span {
+.coinItem {
+  position: relative;
   font-weight: 500;
-  transition: color 0.3s ease;
-  margin: 0 15px;
+  transition: all 0.3s ease;
+  margin: 0 3px; /* Increased margin */
+  padding: 4px 8px; /* Increased padding */
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  flex-shrink: 0;
+  min-width: 70px; /* Increased for larger text */
 }
 
-/* Color coding for price changes */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.coinItem:hover {
+  background: linear-gradient(90deg, #00b7eb, #00f7ff);
+  color: #1a1a2e;
+  box-shadow: 0 2px 8px rgba(0, 204, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.coinText {
+  font-size: 0.9rem; /* Increased */
+  font-weight: 600;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  color: #e0e0e0;
+  padding: 5px 8px; /* Increased */
+  border-radius: 6px;
+  font-size: 0.8rem; /* Increased */
+  line-height: 1.4;
+  white-space: nowrap;
+  z-index: 1400;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.coinItem:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(4px);
+}
+
 .priceUp {
-  color: #00ff00; /* Green for positive change */
+  color: #00ff00;
 }
 
 .priceDown {
-  color: #ff0000; /* Red for negative change */
+  color: #ff0000;
 }
 
-/* Style for the welcome message */
 .welcomeMessage {
-  color: #ffd700; /* Gold color to stand out */
+  color: #ffd700;
   font-weight: 700;
-  font-size: 1.2rem;
-  margin: 0 15px;
+  font-size: 1rem; /* Increased */
+  margin: 0 3px; /* Increased margin */
+  padding: 4px 8px; /* Increased padding */
+  border-radius: 6px;
+  background: rgba(255, 215, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  flex-shrink: 0;
+  min-width: 110px; /* Increased for larger text */
+  text-align: center;
 }
 
-.ticker span:hover {
-  color: #ffd700;
+.welcomeMessage:hover {
+  color: #fff;
+  background: rgba(255, 215, 0, 0.3);
+}
+
+.loading {
+  font-weight: 600;
+  padding: 6px 12px; /* Increased padding */
+  border-radius: 6px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease;
+  flex: 1;
+  text-align: center;
+  color: #00ccff;
+  background: rgba(0, 204, 255, 0.15);
+  font-size: 0.9rem; /* Increased */
 }
 
 @media (max-width: 768px) {
   .ticker {
     font-size: 0.9rem;
     padding: 8px 10px;
+    min-height: 40px;
   }
-  .ticker span {
-    margin: 0 10px;
+  .tickerContent {
+    gap: 6px;
+    min-height: 36px;
+  }
+  .coinItem,
+  .welcomeMessage {
+    margin: 0 2px;
+    padding: 3px 6px;
+    min-width: 65px;
+  }
+  .coinText {
+    font-size: 0.8rem;
   }
   .welcomeMessage {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    min-width: 100px;
+  }
+  .tooltip {
+    font-size: 0.75rem;
+    padding: 4px 7px;
+  }
+  .loading {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticker {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    min-height: 36px;
+  }
+  .tickerContent {
+    gap: 5px;
+    min-height: 32px;
+  }
+  .coinItem,
+  .welcomeMessage {
+    margin: 0 1px;
+    min-width: 60px;
+  }
+  .coinText {
+    font-size: 0.75rem;
+  }
+  .welcomeMessage {
+    min-width: 90px;
+    font-size: 0.9rem;
+  }
+  .tooltip {
+    font-size: 0.7rem;
+    padding: 3px 6px;
   }
 }

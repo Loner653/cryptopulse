@@ -1,3 +1,5 @@
+// C:\Users\hp\Desktop\cryptopulse\app\layout.js
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./global.css";
 import ClientWrapper from "./ClientWrapper";
 
@@ -26,6 +28,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ClientWrapper>{children}</ClientWrapper>
+        <SpeedInsights />
       </body>
     </html>
   );
