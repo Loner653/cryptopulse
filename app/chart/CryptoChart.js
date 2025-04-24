@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './cryptoChart.module.css';
 
-// Log CSS module to confirm loading
 console.log('CryptoChart CSS module loaded:', Object.keys(styles));
 
 export default function CryptoChart() {
@@ -20,11 +19,13 @@ export default function CryptoChart() {
   const [error, setError] = useState(null);
   const [isOnline, setIsOnline] = useState(true);
   const clientCache = useRef(new Map());
-  const CACHE_DURATION = 2 * 60 * 1000;
-  const PREFETCH_DELAY = 5000;
-  const { ref, inView } = useInView({ threshold: 0.1, skip: typeof window === 'undefined' });
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  const PREFETCH_DELAY = 10000; // 10s
+  const { ref, inView } = useInView({ threshold: 0.5, skip: !isOnline || searchQuery });
   const fetchQueue = useRef([]);
   const isFetching = useRef(false);
+  const lastFetchTime = useRef(0);
+  const MIN_FETCH_INTERVAL = 2000; // 2s between fetches
 
   const formatMarketCap = (value) => {
     if (!value) return 'N/A';
@@ -36,9 +37,7 @@ export default function CryptoChart() {
 
   const formatPrice = (value) => {
     if (!value) return 'N/A';
-    if (value >= 1) {
-      return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+    if (value >= 1) return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const str = value.toFixed(20);
     const match = str.match(/0\.0*([1-9])/);
     if (match && match[1]) {
@@ -46,11 +45,7 @@ export default function CryptoChart() {
       const leadingZeros = firstNonZeroIndex - 2;
       if (leadingZeros >= 3) {
         const significantDigits = str.slice(firstNonZeroIndex, firstNonZeroIndex + 3);
-        return (
-          <>
-            0.0<sub>{leadingZeros - 1}</sub>{significantDigits}
-          </>
-        );
+        return <>{`0.0${leadingZeros - 1}${significantDigits}`}</>;
       }
     }
     return Number(value.toFixed(6)).toString();
@@ -61,13 +56,18 @@ export default function CryptoChart() {
   const fetchCoins = useCallback(
     async (pageToFetch, isRefresh = false, attempt = 1) => {
       if (isFetching.current || (!isRefresh && !hasMore)) return false;
+      const now = Date.now();
+      if (now - lastFetchTime.current < MIN_FETCH_INTERVAL && !isRefresh) {
+        console.log(`Throttling fetch for page ${pageToFetch}, waiting...`);
+        await wait(MIN_FETCH_INTERVAL - (now - lastFetchTime.current));
+      }
       isFetching.current = true;
       setLoading(true);
       setError(null);
       const cacheKey = `page_${pageToFetch}`;
 
       const cached = clientCache.current.get(cacheKey);
-      if (cached && Date.now() - cached.timestamp < CACHE_DURATION && !isRefresh) {
+      if (cached && now - cached.timestamp < CACHE_DURATION && !isRefresh) {
         console.log(`Serving client-cached data for page ${pageToFetch}`);
         setCoins((prev) => {
           const existingIds = new Set(prev.map((coin) => coin.id));
@@ -87,22 +87,23 @@ export default function CryptoChart() {
         setHasMore(cached.data.length === 50);
         setLoading(false);
         isFetching.current = false;
+        lastFetchTime.current = now;
         return true;
       }
 
       try {
         if (isOnline) {
           console.log(`Fetching page ${pageToFetch} from CoinGecko (Attempt ${attempt})`);
-          const response = await fetch(`/api/coins?page=${pageToFetch}`);
+          const response = await fetch(`/api/coins?page=${pageToFetch}`, { cache: 'no-store' });
           if (!response.ok) {
             if (response.status === 429) {
               if (attempt <= 3) {
-                const delay = 5000 * Math.pow(2, attempt - 1);
+                const delay = 6000 * Math.pow(2, attempt);
                 console.log(`Rate limit hit, waiting ${delay / 1000}s...`);
                 await wait(delay);
                 return fetchCoins(pageToFetch, isRefresh, attempt + 1);
               }
-              throw new Error('CoinGecko API limit exceeded. Please wait and try again.');
+              throw new Error('Rate limit exceeded. Please wait and try again.');
             }
             throw new Error(`Failed to fetch coins: ${response.status}`);
           }
@@ -124,9 +125,10 @@ export default function CryptoChart() {
               return isRefresh ? newCoins : [...prev, ...newCoins];
             });
           }
-          clientCache.current.set(cacheKey, { data, timestamp: Date.now() });
+          clientCache.current.set(cacheKey, { data, timestamp: now });
           if (!isRefresh) setPage(pageToFetch + 1);
           setHasMore(data.length === 50);
+          lastFetchTime.current = now;
           return true;
         } else {
           if (cached) {
@@ -147,10 +149,10 @@ export default function CryptoChart() {
             }
             if (!isRefresh) setPage(pageToFetch + 1);
             setHasMore(cached.data.length === 50);
+            lastFetchTime.current = now;
             return true;
-          } else {
-            throw new Error('No cached data available. Please reconnect to the internet.');
           }
+          throw new Error('No cached data available. Please reconnect to the internet.');
         }
       } catch (err) {
         console.error(`Error: ${err.message}`);
@@ -165,7 +167,7 @@ export default function CryptoChart() {
         }
       }
     },
-    [hasMore, isOnline, searchQuery, CACHE_DURATION]
+    [hasMore, isOnline, searchQuery]
   );
 
   const queueFetch = useCallback(
@@ -185,20 +187,15 @@ export default function CryptoChart() {
     console.log(`Scheduling prefetch for page ${page} in ${PREFETCH_DELAY / 1000}s...`);
     await wait(PREFETCH_DELAY);
     queueFetch(page, false);
-  }, [queueFetch, hasMore, page, isOnline, searchQuery, PREFETCH_DELAY]);
+  }, [queueFetch, hasMore, page, isOnline, searchQuery]);
 
   const handleSearch = useCallback(() => {
-    console.log('Search query:', searchQuery);
     if (!searchQuery.trim()) {
-      console.log('No search query, resetting to all coins:', coins.length);
       setFilteredCoins(coins);
       setError(null);
       return;
     }
     const lowerQuery = searchQuery.toLowerCase().trim();
-    console.log('Filtering coins with query:', lowerQuery);
-
-    // Check cached pages for matches
     let matchedCoins = [];
     for (const [cacheKey, cached] of clientCache.current) {
       if (Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -211,76 +208,23 @@ export default function CryptoChart() {
         );
       }
     }
-
-    // Filter loaded coins
     const filtered = coins.filter(
       (coin) =>
         (coin.name && coin.name.toLowerCase().includes(lowerQuery)) ||
         (coin.symbol && coin.symbol.toLowerCase().includes(lowerQuery))
     );
-
-    // Combine cached and loaded matches, removing duplicates
     const allMatches = [...new Map([...matchedCoins, ...filtered].map(coin => [coin.id, coin])).values()];
-    console.log('Filtered coins:', allMatches.length, allMatches.map(c => c.name));
     setFilteredCoins(allMatches);
     setError(allMatches.length === 0 ? 'No coins found for your search.' : null);
+  }, [searchQuery, coins]);
 
-    // Trigger background fetching if online and more pages are available
-    if (isOnline && hasMore && allMatches.length < 10) {
-      console.log('Initiating background fetch for more search results, starting at page:', page);
-      const backgroundFetch = async () => {
-        let nextPage = page;
-        while (hasMore && isOnline && !isFetching.current) {
-          console.log(`Background fetching page ${nextPage} for search query: ${lowerQuery}`);
-          const success = await fetchCoins(nextPage, false);
-          if (!success) break;
-          nextPage++;
-          // Re-run search to include new coins
-          const newFiltered = coins.filter(
-            (coin) =>
-              (coin.name && coin.name.toLowerCase().includes(lowerQuery)) ||
-              (coin.symbol && coin.symbol.toLowerCase().includes(lowerQuery))
-          );
-          const newMatches = [...new Map([...matchedCoins, ...newFiltered].map(coin => [coin.id, coin])).values()];
-          console.log('Updated search results:', newMatches.length, newMatches.map(c => c.name));
-          setFilteredCoins(newMatches);
-          setError(newMatches.length === 0 ? 'No coins found for your search.' : null);
-          // Small delay to avoid overwhelming the API
-          await wait(1000);
-        }
-      };
-      backgroundFetch();
-    }
-  }, [searchQuery, coins, isOnline, hasMore, page, fetchCoins, CACHE_DURATION]);
-
-  const debouncedSearch = useCallback(
-    () => {
-      const timeout = setTimeout(() => handleSearch(), 500);
-      return () => clearTimeout(timeout);
-    },
-    [handleSearch]
-  );
-
-  const debouncedFetchCoins = useCallback(
-    () => {
-      const timeout = setTimeout(() => queueFetch(page, false), 1500);
-      return () => clearTimeout(timeout);
-    },
-    [queueFetch, page]
-  );
-
-  const debouncedPrefetch = useCallback(
-    () => {
-      const timeout = setTimeout(() => prefetchNextPage(), PREFETCH_DELAY);
-      return () => clearTimeout(timeout);
-    },
-    [prefetchNextPage, PREFETCH_DELAY]
-  );
+  const debouncedSearch = useCallback(() => {
+    const timeout = setTimeout(() => handleSearch(), 500);
+    return () => clearTimeout(timeout);
+  }, [handleSearch]);
 
   const handleScroll = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      setIsBackToTopVisible(window.scrollY > 300);
-    }
+    setIsBackToTopVisible(window.scrollY > 300);
   }, []);
 
   useEffect(() => {
@@ -294,92 +238,29 @@ export default function CryptoChart() {
       queueFetch(1, true);
     };
     const handleOffline = () => setIsOnline(false);
-
-    if (typeof window !== 'undefined') {
-      setIsOnline(navigator.onLine);
-      window.addEventListener('online', handleOnline);
-      window.addEventListener('offline', handleOffline);
-      window.addEventListener('scroll', handleScroll);
-    }
-
+    setIsOnline(navigator.onLine);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    window.addEventListener('scroll', handleScroll);
     queueFetch(1, true);
-
     return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('online', handleOnline);
-        window.removeEventListener('offline', handleOffline);
-        window.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [queueFetch, handleScroll]);
 
   useEffect(() => {
     if (inView && !isFetching.current && hasMore && !searchQuery && isOnline) {
-      debouncedFetchCoins();
+      queueFetch(page, false);
     }
-  }, [inView, debouncedFetchCoins, hasMore, searchQuery, isOnline]);
+  }, [inView, queueFetch, hasMore, page, searchQuery, isOnline]);
 
   useEffect(() => {
     if (coins.length > 0 && hasMore && !searchQuery && isOnline) {
-      debouncedPrefetch();
+      prefetchNextPage();
     }
-  }, [coins, hasMore, searchQuery, isOnline, debouncedPrefetch]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.Tawk_API && window.Tawk_API.onLoad) {
-      window.Tawk_API.onLoad = function () {
-        window.Tawk_API.setAttributes({ name: 'Crypto-bot' });
-        window.Tawk_API.onChatMessageVisitor = function (message) {
-          const userMessage = message.toLowerCase().trim();
-          const coinsData = window.cryptoChartData || coins;
-
-          if (isFetching.current) {
-            window.Tawk_API.sendMessage('I’m still loading the coin data, please wait a moment...');
-            return;
-          }
-
-          if (coinsData.length === 0) {
-            window.Tawk_API.sendMessage('Sorry, I couldn’t load the cryptocurrency data. Please try again later.');
-            return;
-          }
-
-          let detectedCoin = null;
-          for (const coin of coinsData) {
-            if (
-              userMessage.includes(coin.name?.toLowerCase()) ||
-              userMessage.includes(coin.symbol?.toLowerCase())
-            ) {
-              detectedCoin = coin;
-              break;
-            }
-          }
-
-          if (!detectedCoin) {
-            window.Tawk_API.sendMessage('Sorry, I couldn’t find that cryptocurrency in the chart data. Try another coin.');
-            return;
-          }
-
-          if (userMessage.includes('price') || userMessage.includes('how much')) {
-            window.Tawk_API.sendMessage(
-              `The current price of ${detectedCoin.symbol.toUpperCase()} is $${formatPrice(detectedCoin.current_price)} USD.`
-            );
-          } else if (userMessage.includes('market cap')) {
-            window.Tawk_API.sendMessage(
-              `The market cap of ${detectedCoin.symbol.toUpperCase()} is $${formatMarketCap(detectedCoin.market_cap)} USD.`
-            );
-          } else if (userMessage.includes('24h change') || userMessage.includes('24 hour')) {
-            window.Tawk_API.sendMessage(
-              `The 24h price change of ${detectedCoin.symbol.toUpperCase()} is ${detectedCoin.price_change_percentage_24h?.toFixed(2) ?? 'N/A'}%.`
-            );
-          } else {
-            window.Tawk_API.sendMessage(
-              `I can help with price, market cap, or 24h change for ${detectedCoin.symbol.toUpperCase()}. What would you like to know?`
-            );
-          }
-        };
-      };
-    }
-  }, [coins]);
+  }, [coins, hasMore, searchQuery, isOnline, prefetchNextPage]);
 
   const displayedCoins = searchQuery ? filteredCoins : coins;
 
@@ -390,16 +271,13 @@ export default function CryptoChart() {
         <input
           type="text"
           value={searchQuery}
-          onChange={(e) => {
-            console.log('Input change:', e.target.value);
-            setSearchQuery(e.target.value);
-          }}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search coins (e.g., Bitcoin, BTC)"
           className={styles.searchInput}
         />
       </div>
       <div className={styles.coinCount}>
-        {displayedCoins.length} out of a vast array of coins
+        {displayedCoins.length} coins loaded
       </div>
       {error && (
         <div className={styles.error}>
@@ -487,7 +365,7 @@ export default function CryptoChart() {
       </div>
       {hasMore && !searchQuery && isOnline && (
         <button
-          onClick={() => debouncedFetchCoins()}
+          onClick={() => queueFetch(page, false)}
           className={styles.loadMore}
           disabled={loading}
         >
@@ -497,7 +375,7 @@ export default function CryptoChart() {
         </button>
       )}
       <button
-        onClick={() => typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className={`${styles.backToTop} ${isBackToTopVisible ? styles.visible : ''}`}
         aria-label="Back to top"
       >
